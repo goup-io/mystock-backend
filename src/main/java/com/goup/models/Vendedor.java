@@ -1,4 +1,4 @@
-package com.goup;
+package com.goup.models;
 
 public class Vendedor extends Usuario{
 

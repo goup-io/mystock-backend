@@ -1,4 +1,4 @@
-package com.goup;
+package com.goup.models;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

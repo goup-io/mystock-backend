@@ -1,5 +1,9 @@
-package com.goup;
+package com.goup.controllers;
 
+import com.goup.models.Gerente;
+import com.goup.models.GerenteGeral;
+import com.goup.models.Usuario;
+import com.goup.models.Vendedor;
 import com.goup.utils.Utils;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

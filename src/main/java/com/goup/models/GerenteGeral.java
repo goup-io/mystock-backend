@@ -1,11 +1,10 @@
-package com.goup;
+package com.goup.models;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class Gerente extends Usuario{
-
+public class GerenteGeral extends Usuario{
     @NotBlank
     @Email
     private String email;
@@ -14,10 +13,10 @@ public class Gerente extends Usuario{
     private String senha;
 
 
-    public Gerente() {
+    public GerenteGeral() {
     }
 
-    public Gerente(int id, int codigoVenda, String nome, String cargo, String telefone, String email, String senha) {
+    public GerenteGeral(int id, int codigoVenda, String nome, String cargo, String telefone, String email, String senha) {
         super(id, codigoVenda, nome, cargo, telefone);
         this.email = email;
         this.senha = senha;
