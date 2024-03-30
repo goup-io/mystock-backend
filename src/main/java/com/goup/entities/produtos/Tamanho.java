@@ -1,16 +1,15 @@
-package com.goup.entities.produtos.modelos;
+package com.goup.entities.produtos;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
-@Entity
-@Table
-public class Categoria {
+@Entity @Table
+public class Tamanho {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank @Column(unique = true, nullable = false)
-    private String nome;
+    @NotBlank @Column(unique = true)
+    private int numero;
 
     public int getId() {
         return id;
@@ -20,11 +19,11 @@ public class Categoria {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public int getNumero() {
+        return numero;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNumero(int numero) {
+        this.numero = numero;
     }
 }

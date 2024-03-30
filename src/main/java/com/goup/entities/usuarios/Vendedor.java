@@ -1,4 +1,4 @@
-package com.goup.entities;
+package com.goup.entities.usuarios;
 
 public class Vendedor extends Usuario{
 

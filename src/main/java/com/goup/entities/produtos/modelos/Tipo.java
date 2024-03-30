@@ -6,12 +6,10 @@ import jakarta.validation.constraints.NotBlank;
 @Entity
 @Table
 public class Tipo {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank
-    @Column(unique = true)
+    @NotBlank @Column(unique = true)
     private String nome;
 
     public int getId() {

@@ -1,4 +1,4 @@
-package com.goup.entities;
+package com.goup.entities.usuarios;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

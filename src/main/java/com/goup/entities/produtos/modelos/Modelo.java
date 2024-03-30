@@ -12,29 +12,20 @@ public class Modelo {
     @Id
     private int id;
 
-    @Id
-    @Column
+    @Column(unique = true)
     private String codigo;
 
-    @NotBlank
-    @Column
+    @NotBlank @Column
     private String nome;
 
-    @NotBlank
-    @Column
+    @NotBlank @Column
     private String material;
 
-    @JoinColumn
-    @ManyToOne
+    @ManyToOne @JoinColumn(name = "categoria_id", referencedColumnName = "id")
     private Categoria categoria;
 
-    @JoinColumn
-    @ManyToOne
+    @ManyToOne @JoinColumn(name="tipo_id", referencedColumnName="id")
     private Tipo tipo;
-
-    @JoinColumn
-    @ManyToOne
-    private Cor cor;
 
     public int getId() {
         return id;
@@ -82,13 +73,5 @@ public class Modelo {
 
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
-    }
-
-    public Cor getCor() {
-        return cor;
-    }
-
-    public void setCor(Cor cor) {
-        this.cor = cor;
     }
 }
