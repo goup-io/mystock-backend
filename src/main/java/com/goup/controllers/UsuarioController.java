@@ -1,9 +1,9 @@
 package com.goup.controllers;
 
-import com.goup.models.Gerente;
-import com.goup.models.GerenteGeral;
-import com.goup.models.Usuario;
-import com.goup.models.Vendedor;
+import com.goup.entities.Gerente;
+import com.goup.entities.GerenteGeral;
+import com.goup.entities.Usuario;
+import com.goup.entities.Vendedor;
 import com.goup.utils.Utils;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.goup.utils;
 
-import com.goup.models.Usuario;
-import com.goup.models.Vendedor;
+import com.goup.entities.Usuario;
+import com.goup.entities.Vendedor;
 
 public class Utils {
 
