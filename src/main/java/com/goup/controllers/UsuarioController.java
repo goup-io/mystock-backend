@@ -1,6 +1,5 @@
 package com.goup.controllers;
 
-import com.goup.dtos.requests.Login;
 import com.goup.entities.usuarios.Usuario;
 import com.goup.repositories.UsuarioRepository;
 import com.goup.services.TokenService;
@@ -8,8 +7,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -75,18 +72,6 @@ public class UsuarioController {
             return ResponseEntity.status(404).build();
         }
     }
-
-    @PostMapping("/login")
-    public String login(@RequestBody Login login){
-        UsernamePasswordAuthenticationToken userAuthToken = new UsernamePasswordAuthenticationToken(login.user(), login.senha());
-
-        Authentication authenticate = this.authenticationManager.authenticate(userAuthToken);
-
-        var usuario = (com.goup.entities.usuarios.Login) authenticate.getPrincipal();
-
-        return tokenService.gerarToken(usuario);
-    }
-
 
 /*
 
