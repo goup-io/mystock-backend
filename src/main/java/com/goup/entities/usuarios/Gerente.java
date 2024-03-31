@@ -1,10 +1,12 @@
-package com.goup.entities;
+package com.goup.entities.usuarios;
 
+import com.goup.entities.cargos.Cargo;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class GerenteGeral extends Usuario{
+public class Gerente {
+
     @NotBlank
     @Email
     private String email;
@@ -12,15 +14,6 @@ public class GerenteGeral extends Usuario{
     @NotBlank
     private String senha;
 
-
-    public GerenteGeral() {
-    }
-
-    public GerenteGeral(int id, int codigoVenda, String nome, String cargo, String telefone, String email, String senha) {
-        super(id, codigoVenda, nome, cargo, telefone);
-        this.email = email;
-        this.senha = senha;
-    }
 
     public String getEmail() {
         return email;
