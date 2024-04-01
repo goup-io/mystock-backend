@@ -27,6 +27,9 @@ public class Login implements UserDetails {
         this. role = role;
     }
 
+    public Login() {
+
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

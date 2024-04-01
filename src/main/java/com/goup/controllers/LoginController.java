@@ -1,6 +1,7 @@
 package com.goup.controllers;
 
 import com.goup.dtos.requests.LoginDTO;
+import com.goup.dtos.requests.LoginResponseDTO;
 import com.goup.dtos.requests.RegisterDTO;
 import com.goup.entities.usuarios.Login;
 import com.goup.repositories.LoginRepository;
@@ -34,9 +35,10 @@ public class LoginController {
         UsernamePasswordAuthenticationToken userAuthToken = new UsernamePasswordAuthenticationToken(loginDTO.user(), loginDTO.senha());
         Authentication authenticate = this.authenticationManager.authenticate(userAuthToken);
 
-        var usuario = (com.goup.entities.usuarios.Login) authenticate.getPrincipal();
+        var usuario = (Login) authenticate.getPrincipal();
+        var token = tokenService.gerarToken(usuario);
 
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")

@@ -27,6 +27,7 @@ public class UsuarioController {
         this.repository = repository;
     }
 
+    //todo: create the post user DTO
     @PostMapping
     public ResponseEntity<Usuario> cadastrar(@RequestBody @Valid Usuario usuario) {
         repository.save(usuario);
