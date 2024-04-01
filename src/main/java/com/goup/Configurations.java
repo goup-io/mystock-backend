@@ -24,9 +24,12 @@ public class Configurations {
                .csrf(csrf -> csrf.disable())
                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                .authorizeHttpRequests(authorize ->
-                       authorize.requestMatchers(HttpMethod.POST, "/users").hasRole("CREATE")
-                               .requestMatchers(HttpMethod.DELETE, "/users").hasRole("DELETE")
-                               .requestMatchers(HttpMethod.PUT, "/users").hasRole("UPDATE")
+                       authorize.requestMatchers(HttpMethod.POST, "/users").hasRole("GERENTE")
+                               .requestMatchers(HttpMethod.DELETE, "/users").hasRole("GERENTE")
+                               .requestMatchers(HttpMethod.PUT, "/users").hasRole("GERENTE")
+                               .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
+                               .requestMatchers(HttpMethod.DELETE, "/users").hasRole("ADMIN")
+                               .requestMatchers(HttpMethod.PUT, "/users").hasRole("ADMIN")
                                .anyRequest().authenticated()
                )
                .build();

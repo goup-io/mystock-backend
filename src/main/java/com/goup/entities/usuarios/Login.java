@@ -21,17 +21,19 @@ public class Login implements UserDetails {
 
     private UserRole role;
 
+    public Login(String user, String senhaEcrypted, UserRole role) {
+        this.user = user;
+        this. senha = senhaEcrypted;
+        this. role = role;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == UserRole.CREATE) {
-            return List.of(new SimpleGrantedAuthority("CREATE_AUTHORITY"));
-        } else if (this.role == UserRole.READ){
-            return List.of(new SimpleGrantedAuthority("READ_AUTHORITY"));
-        } else if (this.role == UserRole.UPDATE){
-            return List.of(new SimpleGrantedAuthority("UPDATE_AUTHORITY"));
-        } else {
-            return List.of(new SimpleGrantedAuthority("DELETE_AUTHORITY"));
+        if (this.role == UserRole.GERENTE || this.role == UserRole.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),  new SimpleGrantedAuthority("ROLE_USER"));
+        } else  {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
         }
     }
 

@@ -14,7 +14,7 @@ public class TokenService {
         Algorithm algorithm = Algorithm.HMAC256("bananinhaxptors");
 
         return JWT.create()
-                .withIssuer("Login")
+                .withIssuer("LoginDTO")
                 .withSubject(usuario.getUsername())
                 .withClaim("id", usuario.getId())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 5000L))

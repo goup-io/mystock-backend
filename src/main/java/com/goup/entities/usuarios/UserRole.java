@@ -1,10 +1,9 @@
 package com.goup.entities.usuarios;
 
 public enum UserRole {
-    CREATE("create"),
-    READ("read"),
-    UPDATE("update"),
-    DELETE("delete");
+    VENDEDOR("Vendedor"),
+    GERENTE("Gerente"),
+    ADMIN("ADMIN");
 
     private String role;
 
