@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -31,6 +32,8 @@ public class Configurations {
                        authorize
                                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                               .requestMatchers("/swagger-ui/**").permitAll()
+                               .requestMatchers("/v3/api-docs/**").permitAll()
                                .requestMatchers(HttpMethod.POST, "/users").hasRole("GERENTE")
                                .requestMatchers(HttpMethod.DELETE, "/users").hasRole("GERENTE")
                                .requestMatchers(HttpMethod.PUT, "/users").hasRole("GERENTE")
