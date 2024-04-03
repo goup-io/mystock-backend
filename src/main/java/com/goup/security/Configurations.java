@@ -37,6 +37,7 @@ public class Configurations {
                                .requestMatchers(HttpMethod.POST, "/users").hasRole("GERENTE")
                                .requestMatchers(HttpMethod.DELETE, "/users").hasRole("GERENTE")
                                .requestMatchers(HttpMethod.PUT, "/users").hasRole("GERENTE")
+                               .requestMatchers(HttpMethod.GET, "/users").permitAll()
                                .anyRequest().authenticated()
                )
                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

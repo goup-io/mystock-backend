@@ -4,6 +4,7 @@ import com.goup.dtos.requests.LoginDTO;
 import com.goup.dtos.requests.LoginResponseDTO;
 import com.goup.dtos.requests.RegisterDTO;
 import com.goup.entities.usuarios.Login;
+import com.goup.entities.usuarios.Usuario;
 import com.goup.repositories.LoginRepository;
 import com.goup.services.TokenService;
 import jakarta.validation.Valid;
@@ -42,11 +43,12 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO registerDTO){
+    public ResponseEntity register(@RequestBody RegisterDTO registerDTO){
         if (this.repository.findByUser(registerDTO.user()) != null) return ResponseEntity.status(409).build();
 
         String senhaEcrypted = new BCryptPasswordEncoder().encode(registerDTO.senha());
-        Login novoLogin = new Login(registerDTO.user(), senhaEcrypted, registerDTO.role());
+        Usuario usuario = new Usuario();
+        Login novoLogin = new Login(registerDTO.user(), senhaEcrypted, usuario, registerDTO.role());
 
         this.repository.save(novoLogin);
 

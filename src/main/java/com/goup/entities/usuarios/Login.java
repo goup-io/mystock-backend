@@ -21,9 +21,10 @@ public class Login implements UserDetails {
 
     private UserRole role;
 
-    public Login(String user, String senhaEcrypted, UserRole role) {
+    public Login(String user, String senhaEcrypted, Usuario usuario, UserRole role) {
         this.user = user;
-        this. senha = senhaEcrypted;
+        this.senha = senhaEcrypted;
+        this.usuario = usuario;
         this. role = role;
     }
 
