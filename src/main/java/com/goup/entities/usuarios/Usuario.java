@@ -1,37 +1,24 @@
 package com.goup.entities.usuarios;
 
+import com.goup.entities.cargos.Cargo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
 @Table
-public abstract class Usuario {
-    @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private int codigoVenda;
-    @Size(min = 3, max = 30) @NotBlank
+public class Usuario {
+    @GeneratedValue(strategy = GenerationType.IDENTITY) @Id
+    private Integer id;
+    @Column(unique = true)
+    private Integer codigoVenda;
+    @Size(min = 3, max = 30) @NotBlank @Column
     private String nome;
-    //@Pattern(regexp = "Gerente geral")
-    //@Pattern(regexp = "Gerente")
-   // @Pattern(regexp = "Vendedor")
-    @NotBlank
-    private String cargo;
-    @Size(min = 9, max = 15) @NotBlank
+    @NotBlank @JoinColumn @ManyToOne
+    private Cargo cargo;
+    //@Pattern()
+    @NotBlank @Column
     private String telefone;
-
-
-    public Usuario() {
-    }
-
-    public Usuario(int id, int codigoVenda, String nome, String cargo, String telefone) {
-        this.id = id;
-        this.codigoVenda = codigoVenda;
-        this.nome = nome;
-        this.cargo = cargo;
-        this.telefone = telefone;
-    }
 
     public int getId() {
         return id;
@@ -57,11 +44,11 @@ public abstract class Usuario {
         this.nome = nome;
     }
 
-    public String getCargo() {
+    public Cargo getCargo() {
         return cargo;
     }
 
-    public void setCargo(String cargo) {
+    public void setCargo(Cargo cargo) {
         this.cargo = cargo;
     }
 
@@ -72,4 +59,5 @@ public abstract class Usuario {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
+
 }

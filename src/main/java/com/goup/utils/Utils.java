@@ -4,7 +4,7 @@ import com.goup.entities.usuarios.Usuario;
 import com.goup.entities.usuarios.Vendedor;
 
 public class Utils {
-
+/*
     // Pesquisa binária pelo nome do produto
     public int pesquisaBinaria(Usuario[] vetor, String x) {
         int indinf = 0;
@@ -56,6 +56,6 @@ public class Utils {
             usuarios[indMenor] = aux;
         }
     }
-
+*/
 }
 

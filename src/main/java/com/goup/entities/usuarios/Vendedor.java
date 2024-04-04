@@ -1,19 +1,12 @@
 package com.goup.entities.usuarios;
 
-public class Vendedor extends Usuario{
+import com.goup.entities.cargos.Cargo;
+
+public class Vendedor{
 
     private Double comissao;
     private Double valorTotalVendas;
     private Integer qtdVendas;
-
-
-    public Vendedor() {
-    }
-
-    public Vendedor(int id, int codigoVenda, String nome, String cargo, String telefone, Double comissao) {
-        super(id, codigoVenda, nome, cargo, telefone);
-        this.comissao = comissao;
-    }
 
     public Double getComissao() {
         return comissao;
