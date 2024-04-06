@@ -1,5 +1,6 @@
-package com.goup.controllers;
+package com.goup.controllers.usuario;
 
+import com.goup.dtos.requests.UsuarioCadastrarDTO;
 import com.goup.entities.usuarios.Usuario;
 import com.goup.repositories.UsuarioRepository;
 import com.goup.services.TokenService;
@@ -17,11 +18,6 @@ import java.util.Optional;
 public class UsuarioController {
 
     private final UsuarioRepository repository;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private TokenService tokenService;
 
     public UsuarioController(UsuarioRepository repository) {
         this.repository = repository;
@@ -29,14 +25,15 @@ public class UsuarioController {
 
     //todo: create the post user DTO
     @PostMapping
-    public ResponseEntity<Usuario> cadastrar(@RequestBody @Valid Usuario usuario) {
+    public ResponseEntity<Usuario> cadastrar(@RequestBody @Valid UsuarioCadastrarDTO novoUsuario) {
+        Usuario usuario = new Usuario(novoUsuario.codigoVenda(), novoUsuario.nome(), novoUsuario.cargo(), novoUsuario.telefone());
         repository.save(usuario);
         return ResponseEntity.status(201).body(usuario);
     }
 
     @GetMapping
     public ResponseEntity<List<Usuario>> listar() {
-        List<Usuario> usuariosEncontrados = repository.findAll();
+        List<Usuario> usuariosEncontrados = repository.findAllWithJoin();
         if (usuariosEncontrados.isEmpty()) {
             return ResponseEntity.status(204).build();
         }

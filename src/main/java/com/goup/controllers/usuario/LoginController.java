@@ -1,4 +1,4 @@
-package com.goup.controllers;
+package com.goup.controllers.usuario;
 
 import com.goup.dtos.requests.LoginDTO;
 import com.goup.dtos.requests.LoginResponseDTO;
@@ -6,6 +6,7 @@ import com.goup.dtos.requests.RegisterDTO;
 import com.goup.entities.usuarios.Login;
 import com.goup.entities.usuarios.Usuario;
 import com.goup.repositories.LoginRepository;
+import com.goup.repositories.UsuarioRepository;
 import com.goup.services.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -30,6 +30,8 @@ public class LoginController {
 
     @Autowired
     private LoginRepository repository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid LoginDTO loginDTO){
@@ -45,9 +47,15 @@ public class LoginController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterDTO registerDTO){
         if (this.repository.findByUser(registerDTO.user()) != null) return ResponseEntity.status(409).build();
-
         String senhaEcrypted = new BCryptPasswordEncoder().encode(registerDTO.senha());
-        Usuario usuario = new Usuario();
+
+        Usuario usuario = null;
+
+        Optional<Usuario> searchUser =  usuarioRepository.findById(registerDTO.userId());
+        if (searchUser.isPresent()){
+            usuario = searchUser.get();
+        }
+
         Login novoLogin = new Login(registerDTO.user(), senhaEcrypted, usuario, registerDTO.role());
 
         this.repository.save(novoLogin);
