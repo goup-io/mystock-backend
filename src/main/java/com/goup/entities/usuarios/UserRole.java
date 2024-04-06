@@ -3,7 +3,7 @@ package com.goup.entities.usuarios;
 public enum UserRole {
     VENDEDOR("Vendedor"),
     GERENTE("Gerente"),
-    ADMIN("ADMIN");
+    ADMIN("Admin");
 
     private String role;
 

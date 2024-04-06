@@ -25,23 +25,27 @@ public class Configurations {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-       return http
-               .csrf(csrf -> csrf.disable())
-               .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-               .authorizeHttpRequests(authorize ->
-                       authorize
-                               .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                               .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                               .requestMatchers("/swagger-ui/**").permitAll()
-                               .requestMatchers("/v3/api-docs/**").permitAll()
-                               .requestMatchers(HttpMethod.POST, "/users").hasRole("GERENTE")
-                               .requestMatchers(HttpMethod.DELETE, "/users").hasRole("GERENTE")
-                               .requestMatchers(HttpMethod.PUT, "/users").hasRole("GERENTE")
-                               .requestMatchers(HttpMethod.GET, "/users").permitAll()
-                               .anyRequest().authenticated()
-               )
-               .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-               .build();
+        return http
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize ->
+                        authorize
+                                .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                                .requestMatchers(RequestMatcher -> !RequestMatcher.getServletPath().startsWith("/auth/register")).permitAll() // Excluir a rota /auth/register do filtro de segurança
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/users").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/users").hasRole("GERENTE")
+                                .requestMatchers(HttpMethod.DELETE, "/users").hasRole("GERENTE")
+                                .requestMatchers(HttpMethod.PUT, "/users").hasRole("GERENTE")
+                                .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/users").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/users").hasRole("ADMIN")
+                                .anyRequest().authenticated()
+                )
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean

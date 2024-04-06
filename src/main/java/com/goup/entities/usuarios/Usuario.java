@@ -3,6 +3,7 @@ package com.goup.entities.usuarios;
 import com.goup.entities.cargos.Cargo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -14,11 +15,21 @@ public class Usuario {
     private Integer codigoVenda;
     @Size(min = 3, max = 30) @NotBlank @Column
     private String nome;
-    @NotBlank @JoinColumn @ManyToOne
+    @NotNull @JoinColumn @ManyToOne(cascade = CascadeType.PERSIST)
     private Cargo cargo;
     //@Pattern()
-    @NotBlank @Column
+    @NotNull @Column
     private String telefone;
+
+    public Usuario() {
+    }
+
+    public Usuario(Integer codigoVenda, String nome, Cargo cargo, String telefone) {
+        this.codigoVenda = codigoVenda;
+        this.nome = nome;
+        this.cargo = cargo;
+        this.telefone = telefone;
+    }
 
     public int getId() {
         return id;

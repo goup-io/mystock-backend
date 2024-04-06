@@ -18,7 +18,7 @@ public class Login implements UserDetails {
     private String senha;
     @JoinColumn @OneToOne
     private Usuario usuario;
-
+    @Transient
     private UserRole role;
 
     public Login(String user, String senhaEcrypted, Usuario usuario, UserRole role) {

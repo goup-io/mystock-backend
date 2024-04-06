@@ -1,6 +1,6 @@
 package com.goup.services;
 
-import com.goup.repositories.LoginRepository;
+import com.goup.repositories.usuarios.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
