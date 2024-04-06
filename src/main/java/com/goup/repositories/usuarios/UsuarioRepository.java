@@ -1,11 +1,10 @@
-package com.goup.repositories;
+package com.goup.repositories.usuarios;
 
 import com.goup.entities.usuarios.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 

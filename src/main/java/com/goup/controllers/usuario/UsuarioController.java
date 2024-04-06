@@ -1,13 +1,13 @@
 package com.goup.controllers.usuario;
 
 import com.goup.dtos.requests.UsuarioCadastrarDTO;
+import com.goup.entities.cargos.Cargo;
 import com.goup.entities.usuarios.Usuario;
-import com.goup.repositories.UsuarioRepository;
-import com.goup.services.TokenService;
+import com.goup.repositories.usuarios.CargoRepository;
+import com.goup.repositories.usuarios.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,16 +17,25 @@ import java.util.Optional;
 @RequestMapping("/users")
 public class UsuarioController {
 
+    @Autowired
     private final UsuarioRepository repository;
+    @Autowired
+    private CargoRepository cargoRepository;
 
     public UsuarioController(UsuarioRepository repository) {
         this.repository = repository;
     }
 
-    //todo: create the post user DTO
     @PostMapping
     public ResponseEntity<Usuario> cadastrar(@RequestBody @Valid UsuarioCadastrarDTO novoUsuario) {
-        Usuario usuario = new Usuario(novoUsuario.codigoVenda(), novoUsuario.nome(), novoUsuario.cargo(), novoUsuario.telefone());
+        Optional<Cargo> cargoSearch = cargoRepository.findById(novoUsuario.cargoId());
+        Cargo cargo = null;
+        if(cargoSearch.isPresent()){
+            cargo = cargoSearch.get();
+        } else {
+            return ResponseEntity.status(400).build();
+        }
+        Usuario usuario = new Usuario(novoUsuario.codigoVenda(), novoUsuario.nome(), cargo, novoUsuario.telefone());
         repository.save(usuario);
         return ResponseEntity.status(201).body(usuario);
     }

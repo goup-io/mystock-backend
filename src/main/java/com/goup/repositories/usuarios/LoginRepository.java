@@ -1,4 +1,4 @@
-package com.goup.repositories;
+package com.goup.repositories.usuarios;
 
 import com.goup.entities.usuarios.Login;
 import org.springframework.data.jpa.repository.JpaRepository;

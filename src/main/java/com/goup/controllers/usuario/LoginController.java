@@ -5,8 +5,8 @@ import com.goup.dtos.requests.LoginResponseDTO;
 import com.goup.dtos.requests.RegisterDTO;
 import com.goup.entities.usuarios.Login;
 import com.goup.entities.usuarios.Usuario;
-import com.goup.repositories.LoginRepository;
-import com.goup.repositories.UsuarioRepository;
+import com.goup.repositories.usuarios.LoginRepository;
+import com.goup.repositories.usuarios.UsuarioRepository;
 import com.goup.services.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +54,8 @@ public class LoginController {
         Optional<Usuario> searchUser =  usuarioRepository.findById(registerDTO.userId());
         if (searchUser.isPresent()){
             usuario = searchUser.get();
+        } else {
+            return ResponseEntity.status(400).build();
         }
 
         Login novoLogin = new Login(registerDTO.user(), senhaEcrypted, usuario, registerDTO.role());
