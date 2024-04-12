@@ -1,5 +1,6 @@
 package com.goup.controllers;
-
+import com.goup.dtos.tamanho.TamanhoMapper;
+import com.goup.dtos.tamanho.TamanhoReq;
 import com.goup.entities.produtos.Tamanho;
 import com.goup.repositories.TamanhoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+// CRUD funcionando
 @RestController
 @RequestMapping("/tamanhos")
 public class TamanhoController {
@@ -20,17 +21,8 @@ public class TamanhoController {
     }
 
     @PostMapping
-    public ResponseEntity<Tamanho> cadastrar(@RequestBody Tamanho tamanho) {
-        // ID
-        if(false){
-            return ResponseEntity.status(401).build(); // Se não houver permissão
-        }
-
-        if(false){
-            return ResponseEntity.status(400).build(); // Se os dados foram enviados incorretamente;
-        }
-
-        final Tamanho tamanhoSalvo = this.repository.save(tamanho);
+    public ResponseEntity<Tamanho> cadastrar(@RequestBody TamanhoReq tamanho) {
+        final Tamanho tamanhoSalvo = this.repository.save(TamanhoMapper.reqToEntity(tamanho));
         return ResponseEntity.status(201).body(tamanhoSalvo);
     }
 
@@ -50,17 +42,17 @@ public class TamanhoController {
         // Previnir NPE (NullPointerExecption) caixa
         Optional<Tamanho> tamanhoOpt = repository.findById(id);
 
-        // Retorna 200 com corpo caso encontre
-        // ou 404 caso contrário.
+        // Retorna 200 com corpo caso encontre ou 404 caso contrário.
         return ResponseEntity.of(tamanhoOpt);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tamanho> atualizar(@PathVariable int id, @RequestBody Tamanho tamanhoAtualizado) {
-        if (repository.existsById(id)) {
-            tamanhoAtualizado.setId(id);
-            Tamanho registrado = this.repository.save(tamanhoAtualizado);
-            return ResponseEntity.status(200).body(registrado);
+    public ResponseEntity<Tamanho> atualizar(@PathVariable int id, @RequestBody TamanhoReq tamanhoAtualizado) {
+        Optional<Tamanho> tamanhoOpt = repository.findById(id);
+        if (tamanhoOpt.isPresent()) {
+            tamanhoOpt.get().setNumero(tamanhoAtualizado.numero());
+            this.repository.save(tamanhoOpt.get());
+            return ResponseEntity.status(200).body(tamanhoOpt.get());
         }
         return ResponseEntity.status(404).build();
     }
