@@ -20,13 +20,16 @@ public class LojaLogin implements UserDetails {
     private String senha;
     @JoinColumn @ManyToOne @NotNull
     private Loja loja;
+    @JoinColumn @ManyToOne @NotNull
+    private AcessoLoja acessoLoja;
     @Transient
     private TipoLogin tipoLogin;
 
-    public LojaLogin(String user, String senhaEcrypted, Loja loja, TipoLogin tipoLogin) {
+    public LojaLogin(String user, String senhaEcrypted, Loja loja, AcessoLoja acessoLoja, TipoLogin tipoLogin) {
         this.user = user;
         this.senha = senhaEcrypted;
         this.loja = loja;
+        this.acessoLoja = acessoLoja;
         this.tipoLogin = tipoLogin;
     }
 
@@ -52,6 +55,34 @@ public class LojaLogin implements UserDetails {
 
     public TipoLogin getTipoLogin() {
         return tipoLogin;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public void setLoja(Loja loja) {
+        this.loja = loja;
+    }
+
+    public AcessoLoja getAcessoLoja() {
+        return acessoLoja;
+    }
+
+    public void setAcessoLoja(AcessoLoja acessoLoja) {
+        this.acessoLoja = acessoLoja;
+    }
+
+    public void setTipoLogin(TipoLogin tipoLogin) {
+        this.tipoLogin = tipoLogin;
     }
 
     @Override

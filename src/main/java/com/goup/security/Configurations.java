@@ -32,7 +32,8 @@ public class Configurations {
                         authorize
                                 .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                                .requestMatchers(RequestMatcher -> !RequestMatcher.getServletPath().startsWith("/auth/register")).permitAll() // Excluir a rota /auth/register do filtro de segurança
+                                .requestMatchers(HttpMethod.POST, "/auth/register/user").permitAll()
+                                .requestMatchers(RequestMatcher -> !RequestMatcher.getServletPath().startsWith("/auth/register/user")).permitAll() // Excluir a rota /auth/register do filtro de segurança
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/swagger-ui.html").permitAll()
                                 .requestMatchers("/swagger-resources").permitAll()

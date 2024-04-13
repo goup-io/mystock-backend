@@ -18,7 +18,8 @@ public class Usuario {
     private String nome;
     @NotNull @JoinColumn @ManyToOne(cascade = CascadeType.PERSIST)
     private Cargo cargo;
-    @NotNull
+    @Column
+    private String email;
     //todo: @Pattern()
     @NotNull @Column
     private String telefone;
@@ -89,5 +90,13 @@ public class Usuario {
 
     public void setLoja(Loja loja) {
         this.loja = loja;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
