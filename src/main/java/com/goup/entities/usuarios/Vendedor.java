@@ -1,6 +1,5 @@
 package com.goup.entities.usuarios;
 
-import com.goup.entities.cargos.Cargo;
 
 public class Vendedor{
 

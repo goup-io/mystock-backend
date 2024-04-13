@@ -25,7 +25,7 @@ public class Login implements UserDetails {
         this.user = user;
         this.senha = senhaEcrypted;
         this.usuario = usuario;
-        this. role = role;
+        this.role = role;
     }
 
     public Login() {
