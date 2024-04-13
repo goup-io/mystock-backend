@@ -1,6 +1,5 @@
 package com.goup.entities.usuarios;
 
-import com.goup.entities.cargos.Cargo;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

@@ -4,21 +4,50 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.goup.entities.lojas.LojaLogin;
 import com.goup.entities.usuarios.Login;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
 
 @Service
 public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
+    public String gerarToken(UserDetails userDetails) {
+        if (userDetails instanceof Login) {
+            return gerarToken((Login) userDetails);
+        } else if (userDetails instanceof LojaLogin) {
+            return gerarToken((LojaLogin) userDetails);
+        } else {
+            throw new IllegalArgumentException("Unsupported user type");
+        }
+    }
+
     public String gerarToken(Login usuario) {
+        // chave base para encriptação
+        Algorithm algorithm = Algorithm.HMAC256(secret);
+        try{
+            String token = JWT.create()
+                    .withIssuer("authentication")
+                    .withSubject(usuario.getUsername())
+                    .withClaim("id", usuario.getId())
+                    .withExpiresAt(getExpirationDate())
+                    .sign(algorithm);
+            return token;
+        } catch(JWTCreationException exception){
+            throw new RuntimeException("Error while generating new token", exception);
+        }
+    }
+
+    public String gerarToken(LojaLogin usuario) {
         // chave base para encriptação
         Algorithm algorithm = Algorithm.HMAC256(secret);
         try{
@@ -43,8 +72,18 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         }catch(JWTVerificationException exception){
-            return "";
+            throw new RuntimeException(exception);
         }
+    }
+
+    public String extractTokenFromRequest(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+
+        if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.replace("Bearer ", "");
+        }
+
+        return null;
     }
 
     private Instant getExpirationDate(){

@@ -1,6 +1,7 @@
 package com.goup.entities.usuarios;
 
 import com.goup.entities.cargos.Cargo;
+import com.goup.entities.lojas.Loja;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,9 +18,12 @@ public class Usuario {
     private String nome;
     @NotNull @JoinColumn @ManyToOne(cascade = CascadeType.PERSIST)
     private Cargo cargo;
-    //@Pattern()
+    @NotNull
+    //todo: @Pattern()
     @NotNull @Column
     private String telefone;
+    @NotNull @JoinColumn @ManyToOne(cascade = CascadeType.PERSIST)
+    private Loja loja;
 
     public Usuario() {
     }
@@ -71,4 +75,19 @@ public class Usuario {
         this.telefone = telefone;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setCodigoVenda(Integer codigoVenda) {
+        this.codigoVenda = codigoVenda;
+    }
+
+    public Loja getLoja() {
+        return loja;
+    }
+
+    public void setLoja(Loja loja) {
+        this.loja = loja;
+    }
 }
