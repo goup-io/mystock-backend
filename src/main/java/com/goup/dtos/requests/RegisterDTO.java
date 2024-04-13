@@ -1,5 +1,5 @@
 package com.goup.dtos.requests;
 
-import com.goup.entities.usuarios.UserRole;
+import com.goup.entities.cargos.Cargo;
 
-public record RegisterDTO(String user, String senha, UserRole role, Integer userId) { }
+public record RegisterDTO(String user, String senha, Cargo cargo, Integer userId) { }
