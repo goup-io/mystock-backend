@@ -5,11 +5,13 @@ import com.goup.entities.cargos.Cargo;
 import com.goup.entities.usuarios.Usuario;
 import com.goup.repositories.usuarios.CargoRepository;
 import com.goup.repositories.usuarios.UsuarioRepository;
+import com.goup.utils.CsvCliente;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +59,24 @@ public class UsuarioController {
         return usuarioOpt.map(usuario -> ResponseEntity.status(200).body(usuario)).orElseGet(() -> ResponseEntity.status(404).build());
     }
 
+    @GetMapping("/{id}/csv")
+    public ResponseEntity<Void> gerarCsvParaUsuario(@PathVariable int id) {
+        Optional<Usuario> usuarioOpt = repository.findById(id);
+
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            List<Usuario> usuarios = new ArrayList<>();
+            usuarios.add(usuario);
+
+            CsvCliente csvCliente = new CsvCliente();
+            csvCliente.writeUsersToCSV(usuarios);
+
+            return ResponseEntity.status(200).build();
+        } else {
+            return ResponseEntity.status(404).build();
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> atualizar(@RequestBody @Valid Usuario usuario, @PathVariable int id) {
         Optional<Usuario> usuarioOpt = repository.findById(id);
@@ -79,6 +99,8 @@ public class UsuarioController {
             return ResponseEntity.status(404).build();
         }
     }
+
+
 
 /*
 

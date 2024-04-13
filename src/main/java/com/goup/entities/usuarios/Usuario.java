@@ -10,7 +10,8 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table
 public class Usuario {
-    @GeneratedValue(strategy = GenerationType.IDENTITY) @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Integer id;
     @Column(unique = true)
     private Integer codigoVenda;

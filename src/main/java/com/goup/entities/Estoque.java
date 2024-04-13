@@ -1,5 +1,6 @@
 package com.goup.entities;
 
+import com.goup.entities.lojas.Loja;
 import com.goup.entities.produtos.Produto;
 import com.goup.entities.produtos.Tamanho;
 import jakarta.persistence.*;
