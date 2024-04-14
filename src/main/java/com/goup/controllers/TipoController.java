@@ -1,15 +1,16 @@
 package com.goup.controllers;
 
+import com.goup.dtos.tipo.TipoMapper;
+import com.goup.dtos.tipo.TipoReq;
 import com.goup.entities.produtos.modelos.Tipo;
 import com.goup.repositories.TipoRepository;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+// CRUD funcionando
 @RestController
 @RequestMapping("/tipos")
 public class TipoController {
@@ -21,24 +22,14 @@ public class TipoController {
     }
 
     @PostMapping
-    public ResponseEntity<Tipo> cadastrar(@RequestBody Tipo tipo) {
-        // ID
-        if(false){
-            return ResponseEntity.status(401).build(); // Se não houver permissão
-        }
-
-        if(false){
-            return ResponseEntity.status(400).build(); // Se os dados foram enviados incorretamente;
-        }
-
-        final Tipo tipoSalvo = this.repository.save(tipo);
+    public ResponseEntity<Tipo> cadastrar(@RequestBody TipoReq tipo) {
+        final Tipo tipoSalvo = this.repository.save(TipoMapper.reqToEntity(tipo));
         return ResponseEntity.status(201).body(tipoSalvo);
     }
 
     @GetMapping
     public ResponseEntity<List<Tipo>> listar() {
         List<Tipo> tipos = this.repository.findAll();
-
         if (tipos.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
@@ -47,21 +38,20 @@ public class TipoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Tipo> buscarPorId(@PathVariable Integer id) {
-
-        // Previnir NPE (NullPointerExecption) caixa
+        // Previnir NPE (NullPointerExecption)
         Optional<Tipo> tipoOpt = repository.findById(id);
 
-        // Retorna 200 com corpo caso encontre
-        // ou 404 caso contrário.
+        // Retorna 200 com corpo caso encontre ou 404 caso contrário.
         return ResponseEntity.of(tipoOpt);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tipo> atualizar(@PathVariable int id, @RequestBody Tipo tipoAtualizado) {
-        if (repository.existsById(id)) {
-            tipoAtualizado.setId(id);
-            Tipo registrado = this.repository.save(tipoAtualizado);
-            return ResponseEntity.status(200).body(registrado);
+    public ResponseEntity<Tipo> atualizar(@PathVariable int id, @RequestBody TipoReq tipoAtualizado) {
+        Optional<Tipo> tipoOpt = repository.findById(id);
+        if (tipoOpt.isPresent()) {
+            tipoOpt.get().setNome(tipoAtualizado.nome());
+            this.repository.save(tipoOpt.get());
+            return ResponseEntity.status(200).body(tipoOpt.get());
         }
         return ResponseEntity.status(404).build();
     }

@@ -1,5 +1,7 @@
 package com.goup.controllers;
 
+import com.goup.dtos.cor.CorMapper;
+import com.goup.dtos.cor.CorReq;
 import com.goup.entities.produtos.Cor;
 import com.goup.repositories.CorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+// CRUD funcionando
 @RestController
 @RequestMapping("/cores")
 public class CorController {
@@ -20,47 +22,38 @@ public class CorController {
     }
 
     @PostMapping
-    public ResponseEntity<Cor> cadastrar(@RequestBody Cor cor) {
-        // ID
-        if(false){
-            return ResponseEntity.status(401).build(); // Se não houver permissão
-        }
-
-        if(false){
-            return ResponseEntity.status(400).build(); // Se os dados foram enviados incorretamente;
-        }
-
-        final Cor corSalvo = this.repository.save(cor);
-        return ResponseEntity.status(201).body(corSalvo);
+    public ResponseEntity<Cor> cadastrar(@RequestBody CorReq categoria) {
+        final Cor corSalva = this.repository.save(CorMapper.reqToEntity(categoria));
+        return ResponseEntity.status(201).body(corSalva);
     }
 
     @GetMapping
     public ResponseEntity<List<Cor>> listar() {
-        List<Cor> cors = this.repository.findAll();
+        List<Cor> cores = this.repository.findAll();
 
-        if (cors.isEmpty()) {
+        if (cores.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(cors);
+        return ResponseEntity.status(200).body(cores);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Cor> buscarPorId(@PathVariable Integer id) {
 
-        // Previnir NPE (NullPointerExecption) caixa
+        // Previnir NPE (NullPointerExecption)
         Optional<Cor> corOpt = repository.findById(id);
 
-        // Retorna 200 com corpo caso encontre
-        // ou 404 caso contrário.
+        // Retorna 200 com corpo caso encontre ou 404 caso contrário.
         return ResponseEntity.of(corOpt);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cor> atualizar(@PathVariable int id, @RequestBody Cor corAtualizado) {
-        if (repository.existsById(id)) {
-            corAtualizado.setId(id);
-            Cor registrado = this.repository.save(corAtualizado);
-            return ResponseEntity.status(200).body(registrado);
+    public ResponseEntity<Cor> atualizar(@PathVariable int id, @RequestBody CorReq corAtualizada) {
+        Optional<Cor> corOpt = repository.findById(id);
+        if (corOpt.isPresent()) {
+            corOpt.get().setNome(corAtualizada.nome());
+            this.repository.save(corOpt.get());
+            return ResponseEntity.status(200).body(corOpt.get());
         }
         return ResponseEntity.status(404).build();
     }

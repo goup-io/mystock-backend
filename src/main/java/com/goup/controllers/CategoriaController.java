@@ -1,5 +1,7 @@
 package com.goup.controllers;
 
+import com.goup.dtos.categoria.CategoriaMapper;
+import com.goup.dtos.categoria.CategoriaReq;
 import com.goup.entities.produtos.modelos.Categoria;
 import com.goup.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+// CRUD funcionando
 @RestController
 @RequestMapping("/categorias")
 public class CategoriaController {
@@ -20,47 +22,38 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> cadastrar(@RequestBody Categoria cor) {
-        // ID
-        if(false){
-            return ResponseEntity.status(401).build(); // Se não houver permissão
-        }
-
-        if(false){
-            return ResponseEntity.status(400).build(); // Se os dados foram enviados incorretamente;
-        }
-
-        final Categoria corSalvo = this.repository.save(cor);
-        return ResponseEntity.status(201).body(corSalvo);
+    public ResponseEntity<Categoria> cadastrar(@RequestBody CategoriaReq categoria) {
+        final Categoria categoriaSalva = this.repository.save(CategoriaMapper.reqToEntity(categoria));
+        return ResponseEntity.status(201).body(categoriaSalva);
     }
 
     @GetMapping
     public ResponseEntity<List<Categoria>> listar() {
-        List<Categoria> cors = this.repository.findAll();
+        List<Categoria> categorias = this.repository.findAll();
 
-        if (cors.isEmpty()) {
+        if (categorias.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(cors);
+        return ResponseEntity.status(200).body(categorias);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Categoria> buscarPorId(@PathVariable Integer id) {
 
-        // Previnir NPE (NullPointerExecption) caixa
-        Optional<Categoria> corOpt = repository.findById(id);
+        // Previnir NPE (NullPointerExecption)
+        Optional<Categoria> categoriaOpt = repository.findById(id);
 
-        // Retorna 200 com corpo caso encontre
-        // ou 404 caso contrário.
-        return ResponseEntity.of(corOpt);
+        // Retorna 200 com corpo caso encontre ou 404 caso contrário.
+        return ResponseEntity.of(categoriaOpt);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Categoria> atualizar(@PathVariable int id, @RequestBody Categoria corAtualizado) {
-        if (repository.existsById(id)) {
-            corAtualizado.setId(id);
-            Categoria registrado = this.repository.save(corAtualizado);
-            return ResponseEntity.status(200).body(registrado);
+    public ResponseEntity<Categoria> atualizar(@PathVariable int id, @RequestBody CategoriaReq categoriaAtualizada) {
+        Optional<Categoria> categoriaOpt = repository.findById(id);
+        if (categoriaOpt.isPresent()) {
+            categoriaOpt.get().setNome(categoriaAtualizada.nome());
+            this.repository.save(categoriaOpt.get());
+            return ResponseEntity.status(200).body(categoriaOpt.get());
         }
         return ResponseEntity.status(404).build();
     }

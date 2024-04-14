@@ -1,15 +1,12 @@
 package com.goup.entities.produtos.modelos;
 
-import com.goup.entities.produtos.Cor;
-import com.goup.multiple_pk.ModeloPK;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table
-@IdClass(ModeloPK.class) // Indica que a PK é representada por uma classe (Devido as multiplas PKs)
 public class Modelo {
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(unique = true)
