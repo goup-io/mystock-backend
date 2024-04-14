@@ -16,7 +16,7 @@ public class Login implements UserDetails {
     private String user;
     @Column
     private String senha;
-    @JoinColumn @OneToOne
+    @JoinColumn @OneToOne(cascade = CascadeType.REMOVE)
     private Usuario usuario;
     @Transient
     private UserRole role;

@@ -3,9 +3,7 @@ package com.goup.entities.usuarios;
 import com.goup.entities.cargos.Cargo;
 import com.goup.entities.lojas.Loja;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table
@@ -18,22 +16,23 @@ public class Usuario {
     private String nome;
     @NotNull @JoinColumn @ManyToOne(cascade = CascadeType.PERSIST)
     private Cargo cargo;
-    @Column
+    @Column @Email
     private String email;
-    //todo: @Pattern()
-    @NotNull @Column
+    @NotNull @Column @Pattern(regexp = "^\\(\\d{2}\\) \\d{5}-\\d{4}$", message = "Número de celular inválido")
     private String telefone;
     @NotNull @JoinColumn @ManyToOne(cascade = CascadeType.PERSIST)
     private Loja loja;
 
-    public Usuario() {
-    }
-
-    public Usuario(Integer codigoVenda, String nome, Cargo cargo, String telefone) {
+    public Usuario(Integer codigoVenda, String nome, Cargo cargo, String email, String telefone, Loja loja) {
         this.codigoVenda = codigoVenda;
         this.nome = nome;
         this.cargo = cargo;
+        this.email = email;
         this.telefone = telefone;
+        this.loja = loja;
+    }
+
+    public Usuario() {
     }
 
     public int getId() {

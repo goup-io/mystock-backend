@@ -2,7 +2,9 @@ package com.goup.controllers.usuario;
 
 import com.goup.dtos.requests.UsuarioCadastrarDTO;
 import com.goup.entities.cargos.Cargo;
+import com.goup.entities.lojas.Loja;
 import com.goup.entities.usuarios.Usuario;
+import com.goup.repositories.lojas.LojaRepository;
 import com.goup.repositories.usuarios.CargoRepository;
 import com.goup.repositories.usuarios.UsuarioRepository;
 import jakarta.validation.Valid;
@@ -22,20 +24,32 @@ public class UsuarioController {
     @Autowired
     private CargoRepository cargoRepository;
 
+    @Autowired
+    private LojaRepository lojaRepository;
+
     public UsuarioController(UsuarioRepository repository) {
         this.repository = repository;
     }
 
     @PostMapping
     public ResponseEntity<Usuario> cadastrar(@RequestBody @Valid UsuarioCadastrarDTO novoUsuario) {
-        Optional<Cargo> cargoSearch = cargoRepository.findById(novoUsuario.cargoId());
-        Cargo cargo = null;
+        Optional<Cargo> cargoSearch = cargoRepository.findById(novoUsuario.idCargo());
+        Cargo cargo;
         if(cargoSearch.isPresent()){
             cargo = cargoSearch.get();
         } else {
-            return ResponseEntity.status(400).build();
+            return ResponseEntity.status(404).build();
         }
-        Usuario usuario = new Usuario(novoUsuario.codigoVenda(), novoUsuario.nome(), cargo, novoUsuario.telefone());
+
+        Optional<Loja> lojaSearch = lojaRepository.findById(novoUsuario.idLoja());
+        Loja loja;
+        if(lojaSearch.isPresent()){
+            loja = lojaSearch.get();
+        } else {
+            return ResponseEntity.status(404).build();
+        }
+
+        Usuario usuario = new Usuario(novoUsuario.codigoVenda(), novoUsuario.nome(), cargo, novoUsuario.email(), novoUsuario.telefone(), loja);
         repository.save(usuario);
         return ResponseEntity.status(201).body(usuario);
     }
