@@ -3,7 +3,6 @@ package com.goup.services;
 import com.goup.repositories.lojas.LoginLojaRepository;
 import com.goup.repositories.usuarios.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

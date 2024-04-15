@@ -1,4 +1,4 @@
-package com.goup.entities.usuarios;
+package com.goup.entities.usuarios.login;
 
 public enum UserRole {
     VENDEDOR("Vendedor"),

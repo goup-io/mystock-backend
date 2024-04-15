@@ -1,4 +1,4 @@
-package com.goup.dtos.requests;
+package com.goup.dtos.loja;
 
 import com.goup.entities.lojas.TipoLogin;
 

@@ -1,15 +1,14 @@
 package com.goup.controllers.usuario;
 
-import com.goup.dtos.requests.LoginDTO;
-import com.goup.dtos.requests.LoginResponseDTO;
-import com.goup.dtos.requests.RegisterDTO;
-import com.goup.dtos.requests.RegisterLoginLojaDto;
-import com.goup.entities.cargos.Cargo;
+import com.goup.dtos.login.LoginDTO;
+import com.goup.dtos.login.LoginResponseDTO;
+import com.goup.dtos.login.RegisterDTO;
+import com.goup.dtos.loja.RegisterLoginLojaDto;
 import com.goup.entities.lojas.AcessoLoja;
 import com.goup.entities.lojas.Loja;
 import com.goup.entities.lojas.LojaLogin;
-import com.goup.entities.usuarios.Login;
-import com.goup.entities.usuarios.UserRole;
+import com.goup.entities.usuarios.login.Login;
+import com.goup.entities.usuarios.login.UserRole;
 import com.goup.entities.usuarios.Usuario;
 import com.goup.repositories.lojas.AcessoLojaRepository;
 import com.goup.repositories.lojas.LoginLojaRepository;

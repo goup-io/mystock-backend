@@ -1,4 +1,4 @@
-package com.goup.dtos.requests;
+package com.goup.dtos.login;
 
 import com.goup.entities.cargos.Cargo;
 

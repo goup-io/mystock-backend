@@ -1,6 +1,9 @@
 package com.goup.controllers.usuario;
 
-import com.goup.dtos.requests.UsuarioCadastrarDTO;
+import com.goup.dtos.usuario.UsuarioBuiltDto;
+import com.goup.dtos.usuario.UsuarioCadastrarDto;
+import com.goup.dtos.usuario.UsuarioMapper;
+import com.goup.dtos.usuario.UsuarioResponseDto;
 import com.goup.entities.cargos.Cargo;
 import com.goup.entities.lojas.Loja;
 import com.goup.entities.usuarios.Usuario;
@@ -21,6 +24,7 @@ public class UsuarioController {
 
     @Autowired
     private final UsuarioRepository repository;
+
     @Autowired
     private CargoRepository cargoRepository;
 
@@ -32,7 +36,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> cadastrar(@RequestBody @Valid UsuarioCadastrarDTO novoUsuario) {
+    public ResponseEntity<UsuarioResponseDto> cadastrar(@RequestBody @Valid UsuarioCadastrarDto novoUsuario) {
         Optional<Cargo> cargoSearch = cargoRepository.findById(novoUsuario.idCargo());
         Cargo cargo;
         if(cargoSearch.isPresent()){
@@ -49,9 +53,19 @@ public class UsuarioController {
             return ResponseEntity.status(404).build();
         }
 
-        Usuario usuario = new Usuario(novoUsuario.codigoVenda(), novoUsuario.nome(), cargo, novoUsuario.email(), novoUsuario.telefone(), loja);
-        repository.save(usuario);
-        return ResponseEntity.status(201).body(usuario);
+        Usuario userCadastrar = UsuarioMapper.toEntity(
+                new UsuarioBuiltDto(
+                        novoUsuario.nome(),
+                        cargo,
+                        novoUsuario.email(),
+                        novoUsuario.telefone(),
+                        loja
+                )
+        );
+        userCadastrar.setCodigoVenda(null);
+        Usuario usuario = repository.save(userCadastrar);
+
+        return ResponseEntity.status(201).body(UsuarioMapper.entityToReponse(usuario));
     }
 
     @GetMapping
@@ -93,27 +107,4 @@ public class UsuarioController {
             return ResponseEntity.status(404).build();
         }
     }
-
-/*
-
----to remove---
-
-    Utils utils = new Utils();
-
-    @GetMapping("/vendedor/all")
-    public ResponseEntity<Vendedor[]> buscarVendedores(){
-        Vendedor[] vendedores = listUsers.stream()
-                .filter(usuario -> usuario instanceof Vendedor)
-                .toArray(Vendedor[]::new);
-
-        if (vendedores.length < 1){
-            return ResponseEntity.status(404).build();
-        }
-
-        utils.sortVendedorNome(vendedores);
-
-        return ResponseEntity.status(200).body(vendedores);
-
-    }
-*/
 }

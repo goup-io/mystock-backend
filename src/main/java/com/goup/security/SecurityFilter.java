@@ -2,7 +2,7 @@ package com.goup.security;
 
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.goup.entities.lojas.LojaLogin;
-import com.goup.entities.usuarios.Login;
+import com.goup.entities.usuarios.login.Login;
 import com.goup.repositories.lojas.LoginLojaRepository;
 import com.goup.repositories.usuarios.LoginRepository;
 import com.goup.services.TokenService;

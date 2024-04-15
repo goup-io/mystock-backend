@@ -1,8 +1,7 @@
 package com.goup.utils.login;
 
-import com.goup.dtos.requests.LoginDTO;
 import com.goup.entities.lojas.LojaLogin;
-import com.goup.entities.usuarios.Login;
+import com.goup.entities.usuarios.login.Login;
 import com.goup.repositories.lojas.LoginLojaRepository;
 import com.goup.repositories.usuarios.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;

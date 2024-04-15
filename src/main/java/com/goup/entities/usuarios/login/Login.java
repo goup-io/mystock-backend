@@ -1,5 +1,6 @@
-package com.goup.entities.usuarios;
+package com.goup.entities.usuarios.login;
 
+import com.goup.entities.usuarios.Usuario;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

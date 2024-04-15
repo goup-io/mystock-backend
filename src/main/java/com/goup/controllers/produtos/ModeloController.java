@@ -1,7 +1,7 @@
-package com.goup.controllers;
+package com.goup.controllers.produtos;
 
 import com.goup.entities.produtos.modelos.Modelo;
-import com.goup.repositories.ModeloRepository;
+import com.goup.repositories.produtos.ModeloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

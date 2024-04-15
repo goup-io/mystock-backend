@@ -1,9 +1,9 @@
-package com.goup.controllers;
+package com.goup.controllers.produtos;
 
 import com.goup.dtos.cor.CorMapper;
 import com.goup.dtos.cor.CorReq;
 import com.goup.entities.produtos.Cor;
-import com.goup.repositories.CorRepository;
+import com.goup.repositories.produtos.CorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

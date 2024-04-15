@@ -1,8 +1,8 @@
-package com.goup.controllers;
+package com.goup.controllers.produtos;
 import com.goup.dtos.tamanho.TamanhoMapper;
 import com.goup.dtos.tamanho.TamanhoReq;
 import com.goup.entities.produtos.Tamanho;
-import com.goup.repositories.TamanhoRepository;
+import com.goup.repositories.produtos.TamanhoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

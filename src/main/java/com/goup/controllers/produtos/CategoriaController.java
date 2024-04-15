@@ -1,9 +1,9 @@
-package com.goup.controllers;
+package com.goup.controllers.produtos;
 
 import com.goup.dtos.categoria.CategoriaMapper;
 import com.goup.dtos.categoria.CategoriaReq;
 import com.goup.entities.produtos.modelos.Categoria;
-import com.goup.repositories.CategoriaRepository;
+import com.goup.repositories.produtos.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

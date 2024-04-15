@@ -5,12 +5,10 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.goup.entities.lojas.LojaLogin;
-import com.goup.entities.usuarios.Login;
-import jakarta.servlet.http.HttpServletRequest;
+import com.goup.entities.usuarios.login.Login;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
