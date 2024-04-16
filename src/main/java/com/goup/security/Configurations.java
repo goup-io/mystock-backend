@@ -40,6 +40,8 @@ public class Configurations {
                                 .requestMatchers("/webjars/**").permitAll()
                                 .requestMatchers("/swagger-ui.html").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/users").hasRole("GERENTE")
+                                .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/users").hasRole("GERENTE")
                                 .requestMatchers(HttpMethod.DELETE, "/users").hasRole("GERENTE")
                                 .requestMatchers(HttpMethod.PUT, "/users").hasRole("GERENTE")

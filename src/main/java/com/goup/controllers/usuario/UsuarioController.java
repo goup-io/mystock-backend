@@ -23,17 +23,13 @@ import java.util.Optional;
 public class UsuarioController {
 
     @Autowired
-    private final UsuarioRepository repository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private CargoRepository cargoRepository;
 
     @Autowired
     private LojaRepository lojaRepository;
-
-    public UsuarioController(UsuarioRepository repository) {
-        this.repository = repository;
-    }
 
     @PostMapping
     public ResponseEntity<UsuarioResponseDto> cadastrar(@RequestBody @Valid UsuarioCadastrarDto novoUsuario) {
@@ -53,24 +49,25 @@ public class UsuarioController {
             return ResponseEntity.status(404).build();
         }
 
-        Usuario userCadastrar = UsuarioMapper.toEntity(
-                new UsuarioBuiltDto(
-                        novoUsuario.nome(),
-                        cargo,
-                        novoUsuario.email(),
-                        novoUsuario.telefone(),
-                        loja
-                )
+
+        UsuarioBuiltDto usuarioBuiltDto = new UsuarioBuiltDto(
+                novoUsuario.nome(),
+                cargo,
+                novoUsuario.email(),
+                novoUsuario.telefone(),
+                loja
         );
-        userCadastrar.setCodigoVenda(null);
-        Usuario usuario = repository.save(userCadastrar);
+
+        Usuario userCadastrar = UsuarioMapper.toEntity(usuarioBuiltDto);
+
+        Usuario usuario = usuarioRepository.save(userCadastrar);
 
         return ResponseEntity.status(201).body(UsuarioMapper.entityToReponse(usuario));
     }
 
     @GetMapping
     public ResponseEntity<List<Usuario>> listar() {
-        List<Usuario> usuariosEncontrados = repository.findAllWithJoin();
+        List<Usuario> usuariosEncontrados = usuarioRepository.findAllWithJoin();
         if (usuariosEncontrados.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
@@ -80,17 +77,17 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable int id) {
-        Optional<Usuario> usuarioOpt = repository.findById(id);
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
 
         return usuarioOpt.map(usuario -> ResponseEntity.status(200).body(usuario)).orElseGet(() -> ResponseEntity.status(404).build());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> atualizar(@RequestBody @Valid Usuario usuario, @PathVariable int id) {
-        Optional<Usuario> usuarioOpt = repository.findById(id);
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
 
         if (usuarioOpt.isPresent()) {
-            repository.save(usuarioOpt.get());
+            usuarioRepository.save(usuarioOpt.get());
             return ResponseEntity.status(200).body(usuario);
         } else {
             return ResponseEntity.status(404).build();
@@ -99,9 +96,9 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Usuario> deletar(@PathVariable int id) {
-        Optional<Usuario> usuarioOpt = repository.findById(id);
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
         if (usuarioOpt.isPresent()) {
-            repository.deleteById(id);
+            usuarioRepository.deleteById(id);
             return ResponseEntity.status(204).body(usuarioOpt.get());
         } else {
             return ResponseEntity.status(404).build();

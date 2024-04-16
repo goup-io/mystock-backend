@@ -25,7 +25,7 @@ public class TokenService {
         } else if (userDetails instanceof LojaLogin) {
             return gerarToken((LojaLogin) userDetails);
         } else {
-            throw new IllegalArgumentException("Unsupported user type");
+            return null;
         }
     }
 

@@ -6,11 +6,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity
-@Table
+@Table(name = "Usuario", indexes = {
+        @Index(name = "idx_usuario_codigo_venda_unq", columnList = "codigo_venda", unique = true)
+})
 public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY) @Id
     private Integer id;
-    @Column(unique = true)
     private Integer codigoVenda;
     @Size(min = 3, max = 30) @NotBlank @Column
     private String nome;

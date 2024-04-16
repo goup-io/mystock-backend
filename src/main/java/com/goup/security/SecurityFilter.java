@@ -50,15 +50,13 @@ public class SecurityFilter extends OncePerRequestFilter {
 
                 var userName = tokenService.validateToken(token);
 
-                UserDetails user;
+                UserDetails user = new Login();
 
                 var userDetails = verificaTipoLogin.verificaTipoLogin(userName);
                 if (userDetails instanceof Login) {
                     user = loginRepository.findByUser(userName);
                 } else if (userDetails instanceof LojaLogin) {
                     user = loginLojaRepository.findByUser(userName);
-                } else {
-                    throw new IllegalArgumentException("Unsupported user type");
                 }
 
                 var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
