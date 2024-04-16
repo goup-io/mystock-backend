@@ -1,6 +1,5 @@
 package com.goup.utils;
 
-import com.goup.entities.usuarios.Login;
 import com.goup.entities.usuarios.Usuario;
 import com.goup.repositories.usuarios.LoginRepository;
 import com.opencsv.CSVWriter;
