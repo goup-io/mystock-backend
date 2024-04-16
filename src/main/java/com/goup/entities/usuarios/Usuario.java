@@ -3,37 +3,38 @@ package com.goup.entities.usuarios;
 import com.goup.entities.cargos.Cargo;
 import com.goup.entities.lojas.Loja;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 @Entity
-@Table
+@Table(name = "Usuario", indexes = {
+        @Index(name = "idx_usuario_codigo_venda_unq", columnList = "codigo_venda", unique = true)
+})
 public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
-    @Column(unique = true)
     private Integer codigoVenda;
     @Size(min = 3, max = 30) @NotBlank @Column
     private String nome;
     @NotNull @JoinColumn @ManyToOne(cascade = CascadeType.PERSIST)
     private Cargo cargo;
-    @NotNull
-    //todo: @Pattern()
-    @NotNull @Column
+    @Column @Email
+    private String email;
+    @NotNull @Column @Pattern(regexp = "^\\(\\d{2}\\) \\d{5}-\\d{4}$", message = "Número de celular inválido")
     private String telefone;
     @NotNull @JoinColumn @ManyToOne(cascade = CascadeType.PERSIST)
     private Loja loja;
 
-    public Usuario() {
-    }
-
-    public Usuario(Integer codigoVenda, String nome, Cargo cargo, String telefone) {
+    public Usuario(Integer codigoVenda, String nome, Cargo cargo, String email, String telefone, Loja loja) {
         this.codigoVenda = codigoVenda;
         this.nome = nome;
         this.cargo = cargo;
+        this.email = email;
         this.telefone = telefone;
+        this.loja = loja;
+    }
+
+    public Usuario() {
     }
 
     public int getId() {
@@ -90,5 +91,13 @@ public class Usuario {
 
     public void setLoja(Loja loja) {
         this.loja = loja;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -13,9 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -32,7 +29,8 @@ public class Configurations {
                         authorize
                                 .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                                .requestMatchers(RequestMatcher -> !RequestMatcher.getServletPath().startsWith("/auth/register")).permitAll() // Excluir a rota /auth/register do filtro de segurança
+                                .requestMatchers(HttpMethod.POST, "/auth/register/user").permitAll()
+                                .requestMatchers(RequestMatcher -> !RequestMatcher.getServletPath().startsWith("/auth/register/user")).permitAll() // Excluir a rota /auth/register do filtro de segurança
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/swagger-ui.html").permitAll()
                                 .requestMatchers("/swagger-resources").permitAll()
@@ -42,6 +40,8 @@ public class Configurations {
                                 .requestMatchers("/webjars/**").permitAll()
                                 .requestMatchers("/swagger-ui.html").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/users").hasRole("GERENTE")
+                                .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/users").hasRole("GERENTE")
                                 .requestMatchers(HttpMethod.DELETE, "/users").hasRole("GERENTE")
                                 .requestMatchers(HttpMethod.PUT, "/users").hasRole("GERENTE")

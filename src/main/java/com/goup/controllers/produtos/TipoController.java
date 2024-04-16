@@ -1,9 +1,9 @@
-package com.goup.controllers;
+package com.goup.controllers.produtos;
 
 import com.goup.dtos.tipo.TipoMapper;
 import com.goup.dtos.tipo.TipoReq;
 import com.goup.entities.produtos.modelos.Tipo;
-import com.goup.repositories.TipoRepository;
+import com.goup.repositories.produtos.TipoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

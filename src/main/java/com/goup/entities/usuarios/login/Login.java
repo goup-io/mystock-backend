@@ -1,5 +1,6 @@
-package com.goup.entities.usuarios;
+package com.goup.entities.usuarios.login;
 
+import com.goup.entities.usuarios.Usuario;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,7 +17,7 @@ public class Login implements UserDetails {
     private String user;
     @Column
     private String senha;
-    @JoinColumn @OneToOne
+    @JoinColumn @OneToOne(cascade = CascadeType.REMOVE)
     private Usuario usuario;
     @Transient
     private UserRole role;

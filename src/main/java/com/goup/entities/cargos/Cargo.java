@@ -11,7 +11,7 @@ public class Cargo {
     private Integer id;
     @Column @NotBlank
     private String nome;
-    @Column @NotBlank
+    @Column
     private String descricao;
 
     public Integer getId() {

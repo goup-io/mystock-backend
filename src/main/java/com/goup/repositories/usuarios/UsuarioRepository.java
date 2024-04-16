@@ -11,12 +11,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query("SELECT u FROM Usuario u JOIN u.cargo c")
     List<Usuario> findAllWithJoin();
 
-
-    /*
-    List<Usuario> findAll();
-    Optional<Usuario> findById(int id);
-    Usuario update(Usuario usuario);
-    Usuario delete(Usuario usuario);
-
-     */
 }

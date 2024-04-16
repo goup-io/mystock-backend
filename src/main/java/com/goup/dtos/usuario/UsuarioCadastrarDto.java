@@ -1,0 +1,5 @@
+package com.goup.dtos.usuario;
+
+
+public record UsuarioCadastrarDto(Integer codigoVenda, String nome, Integer idCargo, String email, String telefone, Integer idLoja) {
+}
