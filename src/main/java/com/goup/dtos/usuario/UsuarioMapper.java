@@ -8,6 +8,7 @@ public class UsuarioMapper {
 
     public static Usuario toEntity(UsuarioBuiltDto usuarioBuiltDto){
         Usuario usuario = new Usuario();
+        usuario.setCodigoVenda(0);
         usuario.setNome(usuarioBuiltDto.nome());
         usuario.setCargo(usuarioBuiltDto.cargo());
         usuario.setEmail(usuarioBuiltDto.email());
