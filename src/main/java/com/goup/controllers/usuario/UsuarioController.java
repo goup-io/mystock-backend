@@ -1,9 +1,6 @@
 package com.goup.controllers.usuario;
 
-import com.goup.dtos.usuario.UsuarioBuiltDto;
-import com.goup.dtos.usuario.UsuarioCadastrarDto;
-import com.goup.dtos.usuario.UsuarioMapper;
-import com.goup.dtos.usuario.UsuarioResponseDto;
+import com.goup.dtos.usuario.*;
 import com.goup.entities.cargos.Cargo;
 import com.goup.entities.lojas.Loja;
 import com.goup.entities.usuarios.Usuario;
@@ -33,22 +30,16 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<UsuarioResponseDto> cadastrar(@RequestBody @Valid UsuarioCadastrarDto novoUsuario) {
-        Optional<Cargo> cargoSearch = cargoRepository.findById(novoUsuario.idCargo());
-        Cargo cargo;
-        if(cargoSearch.isPresent()){
-            cargo = cargoSearch.get();
-        } else {
+
+        Cargo cargo = buscarCargoPorId(novoUsuario.idCargo());
+        if(cargo == null){
             return ResponseEntity.status(404).build();
         }
 
-        Optional<Loja> lojaSearch = lojaRepository.findById(novoUsuario.idLoja());
-        Loja loja;
-        if(lojaSearch.isPresent()){
-            loja = lojaSearch.get();
-        } else {
+        Loja loja = buscarLojaPorId(novoUsuario.idLoja());
+        if(loja == null){
             return ResponseEntity.status(404).build();
         }
-
 
         UsuarioBuiltDto usuarioBuiltDto = new UsuarioBuiltDto(
                 novoUsuario.nome(),
@@ -65,42 +56,79 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> listar() {
+    public ResponseEntity<List<UsuarioResponseDto>> listar() {
         List<Usuario> usuariosEncontrados = usuarioRepository.findAllWithJoin();
         if (usuariosEncontrados.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
 
-        return ResponseEntity.status(200).body(usuariosEncontrados);
+        return ResponseEntity.status(200).body(UsuarioMapper.toListDto(usuariosEncontrados));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable int id) {
+    public ResponseEntity<UsuarioResponseDto> buscarUsuarioPorId(@PathVariable int id) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
 
-        return usuarioOpt.map(usuario -> ResponseEntity.status(200).body(usuario)).orElseGet(() -> ResponseEntity.status(404).build());
+        return usuarioOpt.map(usuario -> ResponseEntity.status(200).body(UsuarioMapper.entityToReponse(usuario))).orElseGet(() -> ResponseEntity.status(404).build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizar(@RequestBody @Valid Usuario usuario, @PathVariable int id) {
+    public ResponseEntity<UsuarioResponseDto> atualizar(@RequestBody @Valid UsuarioAtualizarDto novoUsuario, @PathVariable int id) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
-
         if (usuarioOpt.isPresent()) {
-            usuarioRepository.save(usuarioOpt.get());
-            return ResponseEntity.status(200).body(usuario);
+
+            Cargo cargo = buscarCargoPorId(novoUsuario.idCargo());
+            if(cargo == null){
+                return ResponseEntity.status(404).build();
+            }
+
+            Loja loja = buscarLojaPorId(novoUsuario.idLoja());
+            if(loja == null){
+                return ResponseEntity.status(404).build();
+            }
+
+            UsuarioBuiltDto usuarioBuiltDto = new UsuarioBuiltDto(
+                    novoUsuario.nome(),
+                    usuarioOpt.get().getCargo(),
+                    novoUsuario.email(),
+                    novoUsuario.telefone(),
+                    usuarioOpt.get().getLoja()
+            );
+
+            Usuario usuario = UsuarioMapper.toEntity(usuarioBuiltDto);
+
+            return ResponseEntity.status(200).body(UsuarioMapper.entityToReponse(usuario));
         } else {
             return ResponseEntity.status(404).build();
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Usuario> deletar(@PathVariable int id) {
+    public ResponseEntity<Void> deletar(@PathVariable int id) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
         if (usuarioOpt.isPresent()) {
             usuarioRepository.deleteById(id);
-            return ResponseEntity.status(204).body(usuarioOpt.get());
+            return ResponseEntity.status(204).build();
         } else {
             return ResponseEntity.status(404).build();
+        }
+    }
+
+    public Cargo buscarCargoPorId(int idCargo) {
+        Optional<Cargo> cargoSearch = cargoRepository.findById(idCargo);
+        if(cargoSearch.isPresent()){
+            return cargoSearch.get();
+        } else {
+            return null;
+        }
+    }
+
+    public Loja buscarLojaPorId(int idLoja) {
+        Optional<Loja> lojaSearch = lojaRepository.findById(idLoja);
+        if(lojaSearch.isPresent()){
+            return lojaSearch.get();
+        } else {
+            return null;
         }
     }
 }

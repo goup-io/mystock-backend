@@ -15,7 +15,7 @@ public class LojaLogin implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY) @Id
     private Integer id;
     @Column @NotNull
-    private String user;
+    private String username;
     @Column @NotNull
     private String senha;
     @JoinColumn @ManyToOne @NotNull
@@ -25,8 +25,8 @@ public class LojaLogin implements UserDetails {
     @Transient
     private TipoLogin tipoLogin;
 
-    public LojaLogin(String user, String senhaEcrypted, Loja loja, AcessoLoja acessoLoja, TipoLogin tipoLogin) {
-        this.user = user;
+    public LojaLogin(String username, String senhaEcrypted, Loja loja, AcessoLoja acessoLoja, TipoLogin tipoLogin) {
+        this.username = username;
         this.senha = senhaEcrypted;
         this.loja = loja;
         this.acessoLoja = acessoLoja;
@@ -39,10 +39,6 @@ public class LojaLogin implements UserDetails {
 
     public Integer getId() {
         return id;
-    }
-
-    public String getUser() {
-        return user;
     }
 
     public String getSenha() {
@@ -61,8 +57,8 @@ public class LojaLogin implements UserDetails {
         this.id = id;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setSenha(String senha) {
@@ -101,7 +97,7 @@ public class LojaLogin implements UserDetails {
 
     @Override
     public String getUsername() {
-        return getUser();
+        return this.username;
     }
 
     @Override

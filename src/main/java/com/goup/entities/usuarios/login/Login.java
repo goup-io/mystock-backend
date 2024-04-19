@@ -14,7 +14,7 @@ public class Login implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY) @Id
     private int id;
     @Column
-    private String user;
+    private String username;
     @Column
     private String senha;
     @JoinColumn @OneToOne(cascade = CascadeType.REMOVE)
@@ -22,8 +22,8 @@ public class Login implements UserDetails {
     @Transient
     private UserRole role;
 
-    public Login(String user, String senhaEcrypted, Usuario usuario, UserRole role) {
-        this.user = user;
+    public Login(String username, String senhaEcrypted, Usuario usuario, UserRole role) {
+        this.username = username;
         this.senha = senhaEcrypted;
         this.usuario = usuario;
         this.role = role;
@@ -50,12 +50,16 @@ public class Login implements UserDetails {
         this.id = id;
     }
 
-    public String getUser() {
-        return user;
+    public UserRole getRole() {
+        return role;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public void setUsername(String user) {
+        this.username = user;
     }
 
     public String getSenha() {
@@ -81,7 +85,7 @@ public class Login implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user;
+        return username;
     }
 
     @Override

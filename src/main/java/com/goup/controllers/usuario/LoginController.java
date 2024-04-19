@@ -98,7 +98,7 @@ public class LoginController {
         String senha = registerDTO.senha();
 
         // Verificar se o usuário já existe
-        if (usuarioLoginrepository.findByUser(username) != null || lojaLoginRepository.findByUser(username) != null) {
+        if (usuarioLoginrepository.findByUsername(username) != null || lojaLoginRepository.findByUsername(username) != null) {
             return ResponseEntity.status(409).build(); // Conflito, usuário já existe
         }
 
@@ -130,7 +130,7 @@ public class LoginController {
 
     @PostMapping("/register/loja")
     public ResponseEntity registerLoja(@RequestBody RegisterLoginLojaDto registerDTO){
-        if (this.lojaLoginRepository.findByUser(registerDTO.user()) != null || this.usuarioLoginrepository.findByUser(registerDTO.user()) != null) return ResponseEntity.status(409).build();
+        if (this.lojaLoginRepository.findByUsername(registerDTO.user()) != null || this.usuarioLoginrepository.findByUsername(registerDTO.user()) != null) return ResponseEntity.status(409).build();
         String senhaEcrypted = new BCryptPasswordEncoder().encode(registerDTO.senha());
 
         Loja loja = null;

@@ -54,9 +54,9 @@ public class SecurityFilter extends OncePerRequestFilter {
 
                 var userDetails = verificaTipoLogin.verificaTipoLogin(userName);
                 if (userDetails instanceof Login) {
-                    user = loginRepository.findByUser(userName);
+                    user = loginRepository.findByUsername(userName);
                 } else if (userDetails instanceof LojaLogin) {
-                    user = loginLojaRepository.findByUser(userName);
+                    user = loginLojaRepository.findByUsername(userName);
                 }
 
                 var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
