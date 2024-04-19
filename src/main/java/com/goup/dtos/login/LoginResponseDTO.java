@@ -1,6 +1,6 @@
 package com.goup.dtos.login;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import com.goup.entities.usuarios.login.UserRole;
 
-public record LoginResponseDTO(String token, UserDetails login) {
+public record LoginResponseDTO(String token, Integer idUser, UserRole role){
 }

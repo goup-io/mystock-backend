@@ -2,6 +2,7 @@ package com.goup.entities.usuarios.login;
 
 import com.goup.entities.usuarios.Usuario;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,11 +14,11 @@ import java.util.List;
 public class Login implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY) @Id
     private int id;
-    @Column
+    @Column @NotNull
     private String username;
-    @Column
+    @Column @NotNull
     private String senha;
-    @JoinColumn @OneToOne(cascade = CascadeType.REMOVE)
+    @NotNull @JoinColumn @OneToOne(cascade = CascadeType.REMOVE)
     private Usuario usuario;
     @Transient
     private UserRole role;
@@ -35,10 +36,12 @@ public class Login implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == UserRole.GERENTE || this.role == UserRole.ADMIN) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),  new SimpleGrantedAuthority("ROLE_USER"));
-        } else  {
-            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ADMIN"),  new SimpleGrantedAuthority("GERENTE"), new SimpleGrantedAuthority("VENDEDOR"));
+        } else if(this.role == UserRole.GERENTE){
+            return List.of(new SimpleGrantedAuthority("GERENTE"), new SimpleGrantedAuthority("VENDEDOR"));
+        } else {
+            return List.of(new SimpleGrantedAuthority("VENDEDOR"));
         }
     }
 
@@ -49,6 +52,8 @@ public class Login implements UserDetails {
     public void setId(int id) {
         this.id = id;
     }
+
+
 
     public UserRole getRole() {
         return role;

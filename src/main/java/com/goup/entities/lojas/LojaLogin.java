@@ -23,14 +23,14 @@ public class LojaLogin implements UserDetails {
     @JoinColumn @ManyToOne @NotNull
     private AcessoLoja acessoLoja;
     @Transient
-    private TipoLogin tipoLogin;
+    private TipoLogin role;
 
-    public LojaLogin(String username, String senhaEcrypted, Loja loja, AcessoLoja acessoLoja, TipoLogin tipoLogin) {
+    public LojaLogin(String username, String senhaEcrypted, Loja loja, AcessoLoja acessoLoja, TipoLogin role) {
         this.username = username;
         this.senha = senhaEcrypted;
         this.loja = loja;
         this.acessoLoja = acessoLoja;
-        this.tipoLogin = tipoLogin;
+        this.role = role;
     }
 
     public LojaLogin() {
@@ -49,8 +49,8 @@ public class LojaLogin implements UserDetails {
         return loja;
     }
 
-    public TipoLogin getTipoLogin() {
-        return tipoLogin;
+    public TipoLogin getRole() {
+        return role;
     }
 
     public void setId(Integer id) {
@@ -77,13 +77,13 @@ public class LojaLogin implements UserDetails {
         this.acessoLoja = acessoLoja;
     }
 
-    public void setTipoLogin(TipoLogin tipoLogin) {
-        this.tipoLogin = tipoLogin;
+    public void setRole(TipoLogin role) {
+        this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.tipoLogin == TipoLogin.CAIXA) {
+        if (this.role == TipoLogin.CAIXA) {
             return List.of(new SimpleGrantedAuthority("CAIXA"));
         } else  {
             return List.of(new SimpleGrantedAuthority("AREA_VENDA"));

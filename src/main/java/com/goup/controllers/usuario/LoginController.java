@@ -1,19 +1,20 @@
 package com.goup.controllers.usuario;
 
-import com.goup.dtos.login.LoginDTO;
+import com.goup.dtos.login.LoginDto;
 import com.goup.dtos.login.LoginResponseDTO;
 import com.goup.dtos.login.RegisterDTO;
 import com.goup.dtos.loja.RegisterLoginLojaDto;
 import com.goup.entities.lojas.AcessoLoja;
 import com.goup.entities.lojas.Loja;
 import com.goup.entities.lojas.LojaLogin;
+import com.goup.dtos.loja.LojaLoginResponseDTO;
+import com.goup.entities.lojas.TipoLogin;
 import com.goup.entities.usuarios.login.Login;
 import com.goup.entities.usuarios.login.UserRole;
 import com.goup.entities.usuarios.Usuario;
 import com.goup.repositories.lojas.AcessoLojaRepository;
 import com.goup.repositories.lojas.LoginLojaRepository;
 import com.goup.repositories.lojas.LojaRepository;
-import com.goup.repositories.usuarios.CargoRepository;
 import com.goup.repositories.usuarios.LoginRepository;
 import com.goup.repositories.usuarios.UsuarioRepository;
 import com.goup.security.InMemoryTokenBlacklist;
@@ -27,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,9 +56,6 @@ public class LoginController {
     private LojaRepository lojaRepository;
 
     @Autowired
-    private CargoRepository cargoRepository;
-
-    @Autowired
     private AcessoLojaRepository acessoLojaRepository;
 
     @Autowired
@@ -66,29 +65,35 @@ public class LoginController {
     private InMemoryTokenBlacklist invalidateTokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginDTO loginDTO){
-
-       var tipoLogin = verificaTipoLogin.verificaTipoLogin(loginDTO.user());
-
+    public ResponseEntity login(@RequestBody @Valid LoginDto loginDTO){
         UsernamePasswordAuthenticationToken userAuthToken = new UsernamePasswordAuthenticationToken(loginDTO.user(), loginDTO.senha());
         Authentication authenticate = this.authenticationManager.authenticate(userAuthToken);
 
-        var usuario = tipoLogin instanceof Login ? (Login) authenticate.getPrincipal() :  (LojaLogin) authenticate.getPrincipal();;
-
-        var token = tokenService.gerarToken(usuario);
-
-        return ResponseEntity.status(200).body(new LoginResponseDTO(token, usuario));
+        Object tipoLogin = verificaTipoLogin.verificaTipoLogin(loginDTO.user());
+        UserDetails usuario;
+        Usuario userLogged;
+        Loja lojaLogged;
+        String token;
+        if (tipoLogin instanceof Login){
+            usuario = (Login) authenticate.getPrincipal();
+            token = tokenService.gerarToken(usuario);
+            userLogged = ((Login) usuario).getUsuario();
+            ((Login) usuario).setRole(UserRole.valueOf(userLogged.getCargo().getNome().toUpperCase()));
+            return ResponseEntity.status(200).body(new LoginResponseDTO(token, userLogged.getId(), ((Login) usuario).getRole()));
+        } else {
+            usuario = (LojaLogin) authenticate.getPrincipal();
+            token = tokenService.gerarToken(usuario);
+            lojaLogged = ((LojaLogin) usuario).getLoja();
+            return ResponseEntity.status(200).body(new LojaLoginResponseDTO(token, lojaLogged.getId(), ((LojaLogin) usuario).getRole()));
+        }
     }
 
-
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request) {
+    public ResponseEntity<Void> logout(HttpServletRequest request) {
         String token = invalidateTokenService.extractTokenFromRequest(request);
         invalidateTokenService.addToBlacklist(token);
 
-        // limpar dados da sessão, caso exista
-
-        return ResponseEntity.status(200).body(token);
+        return ResponseEntity.status(200).build();
     }
 
 
@@ -97,24 +102,21 @@ public class LoginController {
         String username = registerDTO.user();
         String senha = registerDTO.senha();
 
-        // Verificar se o usuário já existe
         if (usuarioLoginrepository.findByUsername(username) != null || lojaLoginRepository.findByUsername(username) != null) {
-            return ResponseEntity.status(409).build(); // Conflito, usuário já existe
+            return ResponseEntity.status(409).build();
         }
 
-        // Encontrar o usuário associado ao ID fornecido no DTO
         Optional<Usuario> optionalUsuario = usuarioRepository.findById(registerDTO.userId());
         if (optionalUsuario.isEmpty()) {
-            return ResponseEntity.status(404).build(); // Não encontrado, usuário associado ao ID não existe
+            return ResponseEntity.status(404).build();
         }
         Usuario usuario = optionalUsuario.get();
 
-        // Converter o nome do cargo para um UserRole
-        UserRole userRole;
+        UserRole userRole = null;
         try {
             userRole = UserRole.valueOf(usuario.getCargo().getNome().toUpperCase());
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(400).build(); // Nome do cargo inválido, não corresponde a nenhum valor no enum
+            return ResponseEntity.status(400).build();
         }
 
         // Criar um novo objeto Login com as informações fornecidas
@@ -135,22 +137,24 @@ public class LoginController {
 
         Loja loja = null;
 
-        Optional<Loja> searchUser =  lojaRepository.findById(registerDTO.userId());
+        Optional<Loja> searchUser =  lojaRepository.findById(registerDTO.idLoja());
         if (searchUser.isPresent()){
             loja = searchUser.get();
         } else {
             return ResponseEntity.status(404).build();
         }
 
-        AcessoLoja acessoLoja = null;
-        Optional<AcessoLoja> searchAcessoLoja =  acessoLojaRepository.findById(registerDTO.acessoLojaId());
+        AcessoLoja acessoLoja;
+        Optional<AcessoLoja> searchAcessoLoja =  acessoLojaRepository.findById(registerDTO.idAcessoLoja());
         if (searchAcessoLoja.isPresent()){
             acessoLoja = searchAcessoLoja.get();
         } else {
             return ResponseEntity.status(404).build();
         }
 
-        LojaLogin novoLogin = new LojaLogin(registerDTO.user(), senhaEcrypted, loja, acessoLoja, registerDTO.tipoLogin());
+        TipoLogin tipoLogin = acessoLoja.getTipo();
+
+        LojaLogin novoLogin = new LojaLogin(registerDTO.user(), senhaEcrypted, loja, acessoLoja, tipoLogin);
 
         this.lojaLoginRepository.save(novoLogin);
 
