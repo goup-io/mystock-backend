@@ -6,13 +6,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity
-@Table(name = "Usuario", indexes = {
-        @Index(name = "idx_usuario_codigo_venda_unq", columnList = "codigo_venda", unique = true)
-})
+@Table
 public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
+    @Column(unique = true)
     private Integer codigoVenda;
     @Size(min = 3, max = 30) @NotBlank @Column
     private String nome;
@@ -25,16 +24,12 @@ public class Usuario {
     @NotNull @JoinColumn @ManyToOne(cascade = CascadeType.PERSIST)
     private Loja loja;
 
-    public Usuario(Integer codigoVenda, String nome, Cargo cargo, String email, String telefone, Loja loja) {
-        this.codigoVenda = codigoVenda;
-        this.nome = nome;
-        this.cargo = cargo;
-        this.email = email;
-        this.telefone = telefone;
-        this.loja = loja;
+    public Usuario() {
     }
 
-    public Usuario() {
+    @PostPersist
+    public void atualizarCodigoVenda() {
+        this.codigoVenda = 100 + this.id;
     }
 
     public int getId() {

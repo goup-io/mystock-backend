@@ -1,8 +1,9 @@
 package com.goup.controllers.produtos;
-import com.goup.dtos.tamanho.TamanhoMapper;
-import com.goup.dtos.tamanho.TamanhoReq;
-import com.goup.entities.produtos.Tamanho;
+import com.goup.dtos.estoque.tamanho.TamanhoMapper;
+import com.goup.dtos.estoque.tamanho.TamanhoReq;
+import com.goup.entities.estoque.Tamanho;
 import com.goup.repositories.produtos.TamanhoRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class TamanhoController {
     }
 
     @PostMapping
-    public ResponseEntity<Tamanho> cadastrar(@RequestBody TamanhoReq tamanho) {
+    public ResponseEntity<Tamanho> cadastrar(@RequestBody @Valid TamanhoReq tamanho) {
         final Tamanho tamanhoSalvo = this.repository.save(TamanhoMapper.reqToEntity(tamanho));
         return ResponseEntity.status(201).body(tamanhoSalvo);
     }
@@ -47,7 +48,7 @@ public class TamanhoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tamanho> atualizar(@PathVariable int id, @RequestBody TamanhoReq tamanhoAtualizado) {
+    public ResponseEntity<Tamanho> atualizar(@PathVariable int id, @RequestBody @Valid TamanhoReq tamanhoAtualizado) {
         Optional<Tamanho> tamanhoOpt = repository.findById(id);
         if (tamanhoOpt.isPresent()) {
             tamanhoOpt.get().setNumero(tamanhoAtualizado.numero());

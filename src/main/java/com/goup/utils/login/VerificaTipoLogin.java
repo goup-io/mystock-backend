@@ -19,9 +19,9 @@ public class VerificaTipoLogin {
     // verifica qual o tipo de login que o usuário está tentando acessar (loginLoja ou loginUsuario)
     public Object verificaTipoLogin(String user) {
 
-        boolean isLoginUser = usuarioLoginrepository.findByUser(user) != null;
+        boolean isLoginUser = usuarioLoginrepository.findByUsername(user) != null;
 
-        boolean isLoginLoja = lojaLoginRepository.findByUser(user) != null;
+        boolean isLoginLoja = lojaLoginRepository.findByUsername(user) != null;
 
         if (isLoginLoja){
             return new LojaLogin();

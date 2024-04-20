@@ -1,6 +1,6 @@
-package com.goup.dtos.categoria;
+package com.goup.dtos.estoque.produtos.modelos.categoria;
 
-import com.goup.entities.produtos.modelos.Categoria;
+import com.goup.entities.estoque.produtos.modelos.Categoria;
 
 public class CategoriaMapper {
     public static Categoria reqToEntity(CategoriaReq categoria){

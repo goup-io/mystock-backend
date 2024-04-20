@@ -1,6 +1,6 @@
-package com.goup.dtos.tamanho;
+package com.goup.dtos.estoque.tamanho;
 
-import com.goup.entities.produtos.Tamanho;
+import com.goup.entities.estoque.Tamanho;
 
 public class TamanhoMapper {
     public static Tamanho reqToEntity(TamanhoReq tamanho){

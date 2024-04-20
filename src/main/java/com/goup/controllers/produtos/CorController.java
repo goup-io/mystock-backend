@@ -1,9 +1,10 @@
 package com.goup.controllers.produtos;
 
-import com.goup.dtos.cor.CorMapper;
-import com.goup.dtos.cor.CorReq;
-import com.goup.entities.produtos.Cor;
+import com.goup.dtos.estoque.produtos.cor.CorMapper;
+import com.goup.dtos.estoque.produtos.cor.CorReq;
+import com.goup.entities.estoque.produtos.Cor;
 import com.goup.repositories.produtos.CorRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class CorController {
     }
 
     @PostMapping
-    public ResponseEntity<Cor> cadastrar(@RequestBody CorReq categoria) {
+    public ResponseEntity<Cor> cadastrar(@RequestBody @Valid CorReq categoria) {
         final Cor corSalva = this.repository.save(CorMapper.reqToEntity(categoria));
         return ResponseEntity.status(201).body(corSalva);
     }
@@ -48,7 +49,7 @@ public class CorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cor> atualizar(@PathVariable int id, @RequestBody CorReq corAtualizada) {
+    public ResponseEntity<Cor> atualizar(@PathVariable int id, @RequestBody @Valid CorReq corAtualizada) {
         Optional<Cor> corOpt = repository.findById(id);
         if (corOpt.isPresent()) {
             corOpt.get().setNome(corAtualizada.nome());

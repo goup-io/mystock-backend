@@ -1,6 +1,6 @@
-package com.goup.dtos.cor;
+package com.goup.dtos.estoque.produtos.cor;
 
-import com.goup.entities.produtos.Cor;
+import com.goup.entities.estoque.produtos.Cor;
 
 public class CorMapper {
     public static Cor reqToEntity(CorReq cor){

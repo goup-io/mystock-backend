@@ -1,9 +1,10 @@
 package com.goup.controllers.produtos;
 
-import com.goup.dtos.categoria.CategoriaMapper;
-import com.goup.dtos.categoria.CategoriaReq;
-import com.goup.entities.produtos.modelos.Categoria;
+import com.goup.dtos.estoque.produtos.modelos.categoria.CategoriaMapper;
+import com.goup.dtos.estoque.produtos.modelos.categoria.CategoriaReq;
+import com.goup.entities.estoque.produtos.modelos.Categoria;
 import com.goup.repositories.produtos.CategoriaRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> cadastrar(@RequestBody CategoriaReq categoria) {
+    public ResponseEntity<Categoria> cadastrar(@RequestBody @Valid CategoriaReq categoria) {
         final Categoria categoriaSalva = this.repository.save(CategoriaMapper.reqToEntity(categoria));
         return ResponseEntity.status(201).body(categoriaSalva);
     }
@@ -48,7 +49,7 @@ public class CategoriaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Categoria> atualizar(@PathVariable int id, @RequestBody CategoriaReq categoriaAtualizada) {
+    public ResponseEntity<Categoria> atualizar(@PathVariable int id, @RequestBody @Valid CategoriaReq categoriaAtualizada) {
         Optional<Categoria> categoriaOpt = repository.findById(id);
         if (categoriaOpt.isPresent()) {
             categoriaOpt.get().setNome(categoriaAtualizada.nome());
