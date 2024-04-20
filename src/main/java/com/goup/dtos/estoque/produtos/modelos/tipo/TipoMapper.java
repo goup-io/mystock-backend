@@ -1,6 +1,6 @@
-package com.goup.dtos.tipo;
+package com.goup.dtos.estoque.produtos.modelos.tipo;
 
-import com.goup.entities.produtos.modelos.Tipo;
+import com.goup.entities.estoque.produtos.modelos.Tipo;
 
 public class TipoMapper {
     public static Tipo reqToEntity(TipoReq tipo){

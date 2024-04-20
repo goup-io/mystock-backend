@@ -1,9 +1,10 @@
 package com.goup.controllers.produtos;
 
-import com.goup.dtos.tipo.TipoMapper;
-import com.goup.dtos.tipo.TipoReq;
-import com.goup.entities.produtos.modelos.Tipo;
+import com.goup.dtos.estoque.produtos.modelos.tipo.TipoMapper;
+import com.goup.dtos.estoque.produtos.modelos.tipo.TipoReq;
+import com.goup.entities.estoque.produtos.modelos.Tipo;
 import com.goup.repositories.produtos.TipoRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class TipoController {
     }
 
     @PostMapping
-    public ResponseEntity<Tipo> cadastrar(@RequestBody TipoReq tipo) {
+    public ResponseEntity<Tipo> cadastrar(@RequestBody @Valid TipoReq tipo) {
         final Tipo tipoSalvo = this.repository.save(TipoMapper.reqToEntity(tipo));
         return ResponseEntity.status(201).body(tipoSalvo);
     }
@@ -46,7 +47,7 @@ public class TipoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tipo> atualizar(@PathVariable int id, @RequestBody TipoReq tipoAtualizado) {
+    public ResponseEntity<Tipo> atualizar(@PathVariable int id, @RequestBody @Valid TipoReq tipoAtualizado) {
         Optional<Tipo> tipoOpt = repository.findById(id);
         if (tipoOpt.isPresent()) {
             tipoOpt.get().setNome(tipoAtualizado.nome());
