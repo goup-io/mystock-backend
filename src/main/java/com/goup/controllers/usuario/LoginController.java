@@ -79,7 +79,13 @@ public class LoginController {
             token = tokenService.gerarToken(usuario);
             userLogged = ((Login) usuario).getUsuario();
             ((Login) usuario).setRole(UserRole.valueOf(userLogged.getCargo().getNome().toUpperCase()));
-            return ResponseEntity.status(200).body(new LoginResponseDTO(token, userLogged.getId(), ((Login) usuario).getRole()));
+
+            System.out.println(((Login) usuario).getRole());
+            System.out.println(((Login) usuario).getAuthorities());
+            System.out.println(((Login) usuario).getAuthorities().size());
+            System.out.println(((Login) usuario).getAuthorities().toArray()[0]);
+            System.out.println(usuario);
+            return ResponseEntity.status(200).body(new LoginResponseDTO(token, userLogged.getId()));
         } else {
             usuario = (LojaLogin) authenticate.getPrincipal();
             token = tokenService.gerarToken(usuario);
@@ -95,7 +101,6 @@ public class LoginController {
 
         return ResponseEntity.status(200).build();
     }
-
 
     @PostMapping("/register/user")
     public ResponseEntity registerUser(@RequestBody RegisterDTO registerDTO) {

@@ -37,11 +37,11 @@ public class Login implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == UserRole.ADMIN) {
-            return List.of(new SimpleGrantedAuthority("ADMIN"),  new SimpleGrantedAuthority("GERENTE"), new SimpleGrantedAuthority("VENDEDOR"));
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),  new SimpleGrantedAuthority("ROLE_GERENTE"), new SimpleGrantedAuthority("ROLE_VENDEDOR"));
         } else if(this.role == UserRole.GERENTE){
-            return List.of(new SimpleGrantedAuthority("GERENTE"), new SimpleGrantedAuthority("VENDEDOR"));
+            return List.of(new SimpleGrantedAuthority("ROLE_GERENTE"), new SimpleGrantedAuthority("ROLE_VENDEDOR"));
         } else {
-            return List.of(new SimpleGrantedAuthority("VENDEDOR"));
+            return List.of(new SimpleGrantedAuthority("ROLE_VENDEDOR"));
         }
     }
 
