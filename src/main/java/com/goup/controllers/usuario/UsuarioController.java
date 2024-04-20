@@ -84,37 +84,7 @@ public class UsuarioController {
         return usuarioOpt.map(usuario -> ResponseEntity.status(200).body(usuario)).orElseGet(() -> ResponseEntity.status(404).build());
     }
 
-    @GetMapping("/csv")
-    public ResponseEntity<Void> gerarCsvParaTodosUsuarios() {
-        List<Usuario> usuarios = usuarioRepository.findAll();
 
-        if (!usuarios.isEmpty()) {
-            CsvCliente csvCliente = new CsvCliente();
-            csvCliente.writeUsersToCSV(usuarios);
-
-            return ResponseEntity.status(200).build();
-        } else {
-            return ResponseEntity.status(404).build();
-        }
-    }
-
-
-    @GetMapping("/csv/loja/{lojaId}")
-    public ResponseEntity<Void> gerarCsvPorLoja(@PathVariable int lojaId) {
-        Optional<Loja> lojaOpt = lojaRepository.findById(lojaId);
-        if (lojaOpt.isPresent()) {
-            List<Usuario> usuarios = usuarioRepository.findAllByLoja(lojaOpt.get());
-            if (!usuarios.isEmpty()) {
-                CsvCliente csvCliente = new CsvCliente();
-                csvCliente.writeUsersToCSV(usuarios);
-                return ResponseEntity.status(200).build();
-            } else {
-                return ResponseEntity.status(204).build();
-            }
-        } else {
-            return ResponseEntity.status(404).build();
-        }
-    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> atualizar(@RequestBody @Valid Usuario usuario, @PathVariable int id) {
