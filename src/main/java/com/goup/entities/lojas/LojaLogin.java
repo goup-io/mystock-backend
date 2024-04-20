@@ -15,7 +15,7 @@ public class LojaLogin implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY) @Id
     private Integer id;
     @Column @NotNull
-    private String user;
+    private String username;
     @Column @NotNull
     private String senha;
     @JoinColumn @ManyToOne @NotNull
@@ -23,14 +23,14 @@ public class LojaLogin implements UserDetails {
     @JoinColumn @ManyToOne @NotNull
     private AcessoLoja acessoLoja;
     @Transient
-    private TipoLogin tipoLogin;
+    private TipoLogin role;
 
-    public LojaLogin(String user, String senhaEcrypted, Loja loja, AcessoLoja acessoLoja, TipoLogin tipoLogin) {
-        this.user = user;
+    public LojaLogin(String username, String senhaEcrypted, Loja loja, AcessoLoja acessoLoja, TipoLogin role) {
+        this.username = username;
         this.senha = senhaEcrypted;
         this.loja = loja;
         this.acessoLoja = acessoLoja;
-        this.tipoLogin = tipoLogin;
+        this.role = role;
     }
 
     public LojaLogin() {
@@ -41,10 +41,6 @@ public class LojaLogin implements UserDetails {
         return id;
     }
 
-    public String getUser() {
-        return user;
-    }
-
     public String getSenha() {
         return senha;
     }
@@ -53,16 +49,16 @@ public class LojaLogin implements UserDetails {
         return loja;
     }
 
-    public TipoLogin getTipoLogin() {
-        return tipoLogin;
+    public TipoLogin getRole() {
+        return role;
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setSenha(String senha) {
@@ -81,13 +77,13 @@ public class LojaLogin implements UserDetails {
         this.acessoLoja = acessoLoja;
     }
 
-    public void setTipoLogin(TipoLogin tipoLogin) {
-        this.tipoLogin = tipoLogin;
+    public void setRole(TipoLogin role) {
+        this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.tipoLogin == TipoLogin.CAIXA) {
+        if (this.role == TipoLogin.CAIXA) {
             return List.of(new SimpleGrantedAuthority("CAIXA"));
         } else  {
             return List.of(new SimpleGrantedAuthority("AREA_VENDA"));
@@ -101,7 +97,7 @@ public class LojaLogin implements UserDetails {
 
     @Override
     public String getUsername() {
-        return getUser();
+        return this.username;
     }
 
     @Override
