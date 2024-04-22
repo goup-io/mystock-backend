@@ -68,6 +68,7 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 		<dependency>
+<<<<<<< HEAD
 			<groupId>com.azure.spring</groupId>
 			<artifactId>spring-cloud-azure-starter</artifactId>
 		</dependency>
@@ -75,6 +76,11 @@
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
 			<scope>runtime</scope>
+=======
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+>>>>>>> 3cfb0c1f59adb27d6575d124ff0e908ee923230a
 		</dependency>
     </dependencies>
 	<dependencyManagement>
