@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     @Autowired
@@ -68,7 +68,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDto> buscarUsuarioPorId(@PathVariable int id) {
+    public ResponseEntity<UsuarioResponseDto> buscarUsuarioPorId(@PathVariable("id") int id) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
 
         return usuarioOpt.map(usuario -> ResponseEntity.status(200).body(UsuarioMapper.entityToReponse(usuario))).orElseGet(() -> ResponseEntity.status(404).build());

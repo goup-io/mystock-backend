@@ -3,6 +3,7 @@ package com.goup.security;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.goup.entities.lojas.LojaLogin;
 import com.goup.entities.usuarios.login.Login;
+import com.goup.entities.usuarios.login.UserRole;
 import com.goup.repositories.lojas.LoginLojaRepository;
 import com.goup.repositories.usuarios.LoginRepository;
 import com.goup.services.TokenService;
@@ -24,16 +25,16 @@ import java.io.IOException;
 public class SecurityFilter extends OncePerRequestFilter {
 
     @Autowired
-    TokenService tokenService;
+    private TokenService tokenService;
 
     @Autowired
-    LoginRepository loginRepository;
+    private LoginRepository loginRepository;
 
     @Autowired
-    LoginLojaRepository loginLojaRepository;
+    private LoginLojaRepository loginLojaRepository;
 
     @Autowired
-    VerificaTipoLogin verificaTipoLogin;
+    private VerificaTipoLogin verificaTipoLogin;
 
     @Autowired
     private TokenBlacklist tokenBlacklist;
@@ -45,21 +46,27 @@ public class SecurityFilter extends OncePerRequestFilter {
             if (token != null) {
                 if (tokenBlacklist.isBlacklisted(token)) {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    return; // Retorna imediatamente, não prossegue com a autenticação/autorização
+                    return;
                 }
 
                 var userName = tokenService.validateToken(token);
 
-                UserDetails user = new Login();
+                Login loginInfos = (Login) loginRepository.findByUsername(userName) == null ? null : (Login) loginRepository.findByUsername(userName);
+                LojaLogin lojaLoginInfos = (LojaLogin) loginLojaRepository.findByUsername(userName) == null ? null : (LojaLogin) loginLojaRepository.findByUsername(userName);
 
-                var userDetails = verificaTipoLogin.verificaTipoLogin(userName);
-                if (userDetails instanceof Login) {
-                    user = loginRepository.findByUsername(userName);
-                } else if (userDetails instanceof LojaLogin) {
-                    user = loginLojaRepository.findByUsername(userName);
+                var authentication = new UsernamePasswordAuthenticationToken(null, null, null);
+                if (loginInfos != null) {
+                    loginInfos.setRole(UserRole.valueOf(loginInfos.getUsuario().getCargo().getNome().toUpperCase()));
+                    authentication = new UsernamePasswordAuthenticationToken(loginInfos, null, loginInfos.getAuthorities());
+                }
+                if (lojaLoginInfos != null) {
+                    lojaLoginInfos.setRole(lojaLoginInfos.getAcessoLoja().getTipo());
+                    authentication = new UsernamePasswordAuthenticationToken(lojaLoginInfos, null, lojaLoginInfos.getAuthorities());
+                }
+                if (loginInfos == null && lojaLoginInfos == null) {
+                    throw new RuntimeException("Usuário não encontrado");
                 }
 
-                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (JWTCreationException e){
@@ -70,8 +77,6 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
-
-
 
     private String recoverToken(HttpServletRequest request){
         var authHeader = request.getHeader("Authorization");

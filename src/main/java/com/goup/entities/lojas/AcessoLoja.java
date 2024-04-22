@@ -24,4 +24,16 @@ public class AcessoLoja {
     public String getDescricao() {
         return descricao;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setTipo(TipoLogin tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 }
