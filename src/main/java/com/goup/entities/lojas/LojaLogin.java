@@ -37,6 +37,8 @@ public class LojaLogin implements UserDetails {
 
     }
 
+
+
     public Integer getId() {
         return id;
     }
@@ -84,9 +86,9 @@ public class LojaLogin implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == TipoLogin.CAIXA) {
-            return List.of(new SimpleGrantedAuthority("CAIXA"));
+            return List.of(new SimpleGrantedAuthority("ROLE_CAIXA"));
         } else  {
-            return List.of(new SimpleGrantedAuthority("AREA_VENDA"));
+            return List.of(new SimpleGrantedAuthority("ROLE_AREA_VENDA"));
         }
     }
 
