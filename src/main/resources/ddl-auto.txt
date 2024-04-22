@@ -1,0 +1,19 @@
+Explicação dos valores da variável de ambiente "spring.jpa.hibernate.ddl-auto=update"
+Linha 29 do arquivo "src\main\resources\application.properties"
+
+Os valores possíveis para a configuração spring.jpa.hibernate.ddl-auto são create, update, create-drop, validate e none. A descrição delas está a seguir:
+
+create:
+    -O Hibernate primeiro exclui todas as tabelas existentes e depois cria novas tabelas.
+
+update:
+    - O mapeamento objeto-relacional configurado é comparado com o esquema do banco de dados e, em seguida, o Hibernate atualiza o esquema de acordo com as diferenças encontradas. Atenção! Tabelas ou colunas existentes e não mapeados nunca são excluídos.
+
+create-drop:
+    - Atua quase como o create. A diferença é que o esquema é excluído do banco de dados após o encerramento da aplicação. É muito comum seu uso em testes de integração automatizados. Se nenhuma informação de conexão com banco for feita essa será a opção padrão, pois, nesse caso, o Spring Boot tentará usar um banco de dados em memória.
+
+validate:
+    - Com essa opção, o Hibernate apenas compara o esquema do banco de dados com o mapeamento objeto-relacional do projeto. Em havendo divergências (ex: um campo está como varchar na tabela mas Double na entidade), será lançada uma exceção durante a inicialização do projeto. É muito comum seu uso em ambientes de homologação e produção.
+
+none:
+    - Essa opção simplesmente indica que nada deve ser feito. Nem validações, nem atualizações, nem exclusões. Caso existam informações de conexão com banco de dados configuradas, essa será a opção padrão.

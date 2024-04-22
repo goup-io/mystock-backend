@@ -1,10 +1,7 @@
 package com.goup.utils;
 
-import com.goup.Usuario;
-import com.goup.Vendedor;
-
 public class Utils {
-
+/*
     // Pesquisa binária pelo nome do produto
     public int pesquisaBinaria(Usuario[] vetor, String x) {
         int indinf = 0;
@@ -56,6 +53,6 @@ public class Utils {
             usuarios[indMenor] = aux;
         }
     }
-
+*/
 }
 
