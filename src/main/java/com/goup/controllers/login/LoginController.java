@@ -1,4 +1,4 @@
-package com.goup.controllers.usuario;
+package com.goup.controllers.login;
 
 import com.goup.dtos.login.LoginDto;
 import com.goup.dtos.login.LoginResponseDTO;
@@ -79,17 +79,12 @@ public class LoginController {
             token = tokenService.gerarToken(usuario);
             userLogged = ((Login) usuario).getUsuario();
             ((Login) usuario).setRole(UserRole.valueOf(userLogged.getCargo().getNome().toUpperCase()));
-
-            System.out.println(((Login) usuario).getRole());
-            System.out.println(((Login) usuario).getAuthorities());
-            System.out.println(((Login) usuario).getAuthorities().size());
-            System.out.println(((Login) usuario).getAuthorities().toArray()[0]);
-            System.out.println(usuario);
             return ResponseEntity.status(200).body(new LoginResponseDTO(token, userLogged.getId()));
         } else {
             usuario = (LojaLogin) authenticate.getPrincipal();
             token = tokenService.gerarToken(usuario);
             lojaLogged = ((LojaLogin) usuario).getLoja();
+            ((LojaLogin) usuario).setRole(TipoLogin.valueOf(((LojaLogin) usuario).getAcessoLoja().getTipo().getRole()));
             return ResponseEntity.status(200).body(new LojaLoginResponseDTO(token, lojaLogged.getId(), ((LojaLogin) usuario).getRole()));
         }
     }
