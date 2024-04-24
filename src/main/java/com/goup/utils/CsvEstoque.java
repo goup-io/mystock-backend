@@ -4,7 +4,7 @@ import com.goup.repositories.lojas.LojaRepository;
 import com.goup.repositories.usuarios.CargoRepository;
 import com.goup.repositories.usuarios.UsuarioRepository;
 import com.opencsv.CSVWriter;
-import com.goup.entities.Estoque;
+import com.goup.entities.estoque.ETP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,13 +26,13 @@ public class CsvEstoque {
     @Autowired
     private LojaRepository lojaRepository;
 
-    public void writeStockToCSV(List<Estoque> estoques) {
+    public void writeStockToCSV(List<ETP> estoques) {
         String csvFile = "estoque.csv";
         try (CSVWriter writer = new CSVWriter(new FileWriter(csvFile))) {
             String[] header = {"ID Estoque", "ID Produto", "Nome Produto", "ID Loja", "Nome Loja", "ID Tamanho", "Quantidade"};
             writer.writeNext(header);
 
-            for (Estoque estoque : estoques) {
+            for (ETP estoque : estoques) {
                 String[] data = {
                         String.valueOf(estoque.getId()),
                         String.valueOf(estoque.getProduto().getId()),
