@@ -3,9 +3,6 @@ package com.goup;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.goup.entities.usuarios.Usuario;
-import com.goup.utils.CsvCliente;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.io.File;
 import java.util.Arrays;

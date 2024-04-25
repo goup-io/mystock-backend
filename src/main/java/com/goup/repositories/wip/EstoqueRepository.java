@@ -1,3 +1,4 @@
+/*
 package com.goup.repositories.wip;
 
 import com.goup.entities.Estoque;
@@ -10,4 +11,4 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
     List<Estoque> findAll();
 
     List<Estoque> findAllByLojaId(Integer lojaId);
-}
+}*/

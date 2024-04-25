@@ -7,13 +7,11 @@ import com.goup.entities.usuarios.Usuario;
 import com.goup.repositories.lojas.LojaRepository;
 import com.goup.repositories.usuarios.CargoRepository;
 import com.goup.repositories.usuarios.UsuarioRepository;
-import com.goup.utils.CsvCliente;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
