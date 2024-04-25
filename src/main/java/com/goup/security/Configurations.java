@@ -37,6 +37,8 @@ public class Configurations {
                                 .requestMatchers("/webjars/**").permitAll()
                                 .requestMatchers("/swagger-ui.html").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/default").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/default").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/usuarios").hasAnyAuthority("ROLE_ADMIN", "ROLE_AREA_VENDA")
                                 .anyRequest().authenticated()
                 )
