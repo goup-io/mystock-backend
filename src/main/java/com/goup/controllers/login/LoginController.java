@@ -1,5 +1,6 @@
 package com.goup.controllers.login;
 
+import com.goup.dtos.email.RedefinirEmail;
 import com.goup.dtos.login.LoginDto;
 import com.goup.dtos.login.LoginResponseDTO;
 import com.goup.dtos.login.RegisterDTO;
@@ -12,6 +13,7 @@ import com.goup.entities.lojas.TipoLogin;
 import com.goup.entities.usuarios.login.Login;
 import com.goup.entities.usuarios.login.UserRole;
 import com.goup.entities.usuarios.Usuario;
+import com.goup.observer.redefinirsenha.EmailObserver;
 import com.goup.repositories.lojas.AcessoLojaRepository;
 import com.goup.repositories.lojas.LoginLojaRepository;
 import com.goup.repositories.lojas.LojaRepository;
@@ -20,6 +22,7 @@ import com.goup.repositories.usuarios.UsuarioRepository;
 import com.goup.security.InMemoryTokenBlacklist;
 import com.goup.services.TokenService;
 
+import com.goup.services.email.EmailService;
 import com.goup.utils.login.VerificaTipoLogin;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -63,6 +66,11 @@ public class LoginController {
 
     @Autowired
     private InMemoryTokenBlacklist invalidateTokenService;
+
+    @Autowired
+    private EmailService emailService;
+
+    private EmailObserver emailObserver;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid LoginDto loginDTO){
@@ -160,6 +168,18 @@ public class LoginController {
 
         return ResponseEntity.status(201).build();
 
+    }
+
+
+    @PostMapping("/redefinir-senha/enviar-email/{email}")
+    public ResponseEntity<String> redefinirSenhaEnviarEmail(@PathVariable String email) {
+        System.out.println(email);
+        Login loginEncontrado = usuarioLoginrepository.findLoginByEmail(email);
+        if (loginEncontrado == null) {
+            return ResponseEntity.status(404).build();
+        }
+        emailObserver.enviar(email, loginEncontrado.getUsuario().getNome());
+        return ResponseEntity.status(200).body("E-mail enviado com sucesso!");
     }
 
 }
