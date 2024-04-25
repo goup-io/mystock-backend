@@ -70,7 +70,9 @@ public class LoginController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
     private EmailObserver emailObserver;
+
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid LoginDto loginDTO){
