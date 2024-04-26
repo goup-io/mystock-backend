@@ -12,3 +12,5 @@ public interface EstoqueRepository extends JpaRepository<ETP, Integer> {
 
     List<ETP> findAllByLojaId(Integer lojaId);
 }
+
+ */
