@@ -1,14 +1,14 @@
 /*
 package com.goup.repositories.wip;
 
-import com.goup.entities.Estoque;
+import com.goup.entities.estoque.ETP;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
+public interface EstoqueRepository extends JpaRepository<ETP, Integer> {
 
-    List<Estoque> findAll();
+    List<ETP> findAll();
 
-    List<Estoque> findAllByLojaId(Integer lojaId);
-}*/
+    List<ETP> findAllByLojaId(Integer lojaId);
+}
