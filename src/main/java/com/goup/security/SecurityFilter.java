@@ -34,9 +34,6 @@ public class SecurityFilter extends OncePerRequestFilter {
     private LoginLojaRepository loginLojaRepository;
 
     @Autowired
-    private VerificaTipoLogin verificaTipoLogin;
-
-    @Autowired
     private TokenBlacklist tokenBlacklist;
 
     @Override

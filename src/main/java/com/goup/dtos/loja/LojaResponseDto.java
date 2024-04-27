@@ -1,4 +1,4 @@
 package com.goup.dtos.loja;
 
-public class LojaResponseDto {
+public record LojaResponseDto(Integer id, String nome) {
 }
