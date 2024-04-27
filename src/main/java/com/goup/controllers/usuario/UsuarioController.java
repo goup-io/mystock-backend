@@ -49,8 +49,7 @@ public class UsuarioController {
                 loja
         );
 
-        Usuario userCadastrar = UsuarioMapper.toEntity(usuarioBuiltDto);
-        usuarioRepository.save(userCadastrar);
+        Usuario userCadastrar = usuarioRepository.save(UsuarioMapper.toEntity(usuarioBuiltDto));
 
         return ResponseEntity.status(201).body(UsuarioMapper.entityToReponse(userCadastrar));
     }

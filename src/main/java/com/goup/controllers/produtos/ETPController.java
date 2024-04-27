@@ -43,22 +43,53 @@ public class ETPController {
         return ResponseEntity.status(200).body(ETPMapper.toTableResponse(etps));
     }
 
-
     @PostMapping
     public ResponseEntity<ETPTableRes> salvar(@RequestBody ETPReq etp){
+        Optional<Produto> produto = produtoRepository.findById(etp.idProduto());
         Optional<Tamanho> tamanho = tamanhoRepository.findByNumero(etp.tamanho());
-        Optional<Produto> produto = produtoRepository.findById(etp.pkProduto());
         Optional<Loja> loja = lojaRepository.findById(etp.idLoja());
-        if (tamanho.isEmpty() || produto.isEmpty() || loja.isEmpty()) {
+
+        if (produto.isEmpty() || tamanho.isEmpty() || loja.isEmpty()) {
             return ResponseEntity.status(404).build();
         }
+        boolean etpExists = etpRepository.findByTamanhoAndLojaAndProduto(tamanho.get(), loja.get(), produto.get()).isPresent();
+        if (etpExists) {
+            return ResponseEntity.status(409).build();
+        }
 
-        ETP etpBuilt = new ETP();
-        etpBuilt.setTamanho(tamanho.get());
-        etpBuilt.setProduto(produto.get());
-        etpBuilt.setLoja(loja.get());
-        etpBuilt.setQuantidade(0);
+        ETP etpBuild = new ETP();
+        etpBuild.setProduto(produto.get());
+        etpBuild.setTamanho(tamanho.get());
+        etpBuild.setLoja(loja.get());
+        etpBuild.setQuantidade(0);
 
-        return ResponseEntity.status(201).body(ETPMapper.toTableResponse(etpRepository.save(etpBuilt)));
+        ETP savedEtp = etpRepository.save(etpBuild);
+
+        ETPTableRes responseDto = ETPMapper.toTableResponse(savedEtp);
+        return ResponseEntity.status(201).body(responseDto);
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Integer id){
+        Optional<ETP> etp = etpRepository.findById(id);
+        if (etp.isEmpty()) {
+            return ResponseEntity.status(404).build();
+        }
+        etpRepository.delete(etp.get());
+        return ResponseEntity.status(200).build();
+    }
+
+    @PatchMapping("/{id}/{quantidade}")
+    public ResponseEntity<ETPTableRes> incrementarEtp(@PathVariable Integer id, @PathVariable Integer quantidade){
+        Optional<ETP> etp = etpRepository.findById(id);
+        if (etp.isEmpty()) {
+            return ResponseEntity.status(404).build();
+        }
+        etp.get().setQuantidade(etp.get().getQuantidade() + quantidade);
+        ETP savedEtp = etpRepository.save(etp.get());
+        ETPTableRes responseDto = ETPMapper.toTableResponse(savedEtp);
+        return ResponseEntity.status(200).body(responseDto);
+
     }
 }
