@@ -16,6 +16,13 @@ public class ListaGenerica<T> {
                 throw new IllegalStateException("Lista cheia");
             }
         }
+        public void adiciona(int indice,T elemento) {
+            if (indice >= 0 && indice < vetor.length) {
+                vetor[indice] = elemento;
+            } else {
+                throw new IllegalStateException("Lista cheia");
+            }
+        }
 
         public int busca(T elementoBuscado) {
             for (int i = 0; i < nroElem; i++) {

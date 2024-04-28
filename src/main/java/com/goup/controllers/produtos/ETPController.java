@@ -11,6 +11,8 @@ import com.goup.repositories.lojas.LojaRepository;
 import com.goup.repositories.produtos.ETPRepository;
 import com.goup.repositories.produtos.ProdutoRepository;
 import com.goup.repositories.produtos.TamanhoRepository;
+import com.goup.utils.ListaGenerica;
+import com.goup.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,13 +36,23 @@ public class ETPController {
     @Autowired
     private LojaRepository lojaRepository;
 
+    private Utils utils;
+
     @GetMapping
     public ResponseEntity<List<ETPTableRes>> listar(){
         List<ETP> etps = etpRepository.findAll();
         if (etps.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(ETPMapper.toTableResponse(etps));
+
+        ListaGenerica<ETP> eptsList = new ListaGenerica<>(etps.size());
+        for (ETP etp : etps) {
+            eptsList.adiciona(etp);
+        }
+
+        utils.ordenarNome(eptsList, 0, eptsList.getTamanho());
+
+        return ResponseEntity.status(200).body(ETPMapper.toTableResponse(eptsList));
     }
 
     @PostMapping
@@ -65,7 +77,7 @@ public class ETPController {
 
         ETP savedEtp = etpRepository.save(etpBuild);
 
-        ETPTableRes responseDto = ETPMapper.toTableResponse(savedEtp);
+        ETPTableRes responseDto = ETPMapper.toTableResponseEntity(savedEtp);
         return ResponseEntity.status(201).body(responseDto);
 
     }
@@ -88,7 +100,7 @@ public class ETPController {
         }
         etp.get().setQuantidade(etp.get().getQuantidade() + quantidade);
         ETP savedEtp = etpRepository.save(etp.get());
-        ETPTableRes responseDto = ETPMapper.toTableResponse(savedEtp);
+        ETPTableRes responseDto = ETPMapper.toTableResponseEntity(savedEtp);
         return ResponseEntity.status(200).body(responseDto);
 
     }
