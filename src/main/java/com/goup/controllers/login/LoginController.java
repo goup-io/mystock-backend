@@ -73,7 +73,6 @@ public class LoginController {
     @Autowired
     private EmailObserver emailObserver;
 
-
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid LoginDto loginDTO){
         UsernamePasswordAuthenticationToken userAuthToken = new UsernamePasswordAuthenticationToken(loginDTO.user(), loginDTO.senha());
