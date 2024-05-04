@@ -6,11 +6,11 @@ import com.goup.dtos.login.redefinirSenha.RedefinirDto;
 import com.goup.dtos.login.RegisterDTO;
 import com.goup.dtos.login.redefinirSenha.RedefinirMapper;
 import com.goup.dtos.login.redefinirSenha.RedefinirReqDto;
-import com.goup.dtos.loja.RegisterLoginLojaDto;
+import com.goup.dtos.loja.loja_login.RegisterLoginLojaDto;
 import com.goup.entities.lojas.AcessoLoja;
 import com.goup.entities.lojas.Loja;
 import com.goup.entities.lojas.LojaLogin;
-import com.goup.dtos.loja.LojaLoginResponseDTO;
+import com.goup.dtos.loja.loja_login.LojaLoginResponseDTO;
 import com.goup.entities.lojas.TipoLogin;
 import com.goup.entities.usuarios.login.Login;
 import com.goup.entities.usuarios.login.RedefinirSenha;
@@ -80,7 +80,6 @@ public class LoginController {
 
     @Autowired
     private EmailObserver emailObserver;
-
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid LoginDto loginDTO) {
