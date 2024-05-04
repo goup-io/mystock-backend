@@ -96,13 +96,13 @@ public class LoginController {
             token = tokenService.gerarToken(usuario);
             userLogged = ((Login) usuario).getUsuario();
             ((Login) usuario).setRole(UserRole.valueOf(userLogged.getCargo().getNome().toUpperCase()));
-            return ResponseEntity.status(200).body(new LoginResponseDTO(token, userLogged.getId()));
+            return ResponseEntity.status(200).body(new LoginResponseDTO(token, userLogged.getId(), "usuario"));
         } else {
             usuario = (LojaLogin) authenticate.getPrincipal();
             token = tokenService.gerarToken(usuario);
             lojaLogged = ((LojaLogin) usuario).getLoja();
             ((LojaLogin) usuario).setRole(((LojaLogin) usuario).getAcessoLoja().getTipo());
-            return ResponseEntity.status(200).body(new LojaLoginResponseDTO(token, lojaLogged.getId(), ((LojaLogin) usuario).getRole()));
+            return ResponseEntity.status(200).body(new LojaLoginResponseDTO(token, lojaLogged.getId(), ((LojaLogin) usuario).getRole(), "loja"));
         }
     }
 
