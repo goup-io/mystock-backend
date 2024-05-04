@@ -11,12 +11,18 @@ VALUES
     ('74125-987', '32.109.876/0001-98', 'Loja do Centro', 'Loja I', 909),
     ('95132-579', '78.901.234/0001-23', 'Mezanino', 'Loja J', 1010);
 
+INSERT INTO acesso_loja (descricao, tipo)
+VALUES ('Caixa', 0), ('Área de Vendas', 1);
+
+INSERT INTO loja_login (senha, username, acesso_loja_id, loja_id)
+VALUES ('$2a$10$HV6jRjCZGmm.lKw3zYcEo.PkQihGcEmo3v4WJWJUpnBs4h/T5bmZK', 'vendasLoja', 2, 1),('$2a$10$HV6jRjCZGmm.lKw3zYcEo.PkQihGcEmo3v4WJWJUpnBs4h/T5bmZK', 'caixaLoja', 1, 1);
+
 insert into cargo
 values (default, 'Vendedor', 'Vendedor'),(default, 'Gerente', 'Gerente'),(default, 'Admin', 'Admin');
 
 INSERT INTO Usuario (nome, cargo_id, email, telefone, loja_id, codigo_venda)
 VALUES
-    ('Joao', 3, 'joao@example.com', '123456789', 1, 100),
+    ('Joao', 3, 'inaciofigueiredo13@gmail.com', '123456789', 1, 100),
     ('Pedro', 2, 'pedro@gmail.com', '(11) 94091-234', 1, 101),
     ('Simone', 3, 'simone@hotmail.com', '(22) 98765-4321', 2, 102),
     ('Ana', 1, 'ana@yahoo.com', '(33) 12345-6789', 1, 103),

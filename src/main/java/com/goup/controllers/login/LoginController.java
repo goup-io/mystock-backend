@@ -101,7 +101,7 @@ public class LoginController {
             usuario = (LojaLogin) authenticate.getPrincipal();
             token = tokenService.gerarToken(usuario);
             lojaLogged = ((LojaLogin) usuario).getLoja();
-            ((LojaLogin) usuario).setRole(TipoLogin.valueOf(((LojaLogin) usuario).getAcessoLoja().getTipo().getRole()));
+            ((LojaLogin) usuario).setRole(((LojaLogin) usuario).getAcessoLoja().getTipo());
             return ResponseEntity.status(200).body(new LojaLoginResponseDTO(token, lojaLogged.getId(), ((LojaLogin) usuario).getRole()));
         }
     }
@@ -186,7 +186,7 @@ public class LoginController {
             return ResponseEntity.status(404).build();
         }
         String token = UUID.randomUUID().toString();
-        RedefinirSenha emailGerado = redefinirSenhaRepository.save(RedefinirMapper.redefinirReqToEntity(new RedefinirReqDto(loginEncontrado, token)));
+        RedefinirSenha emailGerado = redefinirSenhaRepository.save(RedefinirMapper.redefinirReqToEntity(new RedefinirReqDto(loginEncontrado, true, token)));
 
         emailObserver.enviar(email, loginEncontrado.getUsuario().getNome(), emailGerado.getToken());
 
@@ -195,8 +195,30 @@ public class LoginController {
 
     @PostMapping("/redefinir-senha/alterar-senha")
     public ResponseEntity<Void> alterarSenha(@RequestBody RedefinirDto redefinirDto, @RequestParam String token) {
-        // verificar se token é valido
-        String senhaEncrypted = new BCryptPasswordEncoder().encode(redefinirDto.senha());
+        // verificando se o se token é valido (se ele existe e se já não foi utilizado)
+        Optional<RedefinirSenha> tokenEncontrado = redefinirSenhaRepository.findByToken(token);
+        if (tokenEncontrado.isEmpty()) {
+            return ResponseEntity.status(404).build();
+        } else if (!tokenEncontrado.get().isAtivo()) {
+            return ResponseEntity.status(401).build();
+        }
+
+        // Verificando se o token é de um login de loja ou de um login de usuario
+        Object tipoLogin = verificaTipoLogin.verificaTipoLogin(tokenEncontrado.get().getLogin().getUsername());
+        RedefinirSenha redefinirSenha = tokenEncontrado.get();
+        if (tipoLogin instanceof Login) {
+            Login login = usuarioLoginrepository.findById(tokenEncontrado.get().getLogin().getId()).get();
+            login.setSenha(new BCryptPasswordEncoder().encode(redefinirDto.senha()));
+            usuarioLoginrepository.save(login);
+            redefinirSenha.setAtivo(false);
+            redefinirSenhaRepository.save(redefinirSenha);
+        } else {
+            LojaLogin login = lojaLoginRepository.findById(tokenEncontrado.get().getLogin().getId()).get();
+            login.setSenha(new BCryptPasswordEncoder().encode(redefinirDto.senha()));
+            lojaLoginRepository.save(login);
+            redefinirSenha.setAtivo(false);
+            redefinirSenhaRepository.save(redefinirSenha);
+        }
         return ResponseEntity.status(200).build();
     }
 }
