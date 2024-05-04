@@ -1,4 +1,0 @@
-insert into loja (cep, cnpj, complemento, nome, numero) values ("abcs123", "jioqee", "No brás", "Pérolas Calçado", 123);
-insert into cargo values (default, "Vendedor", "Vendedor"),(default, "Gerente", "Gerente"),(default, "Admin", "Admin");
-insert into usuario(id, codigo_venda, nome, email, telefone, cargo_id, loja_id) values (default, 100, "Inácio", null,"4002-8922", 3, 1);
-insert into login(senha, username, id_usuario) values ("1234", "teste", 1)

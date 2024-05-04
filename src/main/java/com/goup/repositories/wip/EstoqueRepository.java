@@ -2,7 +2,7 @@
 package com.goup.repositories.wip;
 
 import com.goup.entities.estoque.ETP;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.sql.jpa.repository.JpaRepository;
 
 import java.util.List;
 

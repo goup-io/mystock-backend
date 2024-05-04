@@ -14,11 +14,11 @@ public class EmailObserver implements Observer {
     }
 
     @Override
-    public void enviar(String email, String nome) {
+    public void enviar(String email, String nome, String linkToken) {
         String assunto = "Redefinição de Senha";
         String corpo = "Olá  " + nome + "! Você solicitou a redifinição da sua senha? \n" +
                 "Clique no link abaixo para redefinir sua senha. Caso não tenha sido você, ignore este e-mail. \n" +
-                "https://www.goup.com.br/redefinir-senha";
+                "http://localhost:3000/reset?token=" + linkToken + "\n";
 
         emailService.enviarEmail(email, assunto, corpo);
     }

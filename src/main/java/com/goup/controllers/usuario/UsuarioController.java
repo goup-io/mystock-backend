@@ -61,6 +61,8 @@ public class UsuarioController {
             return ResponseEntity.status(204).build();
         }
 
+        System.out.println(usuariosEncontrados);
+
         return ResponseEntity.status(200).body(UsuarioMapper.toListDto(usuariosEncontrados));
     }
 

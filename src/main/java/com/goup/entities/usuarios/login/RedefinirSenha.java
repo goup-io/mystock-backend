@@ -1,0 +1,25 @@
+package com.goup.entities.usuarios.login;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Getter @Setter
+@AllArgsConstructor
+public class RedefinirSenha {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @JoinColumn @ManyToOne
+    private Login login;
+    private String token;
+    private boolean ativo;
+
+    public RedefinirSenha() {}
+
+    public RedefinirSenha(Login login, String token) {
+        this.login = login;
+        this.token = token;
+    }
+}

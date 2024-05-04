@@ -1,9 +1,11 @@
 package com.goup.controllers.login;
 
-import com.goup.dtos.email.RedefinirEmail;
 import com.goup.dtos.login.LoginDto;
 import com.goup.dtos.login.LoginResponseDTO;
+import com.goup.dtos.login.redefinirSenha.RedefinirDto;
 import com.goup.dtos.login.RegisterDTO;
+import com.goup.dtos.login.redefinirSenha.RedefinirMapper;
+import com.goup.dtos.login.redefinirSenha.RedefinirReqDto;
 import com.goup.dtos.loja.RegisterLoginLojaDto;
 import com.goup.entities.lojas.AcessoLoja;
 import com.goup.entities.lojas.Loja;
@@ -11,6 +13,7 @@ import com.goup.entities.lojas.LojaLogin;
 import com.goup.dtos.loja.LojaLoginResponseDTO;
 import com.goup.entities.lojas.TipoLogin;
 import com.goup.entities.usuarios.login.Login;
+import com.goup.entities.usuarios.login.RedefinirSenha;
 import com.goup.entities.usuarios.login.UserRole;
 import com.goup.entities.usuarios.Usuario;
 import com.goup.observer.redefinirsenha.EmailObserver;
@@ -18,6 +21,7 @@ import com.goup.repositories.lojas.AcessoLojaRepository;
 import com.goup.repositories.lojas.LoginLojaRepository;
 import com.goup.repositories.lojas.LojaRepository;
 import com.goup.repositories.usuarios.LoginRepository;
+import com.goup.repositories.usuarios.RedefinirSenhaRepository;
 import com.goup.repositories.usuarios.UsuarioRepository;
 import com.goup.security.InMemoryTokenBlacklist;
 import com.goup.services.TokenService;
@@ -36,6 +40,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth")
@@ -62,6 +67,9 @@ public class LoginController {
     private AcessoLojaRepository acessoLojaRepository;
 
     @Autowired
+    private RedefinirSenhaRepository redefinirSenhaRepository;
+
+    @Autowired
     VerificaTipoLogin verificaTipoLogin;
 
     @Autowired
@@ -75,7 +83,7 @@ public class LoginController {
 
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginDto loginDTO){
+    public ResponseEntity login(@RequestBody @Valid LoginDto loginDTO) {
         UsernamePasswordAuthenticationToken userAuthToken = new UsernamePasswordAuthenticationToken(loginDTO.user(), loginDTO.senha());
         Authentication authenticate = this.authenticationManager.authenticate(userAuthToken);
 
@@ -84,7 +92,7 @@ public class LoginController {
         Usuario userLogged;
         Loja lojaLogged;
         String token;
-        if (tipoLogin instanceof Login){
+        if (tipoLogin instanceof Login) {
             usuario = (Login) authenticate.getPrincipal();
             token = tokenService.gerarToken(usuario);
             userLogged = ((Login) usuario).getUsuario();
@@ -139,24 +147,24 @@ public class LoginController {
         return ResponseEntity.status(201).build(); // Criado com sucesso
     }
 
-
     @PostMapping("/register/loja")
-    public ResponseEntity registerLoja(@RequestBody RegisterLoginLojaDto registerDTO){
-        if (this.lojaLoginRepository.findByUsername(registerDTO.user()) != null || this.usuarioLoginrepository.findByUsername(registerDTO.user()) != null) return ResponseEntity.status(409).build();
+    public ResponseEntity registerLoja(@RequestBody RegisterLoginLojaDto registerDTO) {
+        if (this.lojaLoginRepository.findByUsername(registerDTO.user()) != null || this.usuarioLoginrepository.findByUsername(registerDTO.user()) != null)
+            return ResponseEntity.status(409).build();
         String senhaEcrypted = new BCryptPasswordEncoder().encode(registerDTO.senha());
 
         Loja loja = null;
 
-        Optional<Loja> searchUser =  lojaRepository.findById(registerDTO.idLoja());
-        if (searchUser.isPresent()){
+        Optional<Loja> searchUser = lojaRepository.findById(registerDTO.idLoja());
+        if (searchUser.isPresent()) {
             loja = searchUser.get();
         } else {
             return ResponseEntity.status(404).build();
         }
 
         AcessoLoja acessoLoja;
-        Optional<AcessoLoja> searchAcessoLoja =  acessoLojaRepository.findById(registerDTO.idAcessoLoja());
-        if (searchAcessoLoja.isPresent()){
+        Optional<AcessoLoja> searchAcessoLoja = acessoLojaRepository.findById(registerDTO.idAcessoLoja());
+        if (searchAcessoLoja.isPresent()) {
             acessoLoja = searchAcessoLoja.get();
         } else {
             return ResponseEntity.status(404).build();
@@ -172,16 +180,24 @@ public class LoginController {
 
     }
 
-
     @PostMapping("/redefinir-senha/enviar-email/{email}")
     public ResponseEntity<String> redefinirSenhaEnviarEmail(@PathVariable String email) {
-        System.out.println(email);
         Login loginEncontrado = usuarioLoginrepository.findLoginByEmail(email);
         if (loginEncontrado == null) {
             return ResponseEntity.status(404).build();
         }
-        emailObserver.enviar(email, loginEncontrado.getUsuario().getNome());
-        return ResponseEntity.status(200).body("E-mail enviado com sucesso!");
+        String token = UUID.randomUUID().toString();
+        RedefinirSenha emailGerado = redefinirSenhaRepository.save(RedefinirMapper.redefinirReqToEntity(new RedefinirReqDto(loginEncontrado, token)));
+
+        emailObserver.enviar(email, loginEncontrado.getUsuario().getNome(), emailGerado.getToken());
+
+        return ResponseEntity.status(201).body("E-mail enviado com sucesso!");
     }
 
+    @PostMapping("/redefinir-senha/alterar-senha")
+    public ResponseEntity<Void> alterarSenha(@RequestBody RedefinirDto redefinirDto, @RequestParam String token) {
+        // verificar se token é valido
+        String senhaEncrypted = new BCryptPasswordEncoder().encode(redefinirDto.senha());
+        return ResponseEntity.status(200).build();
+    }
 }

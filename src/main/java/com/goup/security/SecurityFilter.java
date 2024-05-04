@@ -1,6 +1,7 @@
 package com.goup.security;
 
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.goup.entities.lojas.LojaLogin;
 import com.goup.entities.usuarios.login.Login;
 import com.goup.entities.usuarios.login.UserRole;
@@ -69,7 +70,9 @@ public class SecurityFilter extends OncePerRequestFilter {
         } catch (JWTCreationException e){
             throw new RuntimeException(e);
         } catch (Exception e){
-            throw new RuntimeException(e);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Token vencido (EXPIROU)");
+            return;
         }
 
         filterChain.doFilter(request, response);
