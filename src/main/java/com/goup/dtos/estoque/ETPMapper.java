@@ -12,9 +12,8 @@ public class ETPMapper {
             req.getProduto().getModelo().getCodigo(),
             req.getProduto().getNome(),
             req.getProduto().getModelo().getNome(),
-            req.getProduto().getValorRevenda(),
-            req.getTamanho().getNumero(),
             req.getProduto().getCor().getNome(),
+            req.getProduto().getValorRevenda(),
             req.getLoja().getNome(),
             req.getQuantidade());
     }
