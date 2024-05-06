@@ -1,10 +1,12 @@
 package com.goup;
 
+import com.goup.controllers.csv.CsvController;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.goup.entities.usuarios.Usuario;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,11 +34,18 @@ class MyStockApplicationTests {
 
 		List<Usuario> users = Arrays.asList(user1, user2);
 
-		// Cria um CsvCliente
-		CsvCliente csvCliente = new CsvCliente();
+		// Cria um CsvClient
+		CsvController csvController = new CsvController();
 
-		// Chama o método writeUsersToCSV
-		csvCliente.writeUsersToCSV(users);
+		// Escreve os usuários no arquivo CSV
+		try {
+			byte[] csv = csvController.writeUsersToCSV(users);
+			FileWriter fileWriter = new FileWriter("users.csv");
+			fileWriter.write(new String(csv));
+			fileWriter.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Verifica se o arquivo CSV foi criado
 		File csvFile = new File("users.csv");
