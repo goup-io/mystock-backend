@@ -23,6 +23,7 @@ public class UsuarioMapper {
             return null;
         }
         return new UsuarioResponseDto(
+                usuarioResponse.getId(),
                 usuarioResponse.getCodigoVenda(),
                 usuarioResponse.getNome(),
                 usuarioResponse.getEmail(),

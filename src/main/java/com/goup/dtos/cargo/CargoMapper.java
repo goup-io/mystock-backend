@@ -18,7 +18,7 @@ public class CargoMapper {
             return null;
         }
 
-        return new CargoResponseDto(cargoResponse.getNome(), cargoResponse.getDescricao());
+        return new CargoResponseDto(cargoResponse.getId(), cargoResponse.getNome(), cargoResponse.getDescricao());
     }
 
     public static List<CargoResponseDto> toDto(List<Cargo> cargos) {

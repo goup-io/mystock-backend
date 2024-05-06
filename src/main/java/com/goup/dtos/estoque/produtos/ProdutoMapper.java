@@ -7,6 +7,7 @@ import com.goup.entities.estoque.produtos.modelos.Modelo;
 public class ProdutoMapper {
     public static Produto reqToEntity(ProdutoReq produto, Cor cor, Modelo modelo){
         Produto entidade = new Produto();
+        entidade.setNome(produto.nome());
         entidade.setCor(cor);
         entidade.setModelo(modelo);
         entidade.setValorCusto(produto.valorCusto());

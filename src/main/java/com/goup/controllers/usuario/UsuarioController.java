@@ -49,8 +49,7 @@ public class UsuarioController {
                 loja
         );
 
-        Usuario userCadastrar = UsuarioMapper.toEntity(usuarioBuiltDto);
-        usuarioRepository.save(userCadastrar);
+        Usuario userCadastrar = usuarioRepository.save(UsuarioMapper.toEntity(usuarioBuiltDto));
 
         return ResponseEntity.status(201).body(UsuarioMapper.entityToReponse(userCadastrar));
     }
@@ -61,6 +60,8 @@ public class UsuarioController {
         if (usuariosEncontrados.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
+
+        System.out.println(usuariosEncontrados);
 
         return ResponseEntity.status(200).body(UsuarioMapper.toListDto(usuariosEncontrados));
     }

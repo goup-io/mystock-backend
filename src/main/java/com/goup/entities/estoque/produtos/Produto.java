@@ -13,6 +13,8 @@ public class Produto {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String nome;
+
     @NotNull @ManyToOne @JoinColumn(name="cor_id", referencedColumnName="id")
     private Cor cor;
 

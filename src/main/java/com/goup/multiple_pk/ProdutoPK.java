@@ -17,4 +17,28 @@ public class ProdutoPK implements Serializable {
         this.cor = cor;
         this.modelo = modelo;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Cor getCor() {
+        return cor;
+    }
+
+    public void setCor(Cor cor) {
+        this.cor = cor;
+    }
+
+    public Modelo getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(Modelo modelo) {
+        this.modelo = modelo;
+    }
 }
