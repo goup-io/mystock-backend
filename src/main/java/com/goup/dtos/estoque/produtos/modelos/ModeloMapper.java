@@ -30,6 +30,17 @@ public class ModeloMapper {
         return respostaDto;
     }
 
+    public static ModeloTableRes entityToTableRes(Modelo modelo){
+        int id = modelo.getId();
+        String codigo = modelo.getCodigo();
+        String nome = modelo.getNome();
+        String categoria = modelo.getCategoria().getNome();
+        String tipo = modelo.getTipo().getNome();
+        ModeloTableRes respostaDto = new ModeloTableRes(codigo, nome, categoria, tipo);
+        return respostaDto;
+    }
+
+
     public static Modelo updateEntity(Modelo modelo, ModeloReq atualizacao, Categoria categoria, Tipo tipo){
         modelo.setNome(atualizacao.nome());
         modelo.setCodigo(atualizacao.codigo());
