@@ -4,14 +4,17 @@ import com.goup.dtos.usuario.*;
 import com.goup.entities.cargos.Cargo;
 import com.goup.entities.lojas.Loja;
 import com.goup.entities.usuarios.Usuario;
+import com.goup.entities.usuarios.login.Login;
 import com.goup.repositories.lojas.LojaRepository;
 import com.goup.repositories.usuarios.CargoRepository;
+import com.goup.repositories.usuarios.LoginRepository;
 import com.goup.repositories.usuarios.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +24,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private LoginRepository loginRepository;
 
     @Autowired
     private CargoRepository cargoRepository;
@@ -55,15 +61,34 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UsuarioResponseDto>> listar() {
+    public ResponseEntity<List<UsuarioResTableDto>> listar() {
         List<Usuario> usuariosEncontrados = usuarioRepository.findAllWithJoin();
         if (usuariosEncontrados.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
+        List<UsuarioResTableDto> listaDto = new ArrayList<>();
+        String usuarioLogin;
+        for (Usuario usuariosEncontrado : usuariosEncontrados) {
+            Login loginById = loginRepository.findLoginById(usuariosEncontrado.getId());
+            if (loginById == null){
+                usuarioLogin = "---";
+            } else {
+                usuarioLogin = loginById.getUsername();
+            }
 
-        System.out.println(usuariosEncontrados);
+            listaDto.add(new UsuarioResTableDto(
+                    usuariosEncontrado.getId(),
+                    usuariosEncontrado.getCodigoVenda(),
+                    usuariosEncontrado.getNome(),
+                    usuariosEncontrado.getEmail(),
+                    usuariosEncontrado.getTelefone(),
+                    usuariosEncontrado.getLoja().getNome(),
+                    usuariosEncontrado.getCargo().getNome(),
+                    usuarioLogin
+            ));
+        }
 
-        return ResponseEntity.status(200).body(UsuarioMapper.toListDto(usuariosEncontrados));
+        return ResponseEntity.status(200).body(listaDto);
     }
 
     @GetMapping("/{id}")
