@@ -14,6 +14,10 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
 
     @Query("SELECT l FROM Login l JOIN l.usuario u WHERE u.email = :email")
     Login findLoginByEmail(String email);
+
+    @Query("SELECT l FROM Login l JOIN l.usuario u WHERE u.id = :id")
+    Login findLoginById(Integer id);
+
 }
 
 

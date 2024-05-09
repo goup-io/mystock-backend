@@ -24,7 +24,7 @@ INSERT INTO Usuario (nome, cargo_id, email, telefone, loja_id, codigo_venda)
 VALUES
     ('Joao', 3, 'inaciofigueiredo13@gmail.com', '123456789', 1, 100),
     ('Pedro', 2, 'pedro@gmail.com', '(11) 94091-234', 1, 101),
-    ('Simone', 3, 'simone@hotmail.com', '(22) 98765-4321', 2, 102),
+    ('Afonso', 3, 'afonso@hotmail.com', '(22) 98765-4321', 1, 102),
     ('Ana', 1, 'ana@yahoo.com', '(33) 12345-6789', 1, 103),
     ('Lucas', 2, 'lucas@outlook.com', '(44) 55555-5555', 1, 104),
     ('Carla', 2, 'carla@gmail.com', '(55) 1234-5678', 1, 105),
