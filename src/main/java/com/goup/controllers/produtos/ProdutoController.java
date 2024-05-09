@@ -1,7 +1,9 @@
 package com.goup.controllers.produtos;
 
+import com.goup.dtos.estoque.produtos.ProdutoEditReq;
 import com.goup.dtos.estoque.produtos.ProdutoMapper;
 import com.goup.dtos.estoque.produtos.ProdutoReq;
+import com.goup.entities.estoque.ETP;
 import com.goup.entities.estoque.produtos.Cor;
 import com.goup.entities.estoque.produtos.Produto;
 import com.goup.entities.estoque.produtos.modelos.Modelo;
@@ -24,6 +26,8 @@ public class ProdutoController {
     private CorRepository corRepository;
     @Autowired
     private ModeloRepository modeloRepository;
+    @Autowired
+    private ETPRepository etpRepository;
 
 
     @PostMapping
@@ -65,6 +69,27 @@ public class ProdutoController {
             }
         }
         return ResponseEntity.status(404).build();
+    }
+
+
+    @PutMapping("/etp-id/{idEtp}")
+    public ResponseEntity<Produto> editarProduto(@PathVariable Integer idEtp, @RequestBody @Valid ProdutoEditReq produto) {
+        Optional<ETP> etp = etpRepository.findById(idEtp);
+        if(etp.isPresent()){
+            Optional<Produto> produtoOpt = repository.findById(etp.get().getProduto().getId());
+            if(produtoOpt.isPresent()){
+                Produto produtoEditado = produtoOpt.get();
+                produtoEditado.setNome(produto.nome());
+                produtoEditado.setValorCusto(produto.precoCusto());
+                produtoEditado.setValorRevenda(produto.precoRevenda());
+                produtoEditado.setCor(etp.get().getProduto().getCor());
+                produtoEditado.setModelo(etp.get().getProduto().getModelo());
+                repository.save(produtoEditado);
+                return ResponseEntity.status(200).body(produtoEditado);
+            }
+        }
+        return ResponseEntity.status(404).build();
+
     }
 
 //    @PutMapping("/{id}")

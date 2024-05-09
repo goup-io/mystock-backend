@@ -1,5 +1,6 @@
 package com.goup.controllers.produtos;
 
+import com.goup.dtos.estoque.ETPEditModal;
 import com.goup.dtos.estoque.ETPMapper;
 import com.goup.dtos.estoque.ETPReq;
 import com.goup.dtos.estoque.ETPTableRes;
@@ -55,6 +56,24 @@ public class ETPController {
         return ResponseEntity.status(200).body(ETPMapper.toTableResponse(eptsList));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ETPTableRes> procurarEtp(@PathVariable Integer id){
+        Optional<ETP> etp = etpRepository.findById(id);
+        if (etp.isEmpty()) {
+            return ResponseEntity.status(404).build();
+        }
+        return ResponseEntity.status(200).body(ETPMapper.toTableResponseEntity(etp.get()));
+    }
+
+    @GetMapping("/editar/{id}")
+    public ResponseEntity<ETPEditModal> editarPorId(@PathVariable Integer id){
+        Optional<ETP> etp = etpRepository.findById(id);
+        if (etp.isEmpty()) {
+            return ResponseEntity.status(404).build();
+        }
+        return ResponseEntity.status(200).body(ETPMapper.toEditModalEntity(etp.get()));
+    }
+
     @PostMapping
     public ResponseEntity<ETPTableRes> salvar(@RequestBody ETPReq etp){
         Optional<Produto> produto = produtoRepository.findById(etp.idProduto());
@@ -80,6 +99,34 @@ public class ETPController {
         ETPTableRes responseDto = ETPMapper.toTableResponseEntity(savedEtp);
         return ResponseEntity.status(201).body(responseDto);
 
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ETPTableRes> atualizar(@RequestBody ETPReq etp, @PathVariable Integer id){
+        Optional<Produto> produto = produtoRepository.findById(etp.idProduto());
+        Optional<Tamanho> tamanho = tamanhoRepository.findByNumero(etp.tamanho());
+        Optional<Loja> loja = lojaRepository.findById(etp.idLoja());
+
+        if (produto.isEmpty() || tamanho.isEmpty() || loja.isEmpty()) {
+            return ResponseEntity.status(400).build();
+        }
+        Optional<ETP> etpEncontrado = etpRepository.findByTamanhoAndLojaAndProduto(tamanho.get(), loja.get(), produto.get());
+        if (etpEncontrado.isEmpty()) {
+            return ResponseEntity.status(404).build();
+        } else if (etpEncontrado.get().getId() != id) {
+            return ResponseEntity.status(409).build();
+        }
+
+        ETP etpSave = etpEncontrado.get();
+        etpSave.setProduto(produto.get());
+        etpSave.setTamanho(tamanho.get());
+        etpSave.setLoja(loja.get());
+        etpSave.setQuantidade(etpSave.getQuantidade());
+
+        ETP savedEtp = etpRepository.save(etpSave);
+
+        ETPTableRes responseDto = ETPMapper.toTableResponseEntity(savedEtp);
+        return ResponseEntity.status(201).body(responseDto);
     }
 
     @DeleteMapping("/{id}")

@@ -15,6 +15,16 @@ public class ProdutoMapper {
         return entidade;
     }
 
+    public static Produto editReqToEntity(ProdutoEditReq produto, Cor cor, Modelo modelo){
+        Produto entidade = new Produto();
+        entidade.setNome(produto.nome());
+        entidade.setValorCusto(produto.precoCusto());
+        entidade.setValorRevenda(produto.precoRevenda());
+        entidade.setCor(cor);
+        entidade.setModelo(modelo);
+        return entidade;
+    }
+
     public static Produto updateEntity(Produto produto, Cor cor, Modelo modelo){
         return new Produto();
     }
