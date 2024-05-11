@@ -4,12 +4,17 @@ import com.goup.entities.cargos.Cargo;
 import com.goup.entities.lojas.Loja;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
+@Getter @Setter
 @Entity
 @Table
 public class Usuario {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(unique = true)
     private Integer codigoVenda;
@@ -17,84 +22,17 @@ public class Usuario {
     private String nome;
     @NotNull @JoinColumn @ManyToOne(cascade = CascadeType.PERSIST)
     private Cargo cargo;
-    @Column @Email
+    @Column(unique = true) @Email
     private String email;
     @NotNull @Column @Pattern(regexp = "^\\(\\d{2}\\) \\d{5}-\\d{4}$", message = "Número de celular inválido")
     private String telefone;
-    @NotNull @JoinColumn @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "loja_id")
     private Loja loja;
 
-    public Usuario() {
-    }
-
     @PostPersist
-    public void atualizarCodigoVenda() {
-        this.codigoVenda = 100 + this.id;
+    public void setCodigoVenda() {
+        this.codigoVenda = this.id + 100;
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getCodigoVenda() {
-        return codigoVenda;
-    }
-
-    public void setCodigoVenda(int codigoVenda) {
-        this.codigoVenda = codigoVenda;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Cargo getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(Cargo cargo) {
-        this.cargo = cargo;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setCodigoVenda(Integer codigoVenda) {
-        this.codigoVenda = codigoVenda;
-    }
-
-    public Loja getLoja() {
-        return loja;
-    }
-
-    public void setLoja(Loja loja) {
-        this.loja = loja;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-
 }

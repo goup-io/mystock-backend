@@ -6,8 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 public interface LoginRepository extends JpaRepository<Login, Integer> {
     UserDetails findByUsername(String username);
@@ -16,7 +14,7 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
     Login findLoginByEmail(String email);
 
     @Query("SELECT l FROM Login l JOIN l.usuario u WHERE u.id = :id")
-    Login findLoginById(Integer id);
+    Login findLoginByIdUsuario(Integer id);
 
 }
 

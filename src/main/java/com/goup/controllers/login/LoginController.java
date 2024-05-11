@@ -27,7 +27,7 @@ import com.goup.security.InMemoryTokenBlacklist;
 import com.goup.services.TokenService;
 
 import com.goup.services.email.EmailService;
-import com.goup.utils.login.VerificaTipoLogin;
+import com.goup.services.login.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +70,7 @@ public class LoginController {
     private RedefinirSenhaRepository redefinirSenhaRepository;
 
     @Autowired
-    VerificaTipoLogin verificaTipoLogin;
+    LoginService loginService;
 
     @Autowired
     private InMemoryTokenBlacklist invalidateTokenService;
@@ -86,7 +86,7 @@ public class LoginController {
         UsernamePasswordAuthenticationToken userAuthToken = new UsernamePasswordAuthenticationToken(loginDTO.user(), loginDTO.senha());
         Authentication authenticate = this.authenticationManager.authenticate(userAuthToken);
 
-        Object tipoLogin = verificaTipoLogin.verificaTipoLogin(loginDTO.user());
+        Object tipoLogin = loginService.verificaTipoLogin(loginDTO.user());
         UserDetails usuario;
         Usuario userLogged;
         Loja lojaLogged;
@@ -96,7 +96,7 @@ public class LoginController {
             token = tokenService.gerarToken(usuario);
             userLogged = ((Login) usuario).getUsuario();
             ((Login) usuario).setRole(UserRole.valueOf(userLogged.getCargo().getNome().toUpperCase()));
-            return ResponseEntity.status(200).body(new LoginResponseDTO(token, userLogged.getId(), "usuario"));
+            return ResponseEntity.status(200).body(new LoginResponseDTO(token, userLogged.getId(), "usuario", UserRole.valueOf(userLogged.getCargo().getNome().toUpperCase()).toString()));
         } else {
             usuario = (LojaLogin) authenticate.getPrincipal();
             token = tokenService.gerarToken(usuario);
@@ -204,10 +204,11 @@ public class LoginController {
         }
 
         // Verificando se o token é de um login de loja ou de um login de usuario
-        Object tipoLogin = verificaTipoLogin.verificaTipoLogin(tokenEncontrado.get().getLogin().getUsername());
+        Object tipoLogin = loginService.verificaTipoLogin(tokenEncontrado.get().getLogin().getUsername());
         RedefinirSenha redefinirSenha = tokenEncontrado.get();
         if (tipoLogin instanceof Login) {
-            Login login = usuarioLoginrepository.findById(tokenEncontrado.get().getLogin().getId()).get();
+            Integer usuarioId = tokenEncontrado.get().getLogin().getUsuario().getId();
+            Login login = usuarioLoginrepository.findLoginByIdUsuario(usuarioId);
             login.setSenha(new BCryptPasswordEncoder().encode(redefinirDto.senha()));
             usuarioLoginrepository.save(login);
             redefinirSenha.setAtivo(false);
