@@ -15,31 +15,35 @@ INSERT INTO acesso_loja (descricao, tipo)
 VALUES ('Caixa', 0), ('Área de Vendas', 1);
 
 INSERT INTO loja_login (senha, username, acesso_loja_id, loja_id)
-VALUES ('$2a$10$HV6jRjCZGmm.lKw3zYcEo.PkQihGcEmo3v4WJWJUpnBs4h/T5bmZK', 'vendasLoja', 2, 1),('$2a$10$HV6jRjCZGmm.lKw3zYcEo.PkQihGcEmo3v4WJWJUpnBs4h/T5bmZK', 'caixaLoja', 1, 1);
+VALUES
+    ('$2a$10$HV6jRjCZGmm.lKw3zYcEo.PkQihGcEmo3v4WJWJUpnBs4h/T5bmZK', 'vendasLoja', 2, 1),
+    ('$2a$10$HV6jRjCZGmm.lKw3zYcEo.PkQihGcEmo3v4WJWJUpnBs4h/T5bmZK', 'caixaLoja', 1, 1);
 
 insert into cargo
 values (default, 'Vendedor', 'Vendedor'),(default, 'Gerente', 'Gerente'),(default, 'Admin', 'Admin');
 
-INSERT INTO Usuario (nome, cargo_id, email, telefone, loja_id, codigo_venda)
+INSERT INTO usuario ( nome, cargo_id, email, telefone, loja_id, codigo_venda)
 VALUES
     ('Joao', 3, 'inaciofigueiredo13@gmail.com', '123456789', 1, 100),
-    ('Pedro', 2, 'pedro@gmail.com', '(11) 94091-234', 1, 101),
-    ('Afonso', 3, 'afonso@hotmail.com', '(22) 98765-4321', 1, 102),
+    ('Pedro', 2, 'pedro@gmail.com', '(11) 94091-234', 2, 101),
+    ('Afonso', 2, 'afonso@hotmail.com', '(22) 98765-4321', 3, 102),
     ('Ana', 1, 'ana@yahoo.com', '(33) 12345-6789', 1, 103),
-    ('Lucas', 2, 'lucas@outlook.com', '(44) 55555-5555', 1, 104),
-    ('Carla', 2, 'carla@gmail.com', '(55) 1234-5678', 1, 105),
+    ('Lucas', 2, 'lucas@outlook.com', '(44) 55555-5555', 2, 104),
+    ('Carla', 2, 'carla@gmail.com', '(55) 1234-5678', 2, 105),
     ('Mariana', 1, 'mariana@hotmail.com', '(66) 98765-4321', 1, 106),
-    ('Gabriel', 3, 'gabriel@yahoo.com', '(77) 12345-6789', 2, 107),
-    ('Juliana', 2, 'juliana@gmail.com', '(88) 55555-5555', 1, 108),
+    ('Gabriel', 3, 'gabriel@yahoo.com', '(77) 12345-6789', 3, 107),
+    ('Juliana', 2, 'juliana@gmail.com', '(88) 55555-5555', 2, 108),
     ('Mateus', 1, 'mateus@outlook.com', '(99) 1234-5678', 1, 109),
-    ('Rafaela', 1, 'rafaela@hotmail.com', '(00) 98765-4321', 2, 110),
+    ('Rafaela', 1, 'rafaela@hotmail.com', '(00) 98765-4321', 1, 110),
     ('Bruno', 1, 'bruno@yahoo.com', '(11) 12345-6789', 1, 111),
     ('Fernanda', 1, 'fernanda@gmail.com', '(22) 55555-5555', 1, 112),
-    ('Rodrigo', 1, 'rodrigo@outlook.com', '(33) 1234-5678', 2, 113),
-    ('Amanda', 2, 'amanda@hotmail.com', '(44) 98765-4321', 1, 114);
+    ('Rodrigo', 1, 'rodrigo@outlook.com', '(33) 1234-5678', 1, 113),
+    ('Amanda', 2, 'amanda@hotmail.com', '(44) 98765-4321', 2, 114);
 
 insert into login(senha, username, usuario_id)
-values ('$2a$10$HV6jRjCZGmm.lKw3zYcEo.PkQihGcEmo3v4WJWJUpnBs4h/T5bmZK', 'teste', 1);
+values
+    ('$2a$10$HV6jRjCZGmm.lKw3zYcEo.PkQihGcEmo3v4WJWJUpnBs4h/T5bmZK', 'teste', 1),
+    ('$2a$10$HV6jRjCZGmm.lKw3zYcEo.PkQihGcEmo3v4WJWJUpnBs4h/T5bmZK', 'gerente', 3);
 
 INSERT INTO tipo (nome)
 VALUES

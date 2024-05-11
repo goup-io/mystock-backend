@@ -37,7 +37,6 @@ public class lojasController {
 
     @GetMapping("/{id}")
     public ResponseEntity<LojaRes> buscarPorId(@PathVariable Integer id) {
-        // Previnir NPE (NullPointerExecption)
         Optional<Loja> lojaOpt = repository.findById(id);
         if (lojaOpt.isEmpty()) {
             return ResponseEntity.status(404).build();
