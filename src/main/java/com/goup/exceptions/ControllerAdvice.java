@@ -4,14 +4,10 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,8 +47,8 @@ public class ControllerAdvice{
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(RegistroExistenteException.class)
-    public ResponseEntity<ErrorResponse> handleResourceConflictException(RegistroExistenteException ex, WebRequest request) {
+    @ExceptionHandler(RegistroConflitanteException.class)
+    public ResponseEntity<ErrorResponse> handleResourceConflictException(RegistroConflitanteException ex, WebRequest request) {
         LocalDateTime timestamp = LocalDateTime.now();
         int status = HttpStatus.CONFLICT.value();
         String error = HttpStatus.CONFLICT.toString();

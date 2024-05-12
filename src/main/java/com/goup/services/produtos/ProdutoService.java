@@ -7,20 +7,13 @@ import com.goup.dtos.estoque.produtos.ProdutoRes;
 import com.goup.entities.estoque.produtos.Cor;
 import com.goup.entities.estoque.produtos.Produto;
 import com.goup.entities.estoque.produtos.modelos.Modelo;
-import com.goup.exceptions.RegistroExistenteException;
+import com.goup.exceptions.RegistroConflitanteException;
 import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.produtos.CorRepository;
 import com.goup.repositories.produtos.ModeloRepository;
 import com.goup.repositories.produtos.ProdutoRepository;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +39,7 @@ public class ProdutoService {
         // Conjunto é a junção de MODELO + COR
         boolean conjuntoExiste = this.repository.existsByCorAndModelo(cor.get(), modelo.get());
         if(conjuntoExiste){
-            throw new RegistroExistenteException("Produto de mesmo modelo e cor já existente!");
+            throw new RegistroConflitanteException("Produto de mesmo modelo e cor já existente!");
         }
 
         final Produto produtoSalvo = this.repository.save(ProdutoMapper.reqToEntity(produto, cor.get(), modelo.get()));

@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
-public class RegistroExistenteException extends RuntimeException{
-    public RegistroExistenteException(String message) {
+public class RegistroConflitanteException extends RuntimeException{
+    public RegistroConflitanteException(String message) {
         super(message);
     }
 }

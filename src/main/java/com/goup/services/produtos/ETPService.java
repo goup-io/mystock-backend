@@ -8,7 +8,7 @@ import com.goup.entities.estoque.ETP;
 import com.goup.entities.estoque.Tamanho;
 import com.goup.entities.estoque.produtos.Produto;
 import com.goup.entities.lojas.Loja;
-import com.goup.exceptions.RegistroExistenteException;
+import com.goup.exceptions.RegistroConflitanteException;
 import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.lojas.LojaRepository;
 import com.goup.repositories.produtos.ETPRepository;
@@ -19,7 +19,6 @@ import com.goup.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +51,7 @@ public class ETPService {
         boolean etpExists = repository.findByTamanhoAndLojaAndProduto(tamanho.get(), loja.get(), produto.get()).isPresent();
 
         if (etpExists) {
-            throw new RegistroExistenteException("ETP de mesmo produto, tamanho e loja já existente!");
+            throw new RegistroConflitanteException("ETP de mesmo produto, tamanho e loja já existente!");
         }
 
 
