@@ -3,6 +3,7 @@ package com.goup.entities.estoque.produtos;
 import com.goup.entities.estoque.produtos.modelos.Modelo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,9 +22,9 @@ public class Produto {
     @NotNull @ManyToOne @JoinColumn(name="modelo_id", referencedColumnName="id")
     private Modelo modelo;
 
-    @NotNull @PositiveOrZero
-    private double valorCusto;
+    @NotNull @Positive
+    private Double valorCusto;
 
-    @NotNull @PositiveOrZero
-    private double valorRevenda;
-  }
+    @NotNull @Positive
+    private Double valorRevenda;
+}
