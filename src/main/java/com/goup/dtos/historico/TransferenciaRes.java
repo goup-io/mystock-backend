@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public record TransferenciaRes(
     Integer id,
     LocalDateTime dataHora,
+    Boolean status,
     String loja_coletora,
     String loja_liberadora,
     ETPTableRes etp,

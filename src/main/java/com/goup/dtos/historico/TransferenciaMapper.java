@@ -25,8 +25,9 @@ public class TransferenciaMapper {
     public static TransferenciaRes entityToRes(Transferencia transf){
         Integer id = transf.getId();
         LocalDateTime dataHora = transf.getDataHora();
+        Boolean status = transf.getStatus();
         String loja_coletora = transf.getColetor().getLoja().getNome();
-        String loja_liberadora = transf.getLiberador() != null ? transf.getLiberador().getLoja().getNome() : null;
+        String loja_liberadora = transf.getEtp().getLoja().getNome();
         ETPTableRes etp = ETPMapper.entityToRes(transf.getEtp());
         Integer tamanho = transf.getEtp().getTamanho().getNumero();
         Integer quantidadeSolicitada = transf.getQuantidadeSolicitada();
@@ -34,7 +35,7 @@ public class TransferenciaMapper {
         String coletor = transf.getColetor().getNome();
         String liberador = transf.getLiberador() != null ? transf.getLiberador().getNome() : null;
 
-        TransferenciaRes responseDto = new TransferenciaRes(id, dataHora, loja_coletora,
+        TransferenciaRes responseDto = new TransferenciaRes(id, dataHora, status, loja_coletora,
         loja_liberadora, etp, tamanho, quantidadeSolicitada, quantidadeLiberada, coletor, liberador);
         return responseDto;
     }
@@ -46,6 +47,7 @@ public class TransferenciaMapper {
     public static Transferencia aprovar(Transferencia transf, TransferenciaReqAprovar aprovacao, Usuario liberador){
         transf.setLiberador(liberador);
         transf.setQuantidadeLiberada(aprovacao.quantidadeLiberada());
+        transf.setStatus(true);
         return transf;
     }
 

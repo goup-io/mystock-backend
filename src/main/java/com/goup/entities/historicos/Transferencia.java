@@ -22,6 +22,8 @@ public class Transferencia {
 
     private Integer quantidadeLiberada;
 
+    private Boolean status;
+
     @NotNull @ManyToOne @JoinColumn(name = "coletor_id", referencedColumnName = "id")
     private Usuario coletor;
 
