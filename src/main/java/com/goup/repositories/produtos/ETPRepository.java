@@ -4,6 +4,7 @@ import com.goup.entities.estoque.ETP;
 import com.goup.entities.estoque.Tamanho;
 import com.goup.entities.estoque.produtos.Produto;
 import com.goup.entities.lojas.Loja;
+import com.goup.entities.usuarios.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,4 +31,5 @@ public interface ETPRepository extends JpaRepository<ETP, Integer>{
         @Param("precoMaximo") Double precoMaximo,
         @Param("id_loja") Integer id_loja
     );
+    List<ETP> findAllByLoja(Loja loja);
 }
