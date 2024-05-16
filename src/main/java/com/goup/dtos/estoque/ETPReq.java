@@ -1,4 +1,4 @@
 package com.goup.dtos.estoque;
 
-public class ETPReq {
+public record ETPReq(Integer idProduto, Integer idLoja, Integer idTamanho){
 }

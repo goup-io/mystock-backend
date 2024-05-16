@@ -1,4 +1,4 @@
 package com.goup.dtos.cargo;
 
-public record CargoResponseDto (String nome, String descricao){
+public record CargoResponseDto (Integer id, String nome, String descricao){
 }

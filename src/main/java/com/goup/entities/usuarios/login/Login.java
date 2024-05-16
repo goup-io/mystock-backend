@@ -14,11 +14,11 @@ import java.util.List;
 public class Login implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY) @Id
     private int id;
-    @Column @NotNull
+    @Column(unique = true) @NotNull
     private String username;
     @Column @NotNull
     private String senha;
-    @NotNull @JoinColumn @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne @JoinColumn @NotNull
     private Usuario usuario;
     @Transient
     private UserRole role;
