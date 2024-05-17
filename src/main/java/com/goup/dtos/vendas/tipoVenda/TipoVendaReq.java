@@ -1,4 +1,4 @@
-package com.goup.dtos.vendas;
+package com.goup.dtos.vendas.tipoVenda;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

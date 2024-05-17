@@ -1,4 +1,4 @@
-package com.goup.dtos.vendas;
+package com.goup.dtos.vendas.tipoVenda;
 
 import com.goup.entities.vendas.TipoVenda;
 

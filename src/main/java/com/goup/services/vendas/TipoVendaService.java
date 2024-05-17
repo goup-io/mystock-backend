@@ -1,9 +1,9 @@
 package com.goup.services.vendas;
 
-import com.goup.dtos.vendas.TipoVendaDescontoReq;
-import com.goup.dtos.vendas.TipoVendaMapper;
-import com.goup.dtos.vendas.TipoVendaReq;
-import com.goup.dtos.vendas.TipoVendaRes;
+import com.goup.dtos.vendas.tipoVenda.TipoVendaDescontoReq;
+import com.goup.dtos.vendas.tipoVenda.TipoVendaMapper;
+import com.goup.dtos.vendas.tipoVenda.TipoVendaReq;
+import com.goup.dtos.vendas.tipoVenda.TipoVendaRes;
 import com.goup.entities.vendas.TipoVenda;
 import com.goup.exceptions.BuscaRetornaVazioException;
 import com.goup.exceptions.RegistroNaoEncontradoException;

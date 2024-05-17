@@ -1,10 +1,9 @@
 package com.goup.controllers.vendas;
 
-import com.goup.dtos.vendas.TipoVendaDescontoReq;
-import com.goup.dtos.vendas.TipoVendaMapper;
-import com.goup.dtos.vendas.TipoVendaReq;
-import com.goup.dtos.vendas.TipoVendaRes;
-import com.goup.entities.estoque.produtos.modelos.Tipo;
+import com.goup.dtos.vendas.tipoVenda.TipoVendaDescontoReq;
+import com.goup.dtos.vendas.tipoVenda.TipoVendaMapper;
+import com.goup.dtos.vendas.tipoVenda.TipoVendaReq;
+import com.goup.dtos.vendas.tipoVenda.TipoVendaRes;
 import com.goup.services.vendas.TipoVendaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
