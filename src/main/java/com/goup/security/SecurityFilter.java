@@ -7,7 +7,6 @@ import com.goup.entities.usuarios.login.UserRole;
 import com.goup.repositories.lojas.LoginLojaRepository;
 import com.goup.repositories.usuarios.LoginRepository;
 import com.goup.services.TokenService;
-import com.goup.utils.login.VerificaTipoLogin;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -32,9 +30,6 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Autowired
     private LoginLojaRepository loginLojaRepository;
-
-    @Autowired
-    private VerificaTipoLogin verificaTipoLogin;
 
     @Autowired
     private TokenBlacklist tokenBlacklist;
@@ -72,7 +67,9 @@ public class SecurityFilter extends OncePerRequestFilter {
         } catch (JWTCreationException e){
             throw new RuntimeException(e);
         } catch (Exception e){
-            throw new RuntimeException(e);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Token vencido (EXPIROU)");
+            return;
         }
 
         filterChain.doFilter(request, response);

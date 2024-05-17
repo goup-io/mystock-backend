@@ -12,6 +12,6 @@ public interface ModeloRepository extends JpaRepository<Modelo, Integer> {
 
     Optional<Modelo> findByCodigo(String codigo);
 
+    boolean existsById(int id);
     void deleteByCodigo(String codigo);
-
 }

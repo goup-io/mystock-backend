@@ -2,7 +2,7 @@ package com.goup.entities.lojas;
 
 public enum TipoLogin {
     CAIXA("Caixa"),
-    AREA_VENDA("AreaVendas");
+    AREA_VENDA("Área de Vendas");
 
     private String tipo;
     private String descricao;

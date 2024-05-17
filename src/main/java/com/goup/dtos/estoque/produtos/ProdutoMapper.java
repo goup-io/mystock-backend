@@ -1,12 +1,16 @@
 package com.goup.dtos.estoque.produtos;
 
+import com.goup.dtos.estoque.produtos.modelos.ModeloRes;
 import com.goup.entities.estoque.produtos.Cor;
 import com.goup.entities.estoque.produtos.Produto;
 import com.goup.entities.estoque.produtos.modelos.Modelo;
 
+import java.util.List;
+
 public class ProdutoMapper {
     public static Produto reqToEntity(ProdutoReq produto, Cor cor, Modelo modelo){
         Produto entidade = new Produto();
+        entidade.setNome(produto.nome());
         entidade.setCor(cor);
         entidade.setModelo(modelo);
         entidade.setValorCusto(produto.valorCusto());
@@ -14,7 +18,27 @@ public class ProdutoMapper {
         return entidade;
     }
 
-    public static Produto updateEntity(Produto produto, Cor cor, Modelo modelo){
-        return new Produto();
+    public static Produto updateEntity(Produto produtoAtual, ProdutoReqEdit produtoNovo){
+
+        produtoAtual.setNome(produtoNovo.nome());
+        produtoAtual.setValorCusto(produtoNovo.valorCusto());
+        produtoAtual.setValorRevenda(produtoNovo.valorRevenda());
+
+        return produtoAtual;
+    }
+
+    public static ProdutoRes entityToRes(Produto produto){
+        int id = produto.getId();
+        String cor = produto.getCor().getNome();
+        String modelo = produto.getModelo().getNome();
+        String nome = produto.getNome();
+        double valorCusto = produto.getValorCusto();
+        double valorRevenda = produto.getValorRevenda();
+        ProdutoRes respostaDto = new ProdutoRes(id, cor, modelo, nome, valorCusto, valorRevenda);
+        return respostaDto;
+    }
+
+    public static List<ProdutoRes> listToListRes(List<Produto> lista){
+        return lista.stream().map(ProdutoMapper::entityToRes).toList();
     }
 }
