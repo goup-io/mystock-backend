@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity @Getter @Setter
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"tamanho", "produto", "loja"})})
@@ -17,7 +19,8 @@ public class ETP {
     @NotNull @ManyToOne @JoinColumn(name = "tamanho_id", referencedColumnName = "id")
     private Tamanho tamanho;
 
-    @NotNull @ManyToOne @JoinColumn(name="produto_id", referencedColumnName = "id")
+    @NotNull @ManyToOne(cascade = CascadeType.ALL) @JoinColumn(name="produto_id", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Produto produto;
 
     @NotNull @ManyToOne @JoinColumn(name = "loja_id", referencedColumnName = "id")

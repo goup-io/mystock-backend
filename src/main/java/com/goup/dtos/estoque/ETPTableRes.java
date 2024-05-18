@@ -9,5 +9,7 @@ public record ETPTableRes(
         String cor,
         Double preco,
         String loja,
-        Integer quantidade) {
+        Integer quantidade,
+        Integer idProduto
+) {
 }

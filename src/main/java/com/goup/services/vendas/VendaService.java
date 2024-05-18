@@ -54,6 +54,7 @@ public class VendaService {
             throw new RegistroNaoEncontradoException("TipoVenda não encontrado");
         }
         Venda venda = VendaMapper.reqToEntity(req, usuario.get(), tipoVenda.get());
+        //todo: dar baixa nos produtos e adicionar no histórico
 
         return VendaMapper.entityToRes(venda);
     }
@@ -64,9 +65,10 @@ public class VendaService {
             throw new RegistroNaoEncontradoException("Venda não encontrada");
         }
         Venda venda = vendaOpt.get();
-        venda.setStatusVenda(StatusVenda.CANCELADA);
-        //retornar os ETPS para o estoque
-
+        StatusVenda statusCancelado = new StatusVenda();
+        statusCancelado.setStatus(StatusVenda.Status.CANCELADA);
+        venda.setStatusVenda(statusCancelado);
+        //todo: retornar os ETPS para o estoque
 
         return VendaMapper.entityToRes(repository.save(venda));
     }

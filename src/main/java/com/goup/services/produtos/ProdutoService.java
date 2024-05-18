@@ -69,9 +69,10 @@ public class ProdutoService {
     }
 
     public void deletar(int id){
-        if(repository.existsById(id)){
-            repository.deleteById(id);
-        }else{
+        Optional<Produto> produtoOpt = repository.findById(id);
+        if(produtoOpt.isPresent()){
+            repository.delete(produtoOpt.get());
+        } else  {
             throw new RegistroNaoEncontradoException("Produto não encontrado");
         }
     }

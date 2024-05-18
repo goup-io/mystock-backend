@@ -20,7 +20,7 @@ public class Venda {
     private Double desconto;
     @NotNull @Positive
     private Double valorTotal;
-    @NotNull @Enumerated(EnumType.STRING)
+    @NotNull @ManyToOne
     private StatusVenda statusVenda;
     @NotNull @ManyToOne
     private TipoVenda tipoVenda;

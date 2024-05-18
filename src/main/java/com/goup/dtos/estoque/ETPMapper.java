@@ -20,7 +20,8 @@ public class ETPMapper {
             req.getProduto().getCor().getNome(),
             req.getProduto().getValorRevenda(),
             req.getLoja().getNome(),
-            req.getQuantidade());
+            req.getQuantidade(),
+            req.getProduto().getId());
     }
     public static ETPEditModal toEditModalEntity(ETP req) {
         return new ETPEditModal(
@@ -68,7 +69,8 @@ public class ETPMapper {
         Double preco = etp.getProduto().getValorRevenda();
         String loja = etp.getLoja().getNome();
         Integer quantidade = etp.getQuantidade();
-        ETPTableRes respostaDto = new ETPTableRes(id, codigo, nome, modelo, tamanho, cor, preco, loja, quantidade);
+        Integer idProduto = etp.getProduto().getId();
+        ETPTableRes respostaDto = new ETPTableRes(id, codigo, nome, modelo, tamanho, cor, preco, loja, quantidade, idProduto);
         return respostaDto;
     }
 }
