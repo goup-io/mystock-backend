@@ -16,14 +16,14 @@ public class ETP {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull @ManyToOne @JoinColumn(name = "tamanho_id", referencedColumnName = "id")
+    @NotNull @ManyToOne(cascade = CascadeType.ALL) @JoinColumn(name = "tamanho_id", referencedColumnName = "id")
     private Tamanho tamanho;
 
     @NotNull @ManyToOne(cascade = CascadeType.ALL) @JoinColumn(name="produto_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Produto produto;
 
-    @NotNull @ManyToOne @JoinColumn(name = "loja_id", referencedColumnName = "id")
+    @NotNull @ManyToOne(cascade = CascadeType.ALL) @JoinColumn(name = "loja_id", referencedColumnName = "id")
     private Loja loja;
 
     @NotNull @PositiveOrZero @Column

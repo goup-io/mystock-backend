@@ -180,4 +180,44 @@ VALUES
     (6, 4, 1, 7), (7, 4, 2, 8), (8, 4, 3, 9), (9, 4, 4, 10), (10, 4, 5, 11),
     (6, 5, 1, 7), (7, 5, 2, 8), (8, 5, 3, 9), (9, 5, 4, 10), (10, 5, 5, 11);
 
+INSERT INTO Tipo_venda (id, tipo, desconto)
+VALUES
+    (1, 'Varejo', 0),
+    (2, 'Atacado', 20);
+
+INSERT INTO Tipo_Pagamento(metodo)
+VALUES
+    ('Crédito'),
+    ('Débito'),
+    ('Dinheiro');
+
+
+
+-- Inserção na tabela StatusVenda
+INSERT INTO Status_Venda (status)
+VALUES
+    ('EM_ANDAMENTO'),
+    ('FINALIZADA'),
+    ('CANCELADA');
+
+
+-- Inserção na tabela Venda
+INSERT INTO Venda (data_Hora, desconto, valor_Total, status_Venda_id, tipo_Venda_id, usuario_id)
+VALUES
+    ('2024-05-20 00:22:54', 0.00, 150.00, 1, 1, 1),
+    ('2024-05-20 01:15:32', 10.00, 200.00, 2, 2, 1),
+    ('2024-05-20 02:45:10', 5.00, 100.00, 1, 2, 1),
+    ('2024-05-20 00:22:54', 0.00, 150.00, 1, 1, 1),
+    ('2024-05-20 01:15:32', 10.00, 200.00, 2, 2, 1),
+    ('2024-05-20 02:45:10', 5.00, 100.00, 1, 1, 1),
+    ('2024-05-21 10:00:00', 0.00, 250.00, 1, 1, 1),
+    ('2024-05-21 11:30:45', 15.00, 300.00, 2, 2, 1),
+    ('2024-05-22 09:15:30', 5.00, 175.00, 1, 2, 1);
+
+INSERT INTO Produto_Venda (id, valor_Unitario, quantidade, desconto, item_Promocional, venda_id, etp_id)
+VALUES
+    (1, 100.00, 2, 0.00, 0, 1, 1),
+    (2, 120.00, 1, 10.00, 1, 2, 2),
+    (3, 120.00, 3, 0.00, 0, 2, 2),
+    (4, 125.00, 4, 0.00, 0, 2, 2);
 

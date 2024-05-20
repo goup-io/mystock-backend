@@ -17,6 +17,6 @@ public class ProdutoVenda {
     private ItemPromocional itemPromocional;
     @JoinColumn @ManyToOne
     private Venda venda;
-    @JoinColumn @OneToOne
+    @JoinColumn @ManyToOne
     private ETP etp;
 }

@@ -25,7 +25,6 @@ public class VendaMapper {
         venda.setDataHora(LocalDateTime.now());
         venda.setDesconto(req.desconto());
         venda.setValorTotal(req.valorTotal());
-        venda.setStatusVenda(req.statusVenda());
         venda.setTipoVenda(tipoVenda);
         venda.setUsuario(usuario);
         return venda;

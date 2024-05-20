@@ -20,10 +20,10 @@ public class Venda {
     private Double desconto;
     @NotNull @Positive
     private Double valorTotal;
-    @NotNull @ManyToOne
+    @NotNull @ManyToOne(cascade=CascadeType.ALL)
     private StatusVenda statusVenda;
-    @NotNull @ManyToOne
+    @NotNull @ManyToOne(cascade=CascadeType.ALL)
     private TipoVenda tipoVenda;
-    @NotNull @ManyToOne
+    @NotNull @ManyToOne(cascade=CascadeType.ALL)
     private Usuario usuario;
 }

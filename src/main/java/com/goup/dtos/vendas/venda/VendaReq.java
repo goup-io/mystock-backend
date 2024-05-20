@@ -8,8 +8,6 @@ public record VendaReq(
         Double desconto,
         @DecimalMin("0.0") @NotBlank @NotNull @Positive
         Double valorTotal,
-        @NotNull @NotBlank
-        StatusVenda statusVenda,
         @NotNull
         Integer tipoVendaId,
         @NotNull
