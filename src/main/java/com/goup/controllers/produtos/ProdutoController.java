@@ -45,9 +45,13 @@ public class ProdutoController {
         return ResponseEntity.status(200).body(produtoAtualizado);
     }
 
+    /*
+    Devido ao relacionamento entre Produto e ETP, a funcionalidade de deletar produto não vai existir.
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable int id) {
         service.deletar(id);
         return ResponseEntity.status(204).build();
     }
+     */
 }

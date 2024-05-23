@@ -1,6 +1,7 @@
 package com.goup.dtos.vendas.venda;
 
 import com.goup.entities.usuarios.Usuario;
+import com.goup.entities.vendas.StatusVenda;
 import com.goup.entities.vendas.TipoVenda;
 import com.goup.entities.vendas.Venda;
 

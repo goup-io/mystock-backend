@@ -15,7 +15,7 @@ public class StatusVenda {
 
     @Getter
    public enum Status{
-        EM_ANDAMENTO("Em andamento"),
+        PENDENTE("Pendente"),
         FINALIZADA("Finalizada"),
         CANCELADA("Cancelada");
 

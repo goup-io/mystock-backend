@@ -17,6 +17,7 @@ import com.goup.repositories.usuarios.UsuarioRepository;
 import com.goup.repositories.vendas.StatusVendaRepository;
 import com.goup.repositories.vendas.TipoVendaRepository;
 import com.goup.repositories.vendas.VendaRepository;
+import com.goup.services.produtos.ETPService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,8 @@ public class VendaService {
     private ETPRepository etpRepository;
     @Autowired
     private StatusVendaRepository statusVendaRepository;
+    @Autowired
+    private ETPService etpService;
 
     public List<VendaRes> listar(){
         List<Venda> vendas = repository.findAll();
@@ -64,8 +67,37 @@ public class VendaService {
             throw new RegistroNaoEncontradoException("TipoVenda não encontrado");
         }
         Venda venda = VendaMapper.reqToEntity(req, usuario.get(), tipoVenda.get());
-        //todo: dar baixa nos produtos e adicionar no histórico
-        //todo: adicionar o status a em_andamento
+
+        Optional<StatusVenda> statusEmAndamento = statusVendaRepository.findByStatus(StatusVenda.Status.PENDENTE);
+        if (statusEmAndamento.isEmpty()){
+            throw new RegistroNaoEncontradoException("StatusVenda não encontrado");
+        }
+        venda.setStatusVenda(statusEmAndamento.get());
+
+        return VendaMapper.entityToRes(venda);
+    }
+
+    //todo: dar baixa nos produtos - feito; adicionar no histórico
+    public VendaRes finalizarVenda(Integer idVenda){
+        Optional<Venda> vendaOpt = repository.findById(idVenda);
+        if (vendaOpt.isEmpty()){
+            throw new RegistroNaoEncontradoException("Venda não encontrada");
+        }
+
+        // mudando o status da venda para finalizada
+        Optional<StatusVenda> statusFinalizada = statusVendaRepository.findByStatus(StatusVenda.Status.FINALIZADA);
+        if (statusFinalizada.isEmpty()){
+            throw new RegistroNaoEncontradoException("StatusVenda não encontrado");
+        }
+        Venda venda = vendaOpt.get();
+        venda.setStatusVenda(statusFinalizada.get());
+        repository.save(venda);
+
+        // dando baixa dos produtos no estoque
+        alterarEtpBaseadoVenda(venda.getId(), false);
+
+
+
         return VendaMapper.entityToRes(venda);
     }
 
@@ -87,20 +119,25 @@ public class VendaService {
         venda.setStatusVenda(statusCancelado.get());
         Venda vendaSalvada = repository.save(venda);
 
-        // retornando os ETPS para o estoque
-        List<RetornoETPeQuantidade> etps = repository.findAllEtpsByVendaId(id);
-        List<ETP> etpsSalvos = new ArrayList<>();
-        for (RetornoETPeQuantidade etp : etps) {
-            ETP etpAtualizar = etp.etp();
-            etpAtualizar.setQuantidade(etpAtualizar.getQuantidade() + etp.quantidade());
-            etpsSalvos.add(etpAtualizar);
-        }
-
-        // salvando a atualização de quantidade dos testes
-        etpRepository.saveAll(etpsSalvos);
+        alterarEtpBaseadoVenda(venda.getId(), true);
 
         return VendaMapper.entityToRes(vendaSalvada);
     }
 
+    public void alterarEtpBaseadoVenda(Integer idVenda, Boolean soma){
+        List<RetornoETPeQuantidade> etps = repository.findAllEtpsByVendaId(idVenda);
+        List<ETP> etpsSalvos = new ArrayList<>();
+        for (RetornoETPeQuantidade etp : etps) {
+            ETP etpAtualizar = etp.etp();
+            if (soma){
+                etpAtualizar.setQuantidade(etpAtualizar.getQuantidade() + etp.quantidade());
+            } else {
+                etpAtualizar.setQuantidade(etpAtualizar.getQuantidade() - etp.quantidade());
+            }
+            etpsSalvos.add(etpAtualizar);
+        }
+        // salvando a atualização de quantidade dos ETPS
+        etpRepository.saveAll(etpsSalvos);
+    }
 
 }

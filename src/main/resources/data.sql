@@ -196,7 +196,7 @@ VALUES
 -- Inserção na tabela StatusVenda
 INSERT INTO Status_Venda (status)
 VALUES
-    ('EM_ANDAMENTO'),
+    ('PENDENTE'),
     ('FINALIZADA'),
     ('CANCELADA');
 

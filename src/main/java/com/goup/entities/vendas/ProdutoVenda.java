@@ -2,6 +2,7 @@ package com.goup.entities.vendas;
 
 import com.goup.entities.estoque.ETP;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
