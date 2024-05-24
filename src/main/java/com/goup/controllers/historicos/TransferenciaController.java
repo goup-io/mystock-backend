@@ -1,8 +1,8 @@
 package com.goup.controllers.historicos;
 
-import com.goup.dtos.historico.TransferenciaReq;
-import com.goup.dtos.historico.TransferenciaReqAprovar;
-import com.goup.dtos.historico.TransferenciaRes;
+import com.goup.dtos.historico.transferencia.TransferenciaReq;
+import com.goup.dtos.historico.transferencia.TransferenciaReqAprovar;
+import com.goup.dtos.historico.transferencia.TransferenciaRes;
 import com.goup.services.historicos.TransferenciaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,10 +1,7 @@
-package com.goup.dtos.historico;
+package com.goup.dtos.historico.transferencia;
 
 import com.goup.dtos.estoque.ETPMapper;
 import com.goup.dtos.estoque.ETPTableRes;
-import com.goup.dtos.estoque.produtos.ProdutoMapper;
-import com.goup.dtos.estoque.produtos.ProdutoRes;
-import com.goup.dtos.historico.TransferenciaReq;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.historicos.Transferencia;
 import com.goup.entities.usuarios.Usuario;

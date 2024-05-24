@@ -1,4 +1,4 @@
-package com.goup.dtos.historico;
+package com.goup.dtos.historico.transferencia;
 
 import com.goup.dtos.estoque.ETPTableRes;
 import com.goup.dtos.estoque.produtos.ProdutoRes;

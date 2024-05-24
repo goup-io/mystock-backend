@@ -14,6 +14,7 @@ import com.goup.exceptions.RegistroConflitanteException;
 import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.produtos.ETPRepository;
 import com.goup.repositories.usuarios.UsuarioRepository;
+import com.goup.repositories.vendas.ProdutoVendaRepository;
 import com.goup.repositories.vendas.StatusVendaRepository;
 import com.goup.repositories.vendas.TipoVendaRepository;
 import com.goup.repositories.vendas.VendaRepository;
@@ -39,7 +40,7 @@ public class VendaService {
     @Autowired
     private StatusVendaRepository statusVendaRepository;
     @Autowired
-    private ETPService etpService;
+    private ProdutoVendaRepository produtoVendaRepository;
 
     public List<VendaRes> listar(){
         List<Venda> vendas = repository.findAll();
@@ -96,8 +97,6 @@ public class VendaService {
         // dando baixa dos produtos no estoque
         alterarEtpBaseadoVenda(venda.getId(), false);
 
-
-
         return VendaMapper.entityToRes(venda);
     }
 
@@ -125,7 +124,7 @@ public class VendaService {
     }
 
     public void alterarEtpBaseadoVenda(Integer idVenda, Boolean soma){
-        List<RetornoETPeQuantidade> etps = repository.findAllEtpsByVendaId(idVenda);
+        List<RetornoETPeQuantidade> etps = produtoVendaRepository.findAllEtpsByVendaId(idVenda);
         List<ETP> etpsSalvos = new ArrayList<>();
         for (RetornoETPeQuantidade etp : etps) {
             ETP etpAtualizar = etp.etp();
