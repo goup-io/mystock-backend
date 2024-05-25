@@ -69,12 +69,18 @@ public class VendaService {
         return VendaMapper.entityToResTableList(vendas, quantidadePorProdutoVenda);
     }
 
-    public VendaRes buscarPorId(Integer id){
+    public VendaResTable buscarPorId(Integer id){
         Optional<Venda> venda = repository.findById(id);
         if (venda.isEmpty()){
             throw new  RegistroNaoEncontradoException("Venda não encontrou o ID informado");
         }
-        return VendaMapper.entityToRes(venda.get());
+        Integer qtdTotal = 0;
+        List<RetornoETPeQuantidade> itensDaVenda = produtoVendaRepository.findAllEtpsByVendaId(id);
+        for (RetornoETPeQuantidade retornoETPeQuantidade : itensDaVenda) {
+            qtdTotal += retornoETPeQuantidade.quantidade();
+        }
+
+        return VendaMapper.entityToResTable(venda.get(), qtdTotal);
     }
 
     public VendaRes salvar(@Valid VendaReq req, List<ProdutoVendaReq> retornoETPeQuantidades) {

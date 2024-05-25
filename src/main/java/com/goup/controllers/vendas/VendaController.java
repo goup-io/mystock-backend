@@ -25,7 +25,7 @@ public class VendaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VendaRes> buscar(@PathVariable Integer id){
+    public ResponseEntity<VendaResTable> buscar(@PathVariable Integer id){
         return ResponseEntity.status(200).body(service.buscarPorId(id));
     }
 
