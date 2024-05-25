@@ -21,13 +21,13 @@ public class VendaMapper {
         );
     }
 
-    public static Venda reqToEntity(VendaReq req, Usuario usuario, TipoVenda tipoVenda){
+    public static Venda reqToEntity(VendaReq req, Usuario usuario, TipoVenda tipoVenda, StatusVenda statusVenda){
         Venda venda = new Venda();
         venda.setDataHora(LocalDateTime.now());
         venda.setDesconto(req.desconto());
-        venda.setValorTotal(req.valorTotal());
         venda.setTipoVenda(tipoVenda);
         venda.setUsuario(usuario);
+        venda.setStatusVenda(statusVenda);
         return venda;
     }
 

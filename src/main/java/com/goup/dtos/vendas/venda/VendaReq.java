@@ -6,8 +6,6 @@ import jakarta.validation.constraints.*;
 public record VendaReq(
         @DecimalMin("0.0") @NotBlank @Positive
         Double desconto,
-        @DecimalMin("0.0") @NotBlank @NotNull @Positive
-        Double valorTotal,
         @NotNull
         Integer tipoVendaId,
         @NotNull

@@ -214,23 +214,27 @@ VALUES
     ('2024-05-21 11:30:45', 15.00, 300.00, 2, 2, 1),
     ('2024-05-22 09:15:30', 5.00, 175.00, 1, 2, 1);
 
-INSERT INTO Produto_Venda (id, valor_Unitario, quantidade, desconto, item_Promocional, venda_id, etp_id)
+
+INSERT INTO Produto_Venda (valor_Unitario, quantidade, desconto, item_Promocional, venda_id, etp_id)
 VALUES
-    (1, 100.00, 2, 0.00, 0, 1, 1),
-    (2, 120.00, 1, 10.00, 1, 2, 2),
-    (3, 120.00, 3, 0.00, 0, 2, 2),
-    (4, 125.00, 4, 0.00, 0, 2, 2),
-    (5, 180.00, 2, 0.00, 1, 5, 5),
-    (6, 130.00, 3, 0.00, 0, 6, 6),
-    (7, 170.00, 2, 0.00, 0, 7, 7),
-    (8, 120.00, 1, 0.00, 1, 8, 8),
-    (9, 110.00, 3, 0.00, 1, 9, 9);
+    (100.00, 2, 0.00, 0, 1, 1),
+    (120.00, 1, 10.00, 1, 2, 2),
+    (120.00, 3, 0.00, 0, 2, 2),
+    (125.00, 4, 0.00, 0, 2, 2),
+    (180.00, 2, 0.00, 1, 5, 5),
+    (130.00, 3, 0.00, 0, 6, 6),
+    (170.00, 2, 0.00, 0, 7, 7),
+    (120.00, 1, 0.00, 1, 8, 8),
+    (110.00, 3, 0.00, 1, 9, 9);
+
+
 
 INSERT INTO Status_Historico_Produto (status)
 VALUES
     ('VENDIDO'),
     ('DEVOLVIDO'),
     ('ABATIDO');
+
 
 
 INSERT INTO Historico_Produto (data_Hora, produto_Venda_id, status_Historico_Produto_id)

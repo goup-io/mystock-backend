@@ -14,8 +14,8 @@ public class ProdutoVendaMapper {
     public static ProdutoVenda dtoToEntity(ProdutoVendaReq produtoVendaReq, ETP etp, Venda venda){
         ProdutoVenda produtoVenda = new ProdutoVenda();
         produtoVenda.setValorUnitario(produtoVendaReq.valorUnitario());
-        produtoVenda.setQuantidade(produtoVenda.getQuantidade());
-        produtoVenda.setDesconto(produtoVenda.getDesconto());
+        produtoVenda.setQuantidade(produtoVendaReq.quantidade());
+        produtoVenda.setDesconto(produtoVendaReq.desconto());
         produtoVenda.setItemPromocional(produtoVendaReq.itemPromocional());
         produtoVenda.setEtp(etp);
         produtoVenda.setVenda(venda);

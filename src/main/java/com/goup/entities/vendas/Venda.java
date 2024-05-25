@@ -18,7 +18,6 @@ public class Venda {
     @NotNull @PastOrPresent @DateTimeFormat(pattern = "dd.MM.yyyy hh:mm:ss")
     private LocalDateTime dataHora;
     private Double desconto;
-    @NotNull @Positive
     private Double valorTotal;
     @NotNull @ManyToOne(cascade=CascadeType.ALL)
     private StatusVenda statusVenda;

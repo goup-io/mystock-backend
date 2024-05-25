@@ -5,5 +5,5 @@ import com.goup.entities.vendas.ProdutoVenda;
 
 import java.time.LocalDateTime;
 
-public record HistoricoProdutoReq(Integer idProdutoVenda, Integer idStatus) {
+public record HistoricoProdutoReq(Integer idProdutoVenda, StatusHistoricoProduto.StatusHistorico statusHistorico) {
 }

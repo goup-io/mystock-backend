@@ -1,5 +1,7 @@
 package com.goup.controllers.vendas;
 
+import com.goup.dtos.vendas.produtoVenda.ProdutoVendaReq;
+import com.goup.dtos.vendas.venda.VendaEProdutosReq;
 import com.goup.dtos.vendas.venda.VendaReq;
 import com.goup.dtos.vendas.venda.VendaRes;
 import com.goup.services.vendas.VendaService;
@@ -27,8 +29,8 @@ public class VendaController {
     }
 
     @PostMapping
-    public ResponseEntity<VendaRes> criar(@Valid @RequestBody VendaReq reqDto) {
-        return ResponseEntity.status(201).body(service.salvar(reqDto));
+    public ResponseEntity<VendaRes> criar(@Valid @RequestBody VendaEProdutosReq reqDto) {
+        return ResponseEntity.status(201).body(service.salvar(reqDto.vendaReq(), reqDto.produtosVendaReq()));
     }
 
     @PatchMapping("/{id}")

@@ -35,8 +35,8 @@ public class HistoricoProdutoService {
 
         ProdutoVenda produtoVenda = produtoVendaRepository.findById(historicoProdutoReq.idProdutoVenda())
                 .orElseThrow(() -> new RegistroNaoEncontradoException("ProdutoVenda não encontrado com o id: " + historicoProdutoReq.idProdutoVenda()));
-        StatusHistoricoProduto status = statusHistoricoProdRepository.findById(historicoProdutoReq.idStatus())
-                .orElseThrow(() -> new RegistroNaoEncontradoException("StatusHistoricoProduto não encontrado com o id: " + historicoProdutoReq.idStatus()));
+        StatusHistoricoProduto status = statusHistoricoProdRepository.findByStatus(historicoProdutoReq.statusHistorico())
+                .orElseThrow(() -> new RegistroNaoEncontradoException("StatusHistoricoProduto não encontrado com o status: ABATIDO"));
 
         HistoricoProduto historicoProduto = repository.save(HistoricoProdutoMapper.reqToEntity(status, produtoVenda));
 
@@ -48,8 +48,8 @@ public class HistoricoProdutoService {
                 .orElseThrow(() -> new RegistroNaoEncontradoException("ProdutoVenda não encontrado com o id: " + historicoProdutoReq.idProdutoVenda()));
         HistoricoProduto itemHistoricoOpt = repository.findByProdutoVenda_id(historicoProdutoReq.idProdutoVenda())
                 .orElseThrow(() -> new RegistroNaoEncontradoException("HistoricoProduto não existe"));
-        StatusHistoricoProduto status = statusHistoricoProdRepository.findById(historicoProdutoReq.idStatus())
-                .orElseThrow(() -> new RegistroNaoEncontradoException("StatusHistoricoProduto não encontrado com o id: " + historicoProdutoReq.idStatus()));
+        StatusHistoricoProduto status = statusHistoricoProdRepository.findByStatus(historicoProdutoReq.statusHistorico())
+                .orElseThrow(() -> new RegistroNaoEncontradoException("StatusHistoricoProduto não encontrado com o id: " + historicoProdutoReq.statusHistorico()));
 
         itemHistoricoOpt.setStatusHistoricoProduto(status);
 

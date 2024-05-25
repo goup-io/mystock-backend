@@ -16,7 +16,7 @@ public class StatusHistoricoProduto {
     private StatusHistorico status;
 
     @Getter
-    private enum StatusHistorico{
+    public enum StatusHistorico{
         VENDIDO("Vendido"),
         DEVOLVIDO("Devolvido"),
         ABATIDO("Abatido");

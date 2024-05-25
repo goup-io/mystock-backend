@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record ProdutoVendaReq(
-        @NotNull @NotBlank @DecimalMin("0.0")
+        @NotNull @NotBlank
         Integer etpId,
         @NotNull @NotBlank @DecimalMin("0.0")
         Double valorUnitario,
