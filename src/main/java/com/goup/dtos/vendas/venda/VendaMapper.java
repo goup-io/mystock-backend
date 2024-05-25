@@ -6,6 +6,7 @@ import com.goup.entities.vendas.TipoVenda;
 import com.goup.entities.vendas.Venda;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class VendaMapper {
@@ -29,6 +30,25 @@ public class VendaMapper {
         venda.setUsuario(usuario);
         venda.setStatusVenda(statusVenda);
         return venda;
+    }
+
+    public static VendaResTable entityToResTable(Venda venda, Integer quantidadeItens){
+        return new VendaResTable(
+                venda.getId(),
+                venda.getDataHora().toLocalDate(),
+                venda.getDataHora().toLocalTime(),
+                venda.getUsuario().getNome(),
+                quantidadeItens,
+                venda.getValorTotal(),
+                venda.getStatusVenda().getStatus().getDescricao()
+        );
+    }
+    public static List<VendaResTable> entityToResTableList(List<Venda> vendas, List<Integer> quantidadeItens){
+        List<VendaResTable> vendaResTables = new ArrayList<>();
+        for (int i = 0; i < vendas.size(); i++) {
+            vendaResTables.add(entityToResTable(vendas.get(i), quantidadeItens.get(i)));
+        }
+        return vendaResTables;
     }
 
     public static List<VendaRes> entityToRes(List<Venda> vendas){

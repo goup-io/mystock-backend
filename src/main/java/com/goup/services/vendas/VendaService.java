@@ -7,6 +7,7 @@ import com.goup.dtos.vendas.produtoVenda.RetornoETPeQuantidade;
 import com.goup.dtos.vendas.venda.VendaMapper;
 import com.goup.dtos.vendas.venda.VendaReq;
 import com.goup.dtos.vendas.venda.VendaRes;
+import com.goup.dtos.vendas.venda.VendaResTable;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.historicos.StatusHistoricoProduto;
 import com.goup.entities.usuarios.Usuario;
@@ -24,7 +25,6 @@ import com.goup.repositories.vendas.StatusVendaRepository;
 import com.goup.repositories.vendas.TipoVendaRepository;
 import com.goup.repositories.vendas.VendaRepository;
 import com.goup.services.historicos.HistoricoProdutoService;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,12 +51,22 @@ public class VendaService {
     private HistoricoProdutoService historicoProdutoService;
 
 
-    public List<VendaRes> listar(){
+    public List<VendaResTable> listar(){
         List<Venda> vendas = repository.findAll();
         if (vendas.isEmpty()){
             throw new BuscaRetornaVazioException("Venda não encontrou algum resultado");
         }
-        return VendaMapper.entityToRes(vendas);
+
+        List<Integer> quantidadePorProdutoVenda = new ArrayList<>();
+        for (int i = 0; i < vendas.size(); i++) {
+            List<RetornoETPeQuantidade> itensDaVenda = produtoVendaRepository.findAllEtpsByVendaId(vendas.get(i).getId());
+            Integer qtdTotal = 0;
+            for (RetornoETPeQuantidade retornoETPeQuantidade : itensDaVenda) {
+                qtdTotal += retornoETPeQuantidade.quantidade();
+            }
+            quantidadePorProdutoVenda.add(qtdTotal);
+        }
+        return VendaMapper.entityToResTableList(vendas, quantidadePorProdutoVenda);
     }
 
     public VendaRes buscarPorId(Integer id){
@@ -81,7 +91,7 @@ public class VendaService {
 
         double valorTotal = calcularEAdicionarProdutos(venda, retornoETPeQuantidades);
 
-        venda.setValorTotal(valorTotal);
+        venda.setValorTotal(valorTotal - venda.getDesconto());
         venda = repository.save(venda);
 
         // Dando baixa dos produtos no estoque
@@ -114,7 +124,7 @@ public class VendaService {
     }
 
 
-    //todo: dar baixa nos produtos - feito; adicionar no histórico
+    //todo: dar baixa nos produtos - feito; adicionar no histórico - feito
     public VendaRes finalizarVenda(Integer idVenda){
         Optional<Venda> vendaOpt = repository.findById(idVenda);
         if (vendaOpt.isEmpty()){
@@ -129,6 +139,8 @@ public class VendaService {
         Venda venda = vendaOpt.get();
         venda.setStatusVenda(statusFinalizada.get());
         repository.save(venda);
+
+        produtoVendaRepository.findAllEtpsByVendaId(idVenda);
 
         return VendaMapper.entityToRes(venda);
     }

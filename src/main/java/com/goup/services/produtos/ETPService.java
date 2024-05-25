@@ -108,6 +108,7 @@ public class ETPService {
         if (etp.isEmpty()) {
             throw new RegistroNaoEncontradoException("ETP não encontrado!");
         }
+
         if(soma){
             etp.get().setQuantidade(etp.get().getQuantidade() + quantidade);
         }else{

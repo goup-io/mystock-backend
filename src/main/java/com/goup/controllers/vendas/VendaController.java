@@ -4,6 +4,7 @@ import com.goup.dtos.vendas.produtoVenda.ProdutoVendaReq;
 import com.goup.dtos.vendas.venda.VendaEProdutosReq;
 import com.goup.dtos.vendas.venda.VendaReq;
 import com.goup.dtos.vendas.venda.VendaRes;
+import com.goup.dtos.vendas.venda.VendaResTable;
 import com.goup.services.vendas.VendaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class VendaController {
     private VendaService service;
 
     @GetMapping
-    public ResponseEntity<List<VendaRes>> listar(){
+    public ResponseEntity<List<VendaResTable>> listar(){
         return ResponseEntity.status(200).body(service.listar());
     }
 
