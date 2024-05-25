@@ -129,8 +129,6 @@ public class VendaService {
         return produtoVendaReq.valorUnitario() * produtoVendaReq.quantidade() - produtoVendaReq.desconto();
     }
 
-
-    //todo: dar baixa nos produtos - feito; adicionar no histórico - feito
     public VendaRes finalizarVenda(Integer idVenda){
         Optional<Venda> vendaOpt = repository.findById(idVenda);
         if (vendaOpt.isEmpty()){

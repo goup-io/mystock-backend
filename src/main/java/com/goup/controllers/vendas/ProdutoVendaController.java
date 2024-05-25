@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/produtos-venda")
+@RequestMapping("/produto-vendas")
 public class ProdutoVendaController {
     @Autowired
     private  ProdutoVendaService produtoVendaService;
@@ -19,5 +19,15 @@ public class ProdutoVendaController {
     @PostMapping("/{idVenda}")
     public ResponseEntity<List<ProdutoVendaRes>> adicionarVendasAoProdutoVendas(@PathVariable Integer idVenda, @Valid @RequestBody List<ProdutoVendaReq> produtoVendas){
         return ResponseEntity.status(201).body(produtoVendaService.adicionarVendaNosProdutosVenda(produtoVendas, idVenda));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProdutoVendaRes>> listar(){
+        return ResponseEntity.status(200).body(produtoVendaService.listar());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProdutoVendaRes> buscarPorId(@PathVariable Integer id){
+        return ResponseEntity.status(200).body(produtoVendaService.buscarPorId(id));
     }
 }

@@ -15,6 +15,7 @@ import com.goup.repositories.vendas.ProdutoVendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +55,6 @@ public class HistoricoProdutoService {
 
         HistoricoProduto savedHistoricoProduto = repository.save(HistoricoProdutoMapper.reqToEntity(status, produtoVenda));
 
-
         return HistoricoProdutoMapper.entitytoRes(savedHistoricoProduto);
     }
 
@@ -70,5 +70,17 @@ public class HistoricoProdutoService {
         HistoricoProduto historicoProduto = repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("HistoricoProduto não encontrado com o id: " + id));
         return HistoricoProdutoMapper.entitytoRes(historicoProduto);
+    }
+
+    public List<HistoricoProdutoRes> pesquisarPorProdutoVenda(Integer idProdutoVenda){
+        Optional<ProdutoVenda> produtoVenda = produtoVendaRepository.findById(idProdutoVenda);
+        if (produtoVenda.isEmpty()){
+            throw new RegistroNaoEncontradoException("ProdutoVenda não encontrado");
+        }
+        List<HistoricoProduto> historicoProdutos = repository.findByProdutoVenda_id(idProdutoVenda);
+        if (historicoProdutos.isEmpty()){
+            throw new BuscaRetornaVazioException("HistoricoProduto retornou uma lista vazia");
+        }
+        return HistoricoProdutoMapper.listRes(historicoProdutos);
     }
 }

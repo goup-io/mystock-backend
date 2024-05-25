@@ -1,11 +1,14 @@
 package com.goup.dtos.vendas.produtoVenda;
 
 import com.goup.dtos.estoque.ETPMapper;
+import com.goup.dtos.historico.produto.HistoricoProdutoMapper;
 import com.goup.dtos.vendas.venda.VendaMapper;
 import com.goup.entities.estoque.ETP;
+import com.goup.entities.historicos.HistoricoProduto;
 import com.goup.entities.vendas.ProdutoVenda;
 import com.goup.entities.vendas.Venda;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -22,17 +25,34 @@ public class ProdutoVendaMapper {
         return produtoVenda;
     }
 
-    public static ProdutoVendaRes entityToResDto(ProdutoVenda produtoVenda){
-        return new ProdutoVendaRes(
-                produtoVenda.getId(),
-                produtoVenda.getValorUnitario(),
-                produtoVenda.getQuantidade(),
-                produtoVenda.getDesconto(),
-                produtoVenda.getItemPromocional().name(),
-                VendaMapper.entityToRes(produtoVenda.getVenda()),
-                ETPMapper.entityToRes(produtoVenda.getEtp())
+    public static ProdutoVendaRes entityToResDto(ProdutoVenda produtoVenda) {
+        ProdutoVendaRes produtoVendaRes = new ProdutoVendaRes();
+        produtoVendaRes.setId(produtoVenda.getId());
+        produtoVendaRes.setValorUnitario(produtoVenda.getValorUnitario());
+        produtoVendaRes.setQuantidade(produtoVenda.getQuantidade());
+        produtoVendaRes.setDesconto(produtoVenda.getDesconto());
+        produtoVendaRes.setItemPromocional(produtoVenda.getItemPromocional().name());
+        produtoVendaRes.setVenda(VendaMapper.entityToRes(produtoVenda.getVenda()));
+        produtoVendaRes.setEtp(ETPMapper.toTableResponseEntity(produtoVenda.getEtp()));
+        List<HistoricoProduto> historicoProduto = produtoVenda.getHistoricoProduto();
 
-        );
+        List<ProdutoVendaRes.HistoricoProdutoListagem> historicoProdutoListagem = new ArrayList<>();
+
+        if (historicoProduto != null) {
+            for (HistoricoProduto produto : historicoProduto) {
+                ProdutoVendaRes.HistoricoProdutoListagem historicoProdutoDto = new ProdutoVendaRes.HistoricoProdutoListagem();
+                historicoProdutoDto.setId(produto.getId());
+                historicoProdutoDto.setDataHora(produto.getDataHora());
+                historicoProdutoDto.setStatusHistoricoProduto(produto.getStatusHistoricoProduto());
+                historicoProdutoListagem.add(historicoProdutoDto);
+            }
+        }
+        produtoVendaRes.setHistoricos(historicoProdutoListagem);
+        return produtoVendaRes;
+    }
+
+    public static List<ProdutoVendaRes> dtoListToEntityList(List<ProdutoVenda> produtoVendas){
+        return produtoVendas.stream().map(ProdutoVendaMapper::entityToResDto).toList();
     }
 
     public static List<ProdutoVenda> dtoListToEntityList(List<ProdutoVendaReq> prodVendaReqs, ETP etp, Venda venda){
