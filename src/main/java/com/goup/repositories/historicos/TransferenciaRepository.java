@@ -1,5 +1,6 @@
 package com.goup.repositories.historicos;
 
+import com.goup.entities.historicos.StatusTransferencia;
 import com.goup.entities.historicos.Transferencia;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,7 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia, In
             "WHERE (:modelo IS NULL OR lower(produto.modelo.nome) LIKE lower(concat('%',:modelo, '%')))" +
             "AND (:cor IS NULL OR lower(produto.cor.nome) LIKE lower(concat('%', :cor, '%')))" +
             "AND (:tamanho IS NULL OR etp.tamanho.numero = :tamanho) " +
+            "AND (:status IS NULL OR hist.status.status = :status )"+
             "AND (:dataInicio IS NULL OR hist.dataHora >= :dataInicio)" +
             "AND (:dataFim IS NULL OR hist.dataHora <= :dataFim)"
     )
@@ -22,6 +24,7 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia, In
         @Param("dataFim") LocalDateTime dataFim,
         @Param("modelo") String modelo,
         @Param("cor") String cor,
-        @Param("tamanho") Integer tamanho
+        @Param("tamanho") Integer tamanho,
+        @Param("status") StatusTransferencia.Status status
     );
 }

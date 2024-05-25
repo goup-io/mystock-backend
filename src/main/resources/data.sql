@@ -250,12 +250,17 @@ VALUES
     ('DEVOLVIDO'),
     ('ABATIDO');
 
-
-
-
-INSERT INTO transferencia (data_Hora, quantidade_Solicitada, quantidade_Liberada, status, coletor_id, liberador_id, etp_id)
+INSERT INTO STATUS_TRANSFERENCIA (status)
 VALUES
-    ('2024-05-24 19:02:19', 10, 8, false, 1, 2, 1),
+    ('PENDENTE'),
+    ('ACEITO'),
+    ('NEGADO');
+
+
+INSERT INTO transferencia (data_Hora, quantidade_Solicitada, quantidade_Liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+VALUES
+    ('2024-05-24 19:02:19', 10, 8, 1, 1, 2, 23);
+/*,
     ('2024-05-24 19:05:00', 15, 15, true, 2, 3, 2),
     ('2024-05-24 19:10:00', 20, 18, false, 3, 4, 3),
     ('2024-05-24 19:15:00', 5, 5, true, 4, 5, 4),
@@ -274,4 +279,4 @@ VALUES
     ('2024-05-24 20:20:00', 22, 21, true, 5, 2, 17),
     ('2024-05-24 20:25:00', 25, 24, false, 4, 1, 18),
     ('2024-05-24 20:30:00', 30, 29, true, 3, 1, 19),
-    ('2024-05-24 20:35:00', 28, 27, false, 2, 1, 20);
+    ('2024-05-24 20:35:00', 28, 27, false, 2, 1, 20);*/

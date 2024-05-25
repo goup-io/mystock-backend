@@ -3,6 +3,7 @@ package com.goup.controllers.historicos;
 import com.goup.dtos.historico.transferencia.TransferenciaReq;
 import com.goup.dtos.historico.transferencia.TransferenciaReqAprovar;
 import com.goup.dtos.historico.transferencia.TransferenciaRes;
+import com.goup.entities.historicos.StatusTransferencia;
 import com.goup.services.historicos.TransferenciaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,14 @@ public class TransferenciaController {
 
     @GetMapping("/filtro")
     public ResponseEntity<List<TransferenciaRes>> listarPorFiltro(
-        @RequestParam(required = false) LocalDateTime dataInicio,
-        @RequestParam(required = false) LocalDateTime dataFim,
-        @RequestParam(required = false) String modelo,
-        @RequestParam(required = false) String cor,
-        @RequestParam(required = false) Integer tamanho
+            @RequestParam(required = false) LocalDateTime dataInicio,
+            @RequestParam(required = false) LocalDateTime dataFim,
+            @RequestParam(required = false) String modelo,
+            @RequestParam(required = false) String cor,
+            @RequestParam(required = false) Integer tamanho,
+            @RequestParam(required = false) StatusTransferencia.Status status
     ){
-        List<TransferenciaRes> lista = service.listarPorFiltro(dataInicio, dataFim, modelo, cor, tamanho);
+        List<TransferenciaRes> lista = service.listarPorFiltro(dataInicio, dataFim, modelo, cor, tamanho, status);
         if(lista.isEmpty()){
             return ResponseEntity.status(204).build();
         }
