@@ -1,10 +1,12 @@
 package com.goup.entities.vendas;
 
 import com.goup.entities.estoque.ETP;
+import com.goup.entities.historicos.HistoricoProduto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -20,4 +22,6 @@ public class ProdutoVenda {
     private Venda venda;
     @JoinColumn @ManyToOne
     private ETP etp;
+    @OneToMany(mappedBy = "produtoVenda")
+    private List<HistoricoProduto> historicoProduto;
 }

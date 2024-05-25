@@ -117,7 +117,7 @@ public class VendaService {
                     ProdutoVendaMapper.dtoToEntity(produtoVendaReq, etp, venda)
             );
 
-            historicoProdutoService.criarHistorico(new HistoricoProdutoReq(produtoVenda.getId(), StatusHistoricoProduto.StatusHistorico.ABATIDO));
+            historicoProdutoService.alterarStatus(produtoVenda.getId(), StatusHistoricoProduto.StatusHistorico.ABATIDO);
 
             valorTotal += calcularValorTotalProduto(produtoVendaReq);
         }
@@ -137,16 +137,26 @@ public class VendaService {
             throw new RegistroNaoEncontradoException("Venda não encontrada");
         }
 
+        Venda venda = vendaOpt.get();
+        if (venda.getStatusVenda().getStatus().getDescricao().equals("Finalizada")){
+            throw new RegistroConflitanteException("Venda já está finalizada");
+        }
+
         // mudando o status da venda para finalizada
         Optional<StatusVenda> statusFinalizada = statusVendaRepository.findByStatus(StatusVenda.Status.FINALIZADA);
         if (statusFinalizada.isEmpty()){
             throw new RegistroNaoEncontradoException("StatusVenda não encontrado");
         }
-        Venda venda = vendaOpt.get();
         venda.setStatusVenda(statusFinalizada.get());
         repository.save(venda);
 
-        produtoVendaRepository.findAllEtpsByVendaId(idVenda);
+        List<ProdutoVenda> produtoVendas = produtoVendaRepository.findAllProdutoVendaIdVenda(idVenda);
+        if (produtoVendas.isEmpty()){
+            throw new RegistroNaoEncontradoException("ProdutoVenda não encontrado");
+        }
+        for (ProdutoVenda produtoVenda : produtoVendas) {
+            historicoProdutoService.alterarStatus(produtoVenda.getId(), StatusHistoricoProduto.StatusHistorico.VENDIDO);
+        }
 
         return VendaMapper.entityToRes(venda);
     }
@@ -168,6 +178,14 @@ public class VendaService {
         }
         venda.setStatusVenda(statusCancelado.get());
         Venda vendaSalvada = repository.save(venda);
+
+        List<ProdutoVenda> produtoVendas = produtoVendaRepository.findAllProdutoVendaIdVenda(id);
+        if (produtoVendas.isEmpty()){
+            throw new RegistroNaoEncontradoException("ProdutoVenda não encontrado");
+        }
+        for (ProdutoVenda produtoVenda : produtoVendas) {
+            historicoProdutoService.alterarStatus(produtoVenda.getId(), StatusHistoricoProduto.StatusHistorico.DEVOLVIDO);
+        }
 
         alterarEtpBaseadoVenda(venda.getId(), true);
 

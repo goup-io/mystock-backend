@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -15,9 +16,9 @@ public class HistoricoProduto {
     private Integer id;
     @PastOrPresent
     private LocalDateTime dataHora;
-    @JoinColumn @OneToOne
+    @ManyToOne
     private ProdutoVenda produtoVenda;
-    @JoinColumn @ManyToOne
+    @ManyToOne
     private StatusHistoricoProduto statusHistoricoProduto;
 
 }

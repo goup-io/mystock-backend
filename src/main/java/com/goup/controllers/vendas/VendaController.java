@@ -34,10 +34,14 @@ public class VendaController {
         return ResponseEntity.status(201).body(service.salvar(reqDto.vendaReq(), reqDto.produtosVendaReq()));
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/cancelar/{id}")
     ResponseEntity<VendaRes> cancelarVenda(@PathVariable Integer id){
         return ResponseEntity.status(200).body(service.cancelarVenda(id));
     }
 
+    @PatchMapping("/finalizar/{id}")
+    ResponseEntity<VendaRes> finalizarVenda(@PathVariable Integer id){
+        return ResponseEntity.status(200).body(service.finalizarVenda(id));
+    }
 
 }

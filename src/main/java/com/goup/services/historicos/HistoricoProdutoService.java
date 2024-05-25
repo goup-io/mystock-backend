@@ -15,6 +15,7 @@ import com.goup.repositories.vendas.ProdutoVendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,7 @@ public class HistoricoProdutoService {
     @Autowired
     private ProdutoVendaRepository produtoVendaRepository;
 
+    /*
     public HistoricoProdutoRes criarHistorico(HistoricoProdutoReq historicoProdutoReq){
         Optional<HistoricoProduto> itemHistoricoOpt = repository.findByProdutoVenda_id(historicoProdutoReq.idProdutoVenda());
         if (itemHistoricoOpt.isPresent()){
@@ -42,18 +44,18 @@ public class HistoricoProdutoService {
 
         return HistoricoProdutoMapper.entitytoRes(historicoProduto);
     }
+     */
 
-    public HistoricoProdutoRes alterarStatus(HistoricoProdutoReq historicoProdutoReq){
-        ProdutoVenda produtoVenda = produtoVendaRepository.findById(historicoProdutoReq.idProdutoVenda())
-                .orElseThrow(() -> new RegistroNaoEncontradoException("ProdutoVenda não encontrado com o id: " + historicoProdutoReq.idProdutoVenda()));
-        HistoricoProduto itemHistoricoOpt = repository.findByProdutoVenda_id(historicoProdutoReq.idProdutoVenda())
-                .orElseThrow(() -> new RegistroNaoEncontradoException("HistoricoProduto não existe"));
-        StatusHistoricoProduto status = statusHistoricoProdRepository.findByStatus(historicoProdutoReq.statusHistorico())
-                .orElseThrow(() -> new RegistroNaoEncontradoException("StatusHistoricoProduto não encontrado com o id: " + historicoProdutoReq.statusHistorico()));
+    public HistoricoProdutoRes alterarStatus(Integer idProdutoVenda, StatusHistoricoProduto.StatusHistorico statusHistorico){
+        ProdutoVenda produtoVenda = produtoVendaRepository.findById(idProdutoVenda)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("ProdutoVenda não encontrado com o id: " + idProdutoVenda));
+        StatusHistoricoProduto status = statusHistoricoProdRepository.findByStatus(statusHistorico)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("StatusHistoricoProduto não encontrado com o status: " + statusHistorico));
 
-        itemHistoricoOpt.setStatusHistoricoProduto(status);
+        HistoricoProduto savedHistoricoProduto = repository.save(HistoricoProdutoMapper.reqToEntity(status, produtoVenda));
 
-        return HistoricoProdutoMapper.entitytoRes(repository.save(itemHistoricoOpt));
+
+        return HistoricoProdutoMapper.entitytoRes(savedHistoricoProduto);
     }
 
     public List<HistoricoProdutoRes> listar(){
