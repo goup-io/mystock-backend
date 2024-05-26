@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TipoPagamentoMapper {
     public static TipoPagamentoRes entityToRes(TipoPagamento tipoPagamento){
-        return new TipoPagamentoRes(tipoPagamento.getId(), tipoPagamento.getMetodo());
+        return new TipoPagamentoRes(tipoPagamento.getId(), tipoPagamento.getMetodo().getMetodo());
     }
     public static List<TipoPagamentoRes> entityToResList(List<TipoPagamento> tipoPagamentos){
         return tipoPagamentos.stream().map(TipoPagamentoMapper::entityToRes).toList();

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TipoVendaMapper {
     public static TipoVendaRes entityToRes(TipoVenda tipoVenda){
-        return new TipoVendaRes(tipoVenda.getId(), tipoVenda.getTipo(), tipoVenda.getDesconto());
+        return new TipoVendaRes(tipoVenda.getId(), tipoVenda.getTipo().getTipo(), tipoVenda.getDesconto());
     }
 
     public static TipoVenda atualizarTipoVenda(TipoVendaReq tipoVendaReq, TipoVenda tipoVenda){

@@ -17,7 +17,7 @@ public class VendaMapper {
                 venda.getDesconto(),
                 venda.getValorTotal(),
                 venda.getStatusVenda().getStatus().getDescricao(),
-                venda.getTipoVenda().getTipo(),
+                venda.getTipoVenda().getTipo().getTipo(),
                 venda.getUsuario().getNome()
         );
     }

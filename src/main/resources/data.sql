@@ -182,15 +182,16 @@ VALUES
 
 INSERT INTO Tipo_venda (id, tipo, desconto)
 VALUES
-    (1, 'Varejo', 0),
-    (2, 'Atacado', 20);
+    (1, 'VAREJO', 0),
+    (2, 'ATACADO', 20),
+    (3, 'ESPECIAL', 50);
 
-INSERT INTO Tipo_Pagamento(metodo)
+INSERT INTO tipo_pagamento(metodo)
 VALUES
-    ('Crédito'),
-    ('Débito'),
-    ('Dinheiro');
-
+    ('CREDITO'),
+    ('DEBITO'),
+    ('PIX'),
+    ('DINHEIRO');
 
 
 -- Inserção na tabela StatusVenda

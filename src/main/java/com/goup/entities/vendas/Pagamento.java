@@ -15,6 +15,4 @@ public class Pagamento {
     private Venda venda;
     private Double valor;
     private Integer qtdParcelas;
-
-
 }
