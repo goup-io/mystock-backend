@@ -1,0 +1,35 @@
+package pagseguro.data;
+
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import pagseguro.service.PixOrderService;
+import pagseguro.service.response.Link;
+import pagseguro.service.response.PaymentResponse;
+
+import java.time.OffsetDateTime;
+import java.util.List;
+
+/**
+ * Informações sobre a confirmação de pagamento de um pedido feito por um cliente.
+ *
+ * @param status situação do pagamento (como PAID para "PAGO")
+ * @author Manoel Campos da Silva Filho
+ */
+public record Charge (
+    String id,
+    String reference_id,
+    Status status,
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = PixOrderService.DATE_TIME_FORMAT)
+    OffsetDateTime created_at,
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = PixOrderService.DATE_TIME_FORMAT)
+    OffsetDateTime paid_at,
+
+    String description,
+    Amount amount,
+    PaymentResponse payment_response,
+    PaymentMethod payment_method,
+    List<Link> links){
+        public enum Status{PAID, AUTHORIZED, CANCELED};
+}
