@@ -1,9 +1,6 @@
 package com.goup.services.historicos;
 
-import com.goup.dtos.historico.transferencia.TransferenciaMapper;
-import com.goup.dtos.historico.transferencia.TransferenciaReq;
-import com.goup.dtos.historico.transferencia.TransferenciaReqAprovar;
-import com.goup.dtos.historico.transferencia.TransferenciaRes;
+import com.goup.dtos.historico.transferencia.*;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.estoque.Tamanho;
 import com.goup.entities.estoque.produtos.Produto;
@@ -122,6 +119,16 @@ public class TransferenciaService {
         return TransferenciaMapper.entityToRes(transfAprovada);
     }
 
+    public TransferenciaRes rejeitar(int id, TransferenciaReqRejeitar rejeicao){
+        Optional<Transferencia> transf = repository.findById(id);
+        Optional<Usuario> liberador = usuarioRepository.findById(rejeicao.id_liberador());
+        Optional<StatusTransferencia> status_negado = statusTransferenciaRepository.findByStatus(StatusTransferencia.Status.NEGADO);
+        validarProcessamento(transf, liberador, status_negado); // Joga exceções se não atender os requisitos de processamento
+
+        Transferencia transfRejeitada = TransferenciaMapper.rejeitar(transf.get(), liberador.get(), status_negado.get());
+        repository.save(transfRejeitada);
+        return TransferenciaMapper.entityToRes(transfRejeitada);
+    }
     //public TransferenciaRes rejeitar(int id){}
 
     private void validarProcessamento(Optional<Transferencia> transf, Optional<Usuario> liberador, Optional<StatusTransferencia> status_aceite){

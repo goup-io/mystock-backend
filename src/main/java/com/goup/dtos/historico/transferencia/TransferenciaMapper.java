@@ -56,4 +56,15 @@ public class TransferenciaMapper {
         return transf;
     }
 
+    public static Transferencia rejeitar
+    (
+        Transferencia transf,
+        Usuario liberador,
+        StatusTransferencia negado
+    ){
+        transf.setLiberador(liberador);
+        transf.setStatus((negado));
+        return transf;
+    }
+
 }
