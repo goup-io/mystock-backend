@@ -257,9 +257,9 @@ VALUES
     ('NEGADO');
 
 
-INSERT INTO transferencia (data_Hora, quantidade_Solicitada, quantidade_Liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+INSERT INTO transferencia (data_Hora, quantidade_Solicitada, quantidade_Liberada, status_transferencia_id, coletor_id, etp_id)
 VALUES
-    ('2024-05-24 19:02:19', 10, 8, 1, 1, 2, 23);
+    ('2024-05-24 19:02:19', 10, 8, 1, 2, 1);
 /*,
     ('2024-05-24 19:05:00', 15, 15, true, 2, 3, 2),
     ('2024-05-24 19:10:00', 20, 18, false, 3, 4, 3),

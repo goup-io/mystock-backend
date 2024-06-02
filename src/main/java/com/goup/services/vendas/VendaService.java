@@ -27,8 +27,11 @@ import com.goup.repositories.vendas.VendaRepository;
 import com.goup.services.historicos.HistoricoProdutoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +71,31 @@ public class VendaService {
         }
         return VendaMapper.entityToResTableList(vendas, quantidadePorProdutoVenda);
     }
+
+    public List<VendaResTable> listarPorFiltro(
+        @Param("tipo_venda") TipoVenda tipoVenda,
+        @Param("id_vendedor") Integer id_vendedor,
+        @Param("data_inicio") LocalDateTime dataHoraInicio,
+        @Param("data_fim") LocalDateTime dataHoraFim,
+        @Param("id_loja") Integer id_loja
+    ){
+        List<Venda> vendas = repository.findAllByFiltros(tipoVenda, id_vendedor, dataHoraInicio, dataHoraFim, id_loja);
+        if (vendas.isEmpty()){
+            throw new BuscaRetornaVazioException("Venda não encontrou algum resultado");
+        }
+        List<Integer> quantidadePorProdutoVenda = new ArrayList<>();
+        for (int i = 0; i < vendas.size(); i++) {
+            List<RetornoETPeQuantidade> itensDaVenda = produtoVendaRepository.findAllEtpsByVendaId(vendas.get(i).getId());
+            Integer qtdTotal = 0;
+            for (RetornoETPeQuantidade retornoETPeQuantidade : itensDaVenda) {
+                qtdTotal += retornoETPeQuantidade.quantidade();
+            }
+            quantidadePorProdutoVenda.add(qtdTotal);
+        }
+        return VendaMapper.entityToResTableList(vendas, quantidadePorProdutoVenda);
+    }
+
+
 
     public VendaResTable buscarPorId(Integer id){
         Optional<Venda> venda = repository.findById(id);

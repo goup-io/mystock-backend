@@ -67,9 +67,10 @@ public class TransferenciaService {
             @Param("modelo") String modelo,
             @Param("cor") String cor,
             @Param("tamanho") Integer tamanho,
+            @Param("tamanho") Integer id_loja,
             @Param("status") StatusTransferencia.Status status
     ){
-        List<Transferencia> lista = repository.findAllByFiltro(dataInicio, dataFim, modelo, cor, tamanho, status);
+        List<Transferencia> lista = repository.findAllByFiltro(dataInicio, dataFim, modelo, cor, tamanho, id_loja, status);
         List<TransferenciaRes> listaDto = TransferenciaMapper.listToListReq(lista);
         return listaDto;
     }
