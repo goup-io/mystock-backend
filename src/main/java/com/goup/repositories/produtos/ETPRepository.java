@@ -31,5 +31,14 @@ public interface ETPRepository extends JpaRepository<ETP, Integer>{
         @Param("precoMaximo") Double precoMaximo,
         @Param("id_loja") Integer id_loja
     );
+
     List<ETP> findAllByLoja(Loja loja);
+
+    // contar quantidade de produtos em estoque
+    @Query("SELECT COUNT(etp) FROM ETP etp WHERE etp.loja = :loja")
+    Integer countByLoja(Loja loja);
+    // contar quantidade de produtos em estoque
+    @Query("SELECT COUNT(etp) FROM ETP etp")
+    Integer countETPs();
+
 }
