@@ -2,7 +2,9 @@ package com.goup.controllers.historicos;
 
 import com.goup.dtos.historico.transferencia.TransferenciaReq;
 import com.goup.dtos.historico.transferencia.TransferenciaReqAprovar;
+import com.goup.dtos.historico.transferencia.TransferenciaReqRejeitar;
 import com.goup.dtos.historico.transferencia.TransferenciaRes;
+import com.goup.entities.historicos.StatusTransferencia;
 import com.goup.services.historicos.TransferenciaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +36,15 @@ public class TransferenciaController {
 
     @GetMapping("/filtro")
     public ResponseEntity<List<TransferenciaRes>> listarPorFiltro(
-        @RequestParam(required = false) LocalDateTime dataInicio,
-        @RequestParam(required = false) LocalDateTime dataFim,
-        @RequestParam(required = false) String modelo,
-        @RequestParam(required = false) String cor,
-        @RequestParam(required = false) Integer tamanho
+            @RequestParam(required = false) LocalDateTime dataInicio,
+            @RequestParam(required = false) LocalDateTime dataFim,
+            @RequestParam(required = false) String modelo,
+            @RequestParam(required = false) String cor,
+            @RequestParam(required = false) Integer tamanho,
+            @RequestParam(required = false) Integer id_loja,
+            @RequestParam(required = false) StatusTransferencia.Status status
     ){
-        List<TransferenciaRes> lista = service.listarPorFiltro(dataInicio, dataFim, modelo, cor, tamanho);
+        List<TransferenciaRes> lista = service.listarPorFiltro(dataInicio, dataFim, modelo, cor, tamanho, id_loja, status);
         if(lista.isEmpty()){
             return ResponseEntity.status(204).build();
         }
@@ -52,6 +56,9 @@ public class TransferenciaController {
         TransferenciaRes aprovada = service.aprovar(id, transf);
         return ResponseEntity.status(200).body(aprovada);
     }
-
-    //@PostMapping("/{id}") public ResponseEntity<HistoricoTransferenciaRes> finalizarTransferencia(){}
+    @PostMapping("/{id}/rejeitar")
+    public ResponseEntity<TransferenciaRes> rejeitar(@PathVariable int id, @Valid @RequestBody TransferenciaReqRejeitar transf){
+        TransferenciaRes aprovada = service.rejeitar(id, transf);
+        return ResponseEntity.status(200).body(aprovada);
+    }
 }
