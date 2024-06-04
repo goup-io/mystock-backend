@@ -22,7 +22,9 @@ public class PagamentoMapper {
                 pagamento.getTipoPagamento().getMetodo().getMetodo(),
                 VendaMapper.entityToRes(pagamento.getVenda()),
                 pagamento.getValor(),
-                pagamento.getQtdParcelas()
+                pagamento.getQtdParcelas(),
+                pagamento.getVenda().getValorTotal() - pagamento.getValor(),
+                pagamento.getValor() - pagamento.getVenda().getValorTotal()
         );
     }
 

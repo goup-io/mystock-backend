@@ -41,11 +41,16 @@ public class DashboardGeralService {
         if (lojas.isEmpty()){
             throw new BuscaRetornaVazioException("Nenhuma loja encontrada!");
         }
-        Object[][][] faturamentoPorLoja = new Object[lojas.size()][12][12];
+
+        Object[][] faturamentoPorLoja = new Object[lojas.size()][13];
         for (int i = 0; i < lojas.size(); i++){
-            for (int j = 0; j < 12; j++){
-                faturamentoPorLoja[i][j][0] = lojas.get(i).getNome();
-                faturamentoPorLoja[i][j][1] = pagamentoRepository.sumValorTotalByMonthAndYear(j+1, LocalDateTime.now().getYear());
+            faturamentoPorLoja[i][0] = lojas.get(i).getNome();
+            for (int j = 1; j <= 12; j++){
+                Double valorTotal = pagamentoRepository.sumValorTotalByMonthAndYearAndLoja(j, LocalDateTime.now().getYear(), lojas.get(i).getId());
+                if (valorTotal == null){
+                    valorTotal = 0.0;
+                }
+                faturamentoPorLoja[i][j] = valorTotal;
             }
         }
         return faturamentoPorLoja;
