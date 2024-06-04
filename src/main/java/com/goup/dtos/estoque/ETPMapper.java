@@ -4,6 +4,7 @@ import com.goup.entities.estoque.ETP;
 import com.goup.entities.estoque.Tamanho;
 import com.goup.entities.estoque.produtos.Produto;
 import com.goup.entities.lojas.Loja;
+import com.goup.entities.vendas.ItemPromocional;
 import com.goup.utils.ListaGenerica;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class ETPMapper {
             req.getProduto().getCor().getNome(),
             req.getProduto().getValorRevenda(),
             req.getLoja().getNome(),
+            req.getItemPromocional(),
             req.getQuantidade(),
             req.getProduto().getId());
     }
@@ -35,6 +37,7 @@ public class ETPMapper {
                 req.getProduto().getValorRevenda(),
                 req.getLoja().getId(),
                 req.getProduto().getId(),
+                req.getItemPromocional(),
                 req.getQuantidade());
     }
 
@@ -50,12 +53,13 @@ public class ETPMapper {
         return res;
     }
 
-    public static ETP reqToEntity(Tamanho tamanho, Produto produto, Loja loja){
+    public static ETP reqToEntity(Tamanho tamanho, Produto produto, Loja loja, ItemPromocional itemPromocional){
         ETP entidade = new ETP();
         entidade.setProduto(produto);
         entidade.setTamanho(tamanho);
         entidade.setLoja(loja);
         entidade.setQuantidade(0);
+        entidade.setItemPromocional(itemPromocional);
         return entidade;
     }
 
@@ -69,8 +73,9 @@ public class ETPMapper {
         Double preco = etp.getProduto().getValorRevenda();
         String loja = etp.getLoja().getNome();
         Integer quantidade = etp.getQuantidade();
+        ItemPromocional itemPromocional = etp.getItemPromocional();
         Integer idProduto = etp.getProduto().getId();
-        ETPTableRes respostaDto = new ETPTableRes(id, codigo, nome, modelo, tamanho, cor, preco, loja, quantidade, idProduto);
+        ETPTableRes respostaDto = new ETPTableRes(id, codigo, nome, modelo, tamanho, cor, preco, loja, itemPromocional, quantidade, idProduto);
         return respostaDto;
     }
 }

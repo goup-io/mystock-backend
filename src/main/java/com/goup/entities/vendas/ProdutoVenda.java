@@ -16,8 +16,8 @@ public class ProdutoVenda {
     private Double valorUnitario;
     private Integer quantidade;
     private Double desconto;
-    @Enumerated(EnumType.ORDINAL)
-    private ItemPromocional itemPromocional;
+//    @Enumerated(EnumType.ORDINAL)
+//    private ItemPromocional itemPromocional;
     @JoinColumn @ManyToOne
     private Venda venda;
     @JoinColumn @ManyToOne

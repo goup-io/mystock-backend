@@ -29,7 +29,10 @@ public class HistoricoProdutoMapper {
             produtoVendaListagem.setValorUnitario(historicoProduto.getProdutoVenda().getValorUnitario());
             produtoVendaListagem.setQuantidade(historicoProduto.getProdutoVenda().getQuantidade());
             produtoVendaListagem.setDesconto(historicoProduto.getProdutoVenda().getDesconto());
-            produtoVendaListagem.setItemPromocional(historicoProduto.getProdutoVenda().getItemPromocional().name());
+//            produtoVendaListagem.setItemPromocional(historicoProduto.getProdutoVenda().getEtp().getItemPromocional().name());
+
+
+//            produtoVendaListagem.setItemPromocional(historicoProduto.getProdutoVenda(). getItemPromocional().name());
             produtoVendaListagem.setEtp(ETPMapper.toTableResponseEntity(historicoProduto.getProdutoVenda().getEtp()));
             produtoVendaListagem.setVenda(VendaMapper.entityToRes(historicoProduto.getProdutoVenda().getVenda()));
             historicoProdutoRes.setProdutoVenda(produtoVendaListagem);

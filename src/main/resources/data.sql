@@ -158,28 +158,28 @@ VALUES
     (33), (34), (35), (36), (37), (38), (39), (40), (41), (42), (43), (44), (45);
 
 -- Inserção na tabela ETP sem conflitos de duplicados e distribuindo os produtos entre as lojas
-INSERT INTO ETP (produto_id, loja_id, tamanho_id, quantidade)
+INSERT INTO ETP (produto_id, loja_id, tamanho_id, item_promocional, quantidade)
 VALUES
-    (1, 1, 1, 5),
-    (2, 1, 1, 5),
-    (3, 1, 3, 5),
-    (4, 1, 4, 5),
-    (5, 1, 5, 5),
-    (6, 1, 1, 5),
-    (7, 1, 1, 5),
-    (8, 1, 3, 5),
-    (9, 1, 4, 5),
-    (10, 1, 5, 5),
-    (11, 1, 1, 5),
-    (12, 1, 2, 5),
-    (13, 1, 3, 5),
-    (14, 1, 4, 5),
-    (15, 1, 5, 5),
-    (16, 1, 1, 5),
-    (17, 1, 2, 5),
-    (18, 1, 3, 5),
-    (19, 1, 4, 5),
-    (20, 1, 5, 5);
+    (1, 1, 1,  'NAO',5),
+    (2, 1, 1,  'NAO',5),
+    (3, 1, 3,  'NAO',5),
+    (4, 1, 4,  'NAO',5),
+    (5, 1, 5,  'NAO',5),
+    (6, 1, 1,  'NAO',5),
+    (7, 1, 1,  'NAO',5),
+    (8, 1, 3,  'NAO',5),
+    (9, 1, 4,  'NAO',5),
+    (10, 1, 5, 'NAO', 5),
+    (11, 1, 1, 'NAO', 5),
+    (12, 1, 2, 'NAO', 5),
+    (13, 1, 3, 'NAO', 5),
+    (14, 1, 4, 'NAO', 5),
+    (15, 1, 5, 'NAO', 5),
+    (16, 1, 1, 'NAO', 5),
+    (17, 1, 2, 'NAO', 5),
+    (18, 1, 3, 'NAO', 5),
+    (19, 1, 4, 'NAO', 5),
+    (20, 1, 5, 'NAO', 5);
 
 
 INSERT INTO Tipo_venda (id, tipo, desconto)

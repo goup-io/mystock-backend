@@ -12,6 +12,7 @@ import com.goup.entities.estoque.produtos.Cor;
 import com.goup.entities.estoque.produtos.Produto;
 import com.goup.entities.estoque.produtos.modelos.Modelo;
 import com.goup.entities.lojas.Loja;
+import com.goup.entities.vendas.ItemPromocional;
 import com.goup.exceptions.RegistroConflitanteException;
 import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.lojas.LojaRepository;
@@ -62,10 +63,10 @@ public class ProdutoService {
             if (etpSearch.isPresent()){
                 throw new RegistroConflitanteException("Produto de mesmo modelo e cor já existente!");
             }
-            etpRepository.save(ETPMapper.reqToEntity(tamanho.get(), produtoEncontrado, loja.get()));
+            etpRepository.save(ETPMapper.reqToEntity(tamanho.get(), produtoEncontrado, loja.get(), etpSearch.get().getItemPromocional()));
         }
         final Produto produtoSalvo = this.repository.save(ProdutoMapper.reqToEntity(produto, cor.get(), modelo.get()));
-        etpRepository.save(ETPMapper.reqToEntity(tamanho.get(), produtoSalvo, loja.get()));
+        etpRepository.save(ETPMapper.reqToEntity(tamanho.get(), produtoSalvo, loja.get(), produto.itemPromocional()));
         return ProdutoMapper.entityToRes(produtoSalvo);
     }
 
