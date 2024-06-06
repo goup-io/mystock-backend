@@ -5,12 +5,15 @@ import com.goup.dtos.vendas.venda.VendaEProdutosReq;
 import com.goup.dtos.vendas.venda.VendaReq;
 import com.goup.dtos.vendas.venda.VendaRes;
 import com.goup.dtos.vendas.venda.VendaResTable;
+import com.goup.entities.usuarios.Usuario;
+import com.goup.entities.vendas.TipoVenda;
 import com.goup.services.vendas.VendaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -22,6 +25,16 @@ public class VendaController {
     @GetMapping
     public ResponseEntity<List<VendaResTable>> listar(){
         return ResponseEntity.status(200).body(service.listar());
+    }
+    @GetMapping("/filtro")
+    public ResponseEntity<List<VendaResTable>> listarPorFiltro(
+        @RequestParam(required = false) TipoVenda tipoVenda,
+        @RequestParam(required = false) Integer id_vendedor,
+        @RequestParam(required = false) LocalDateTime dataHoraInicio,
+        @RequestParam(required = false) LocalDateTime dataHoraFim,
+        @RequestParam(required = false) Integer id_loja
+    ){
+        return ResponseEntity.status(200).body(service.listarPorFiltro(tipoVenda, id_vendedor, dataHoraInicio, dataHoraFim, id_loja));
     }
 
     @GetMapping("/{id}")

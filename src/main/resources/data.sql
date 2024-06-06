@@ -158,28 +158,28 @@ VALUES
     (33), (34), (35), (36), (37), (38), (39), (40), (41), (42), (43), (44), (45);
 
 -- Inserção na tabela ETP sem conflitos de duplicados e distribuindo os produtos entre as lojas
-INSERT INTO ETP (produto_id, loja_id, tamanho_id, quantidade)
+INSERT INTO ETP (produto_id, loja_id, tamanho_id, item_promocional, quantidade)
 VALUES
-    (1, 1, 1, 5),
-    (2, 1, 1, 5),
-    (3, 1, 3, 5),
-    (4, 1, 4, 5),
-    (5, 1, 5, 5),
-    (6, 1, 1, 5),
-    (7, 1, 1, 5),
-    (8, 1, 3, 5),
-    (9, 1, 4, 5),
-    (10, 1, 5, 5),
-    (11, 1, 1, 5),
-    (12, 1, 2, 5),
-    (13, 1, 3, 5),
-    (14, 1, 4, 5),
-    (15, 1, 5, 5),
-    (16, 1, 1, 5),
-    (17, 1, 2, 5),
-    (18, 1, 3, 5),
-    (19, 1, 4, 5),
-    (20, 1, 5, 5);
+    (1, 1, 1,  'NAO',5),
+    (2, 1, 1,  'NAO',5),
+    (3, 1, 3,  'NAO',5),
+    (4, 1, 4,  'NAO',5),
+    (5, 1, 5,  'NAO',5),
+    (6, 1, 1,  'NAO',5),
+    (7, 1, 1,  'NAO',5),
+    (8, 1, 3,  'NAO',5),
+    (9, 1, 4,  'NAO',5),
+    (10, 1, 5, 'NAO', 5),
+    (11, 1, 1, 'NAO', 5),
+    (12, 1, 2, 'NAO', 5),
+    (13, 1, 3, 'NAO', 5),
+    (14, 1, 4, 'NAO', 5),
+    (15, 1, 5, 'NAO', 5),
+    (16, 1, 1, 'NAO', 5),
+    (17, 1, 2, 'NAO', 5),
+    (18, 1, 3, 'NAO', 5),
+    (19, 1, 4, 'NAO', 5),
+    (20, 1, 5, 'NAO', 5);
 
 
 INSERT INTO Tipo_venda (id, tipo, desconto)
@@ -373,12 +373,17 @@ VALUES
     ('DEVOLVIDO'),
     ('ABATIDO');
 
-
-
-
-INSERT INTO transferencia (data_Hora, quantidade_Solicitada, quantidade_Liberada, status, coletor_id, liberador_id, etp_id)
+INSERT INTO STATUS_TRANSFERENCIA (status)
 VALUES
-    ('2024-05-24 19:02:19', 10, 8, false, 1, 2, 1),
+    ('PENDENTE'),
+    ('ACEITO'),
+    ('NEGADO');
+
+
+INSERT INTO transferencia (data_Hora, quantidade_Solicitada, quantidade_Liberada, status_transferencia_id, coletor_id, etp_id)
+VALUES
+    ('2024-05-24 19:02:19', 10, 8, 1, 2, 1);
+/*,
     ('2024-05-24 19:05:00', 15, 15, true, 2, 3, 2),
     ('2024-05-24 19:10:00', 20, 18, false, 3, 4, 3),
     ('2024-05-24 19:15:00', 5, 5, true, 4, 5, 4),
@@ -397,4 +402,4 @@ VALUES
     ('2024-05-24 20:20:00', 22, 21, true, 5, 2, 17),
     ('2024-05-24 20:25:00', 25, 24, false, 4, 1, 18),
     ('2024-05-24 20:30:00', 30, 29, true, 3, 1, 19),
-    ('2024-05-24 20:35:00', 28, 27, false, 2, 1, 20);
+    ('2024-05-24 20:35:00', 28, 27, false, 2, 1, 20);*/

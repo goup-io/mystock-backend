@@ -19,7 +19,7 @@ public class ProdutoVendaRes{
         private Double valorUnitario;
         private Integer quantidade;
         private Double desconto;
-        private String itemPromocional;
+//        private ItemPromocional itemPromocional;
         private VendaRes venda;
         private ETPTableRes etp;
         private List<HistoricoProdutoListagem> historicos;

@@ -23,7 +23,8 @@ public class ProdutoVendaController {
 
     @GetMapping
     public ResponseEntity<List<ProdutoVendaRes>> listar(){
-        return ResponseEntity.status(200).body(produtoVendaService.listar());
+        List<ProdutoVendaRes> produtos = produtoVendaService.listar();
+        return produtos.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(produtos);
     }
 
     @GetMapping("/{id}")

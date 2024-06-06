@@ -49,10 +49,6 @@ public class ProdutoVendaService{
 
     public List<ProdutoVendaRes> listar(){
         List<ProdutoVenda> produtoVendas = repository.findAll();
-        if (produtoVendas.isEmpty()){
-            throw new BuscaRetornaVazioException("ProdutoVenda retorna lista vazia");
-        }
-
         return ProdutoVendaMapper.dtoListToEntityList(produtoVendas);
     }
 

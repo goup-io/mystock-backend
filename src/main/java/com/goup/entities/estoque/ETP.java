@@ -2,6 +2,7 @@ package com.goup.entities.estoque;
 
 import com.goup.entities.estoque.produtos.Produto;
 import com.goup.entities.lojas.Loja;
+import com.goup.entities.vendas.ItemPromocional;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -25,6 +26,9 @@ public class ETP {
 
     @NotNull @ManyToOne(cascade = CascadeType.ALL) @JoinColumn(name = "loja_id", referencedColumnName = "id")
     private Loja loja;
+
+    @Enumerated(EnumType.STRING)
+    private ItemPromocional itemPromocional;
 
     @NotNull @PositiveOrZero @Column
     private int quantidade;
