@@ -234,4 +234,7 @@ public class VendaService {
         etpRepository.saveAll(etpsSalvos);
     }
 
+    public List<VendaResTable> listarVendasPendentes(Integer idLoja) {
+
+    }
 }
