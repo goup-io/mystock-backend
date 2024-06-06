@@ -57,8 +57,8 @@ public class VendaController {
         return ResponseEntity.status(200).body(service.finalizarVenda(id));
     }
 
-    @GetMapping("/vendas-pendentes/${idLoja}")
+    @GetMapping("/vendas-pendentes/{idLoja}")
     public ResponseEntity<List<VendaResTable>> listarVendasPendentes(@PathVariable Integer idLoja){
-        return ResponseEntity.status(200).body(service.listarVendasPendentes(idLoja));
+        return ResponseEntity.status(200).body(service.listarVendasPendentesPorLoja(idLoja));
     }
 }

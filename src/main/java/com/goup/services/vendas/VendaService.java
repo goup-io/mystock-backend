@@ -234,7 +234,21 @@ public class VendaService {
         etpRepository.saveAll(etpsSalvos);
     }
 
-    public List<VendaResTable> listarVendasPendentes(Integer idLoja) {
+    public List<VendaResTable> listarVendasPendentesPorLoja(Integer idLoja) {
+        List<Venda> vendas = repository.findAllByUsuarioLojaIdAndStatusVendaStatus(idLoja, StatusVenda.Status.PENDENTE);
+        if (vendas.isEmpty()){
+            throw new BuscaRetornaVazioException("Nenhuma venda pendente encontrada");
+        }
 
+        List<Integer> quantidadePorProdutoVenda = new ArrayList<>();
+        for (int i = 0; i < vendas.size(); i++) {
+            List<RetornoETPeQuantidade> itensDaVenda = produtoVendaRepository.findAllEtpsByVendaId(vendas.get(i).getId());
+            Integer qtdTotal = 0;
+            for (RetornoETPeQuantidade retornoETPeQuantidade : itensDaVenda) {
+                qtdTotal += retornoETPeQuantidade.quantidade();
+            }
+            quantidadePorProdutoVenda.add(qtdTotal);
+        }
+        return VendaMapper.entityToResTableList(vendas, quantidadePorProdutoVenda);
     }
 }
