@@ -37,7 +37,9 @@ public class VendaMapper {
                 venda.getId(),
                 venda.getDataHora().toLocalDate(),
                 venda.getDataHora().toLocalTime(),
+                venda.getUsuario().getCodigoVenda().toString(),
                 venda.getUsuario().getNome(),
+                venda.getTipoVenda(),
                 quantidadeItens,
                 venda.getValorTotal(),
                 venda.getStatusVenda().getStatus().getDescricao()
