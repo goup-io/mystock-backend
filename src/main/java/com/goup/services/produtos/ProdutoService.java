@@ -60,10 +60,12 @@ public class ProdutoService {
             List<Produto> produtos = repository.findAllByCorAndModelo(cor.get(), modelo.get());
             Produto produtoEncontrado = produtos.get(0);
             Optional<ETP> etpSearch = etpRepository.findByTamanhoAndLojaAndProduto(tamanho.get(), loja.get(), produtoEncontrado);
+
             if (etpSearch.isPresent()){
                 throw new RegistroConflitanteException("Produto de mesmo modelo e cor já existente!");
             }
-            etpRepository.save(ETPMapper.reqToEntity(tamanho.get(), produtoEncontrado, loja.get(), etpSearch.get().getItemPromocional()));
+
+            etpRepository.save(ETPMapper.reqToEntity(tamanho.get(), produtoEncontrado, loja.get(), produto.itemPromocional()));
         }
         final Produto produtoSalvo = this.repository.save(ProdutoMapper.reqToEntity(produto, cor.get(), modelo.get()));
         etpRepository.save(ETPMapper.reqToEntity(tamanho.get(), produtoSalvo, loja.get(), produto.itemPromocional()));
