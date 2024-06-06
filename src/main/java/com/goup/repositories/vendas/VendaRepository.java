@@ -1,13 +1,6 @@
 package com.goup.repositories.vendas;
-
-import com.goup.dtos.vendas.produtoVenda.RetornoETPeQuantidade;
-import com.goup.entities.estoque.ETP;
-<<<<<<< HEAD
 import com.goup.entities.vendas.StatusVenda;
-=======
-import com.goup.entities.usuarios.Usuario;
 import com.goup.entities.vendas.TipoVenda;
->>>>>>> develop
 import com.goup.entities.vendas.Venda;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
