@@ -4,6 +4,7 @@ import com.goup.dtos.vendas.pagamento.PagamentoMapper;
 import com.goup.dtos.vendas.pagamento.PagamentoReq;
 import com.goup.dtos.vendas.pagamento.PagamentoRes;
 import com.goup.entities.vendas.Pagamento;
+import com.goup.entities.vendas.StatusVenda;
 import com.goup.entities.vendas.TipoPagamento;
 import com.goup.entities.vendas.Venda;
 import com.goup.exceptions.BuscaRetornaVazioException;
@@ -34,17 +35,22 @@ public class PagamentoService {
                 .orElseThrow(() -> new RegistroNaoEncontradoException("TipoPagamento não encontrado"));
 
         Double valorPagoAteMomento = repository.sumValorPago(venda.getId()) == null ? 0.0 : repository.sumValorPago(venda.getId());
+        Double valorRestante = venda.getValorTotal() - valorPagoAteMomento;
         Pagamento pagamento;
-        if (valorPagoAteMomento >= venda.getValorTotal()){
+        if ((valorPagoAteMomento >= venda.getValorTotal())){
             throw new RegistroConflitanteException("Pagamento da Venda já foi realizado");
+        } else if (venda.getStatusVenda().getStatus() == StatusVenda.Status.FINALIZADA) {
+            throw new RegistroConflitanteException("Pagamento Impossivel de ser realizado - A venda já foi finalizada");
+        } else if (venda.getStatusVenda().getStatus() == StatusVenda.Status.CANCELADA) {
+            throw new RegistroConflitanteException("Pagamento Impossivel de ser realizado - A venda foi cancelada");
         }
         if (valorPagoAteMomento + dtoPagamento.getValor() > venda.getValorTotal()){
-            pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, venda.getValorTotal(), tipoPagamento, venda));
+            pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, valorRestante, tipoPagamento, venda));
         } else {
             pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
         }
 
-        return PagamentoMapper.entityToDto(pagamento, dtoPagamento.getValor());
+        return PagamentoMapper.entityToDto(pagamento, venda.getValorTotal() - (valorPagoAteMomento + dtoPagamento.getValor()));
     }
 
     public List<PagamentoRes> listar(){
