@@ -8,13 +8,24 @@ import com.goup.entities.vendas.Venda;
 import java.util.List;
 
 public class PagamentoMapper {
-    public static Pagamento dtoToEntity(PagamentoReq pagamentoReq, TipoPagamento tipoPagamento, Venda venda){
+    public static Pagamento dtoToEntity(PagamentoReq pagamentoReq, Double valorPagar, TipoPagamento tipoPagamento, Venda venda){
         Pagamento pagamento = new Pagamento();
         pagamento.setTipoPagamento(tipoPagamento);
-        pagamento.setValor(pagamentoReq.valor());
-        pagamento.setQtdParcelas(pagamentoReq.qtdParcelas());
+        pagamento.setValor(valorPagar);
+        pagamento.setQtdParcelas(pagamentoReq.getQtdParcelas());
         pagamento.setVenda(venda);
         return pagamento;
+    }
+
+    public static PagamentoRes entityToDto(Pagamento pagamento, Double valorPago){
+        return new PagamentoRes(
+                pagamento.getTipoPagamento().getMetodo().getMetodo(),
+                VendaMapper.entityToRes(pagamento.getVenda()),
+                pagamento.getValor(),
+                pagamento.getQtdParcelas(),
+                pagamento.getVenda().getValorTotal() - valorPago,
+                valorPago - pagamento.getVenda().getValorTotal()
+        );
     }
 
     public static PagamentoRes entityToDto(Pagamento pagamento){

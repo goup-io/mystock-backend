@@ -3,14 +3,20 @@ package com.goup.dtos.vendas.pagamento;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-public record PagamentoReq(
+@Getter
+@Setter
+public class PagamentoReq{
         @NotNull @DecimalMin("0.0")
-        Integer idTipoPagamento,
+        Integer idTipoPagamento;
         @NotNull @DecimalMin("0.0")
-        Integer idVenda,
+        Integer idVenda;
         @NotNull @DecimalMin("0.0")
-        Double valor,
+        Double valor;
         @NotNull @DecimalMin("1.0")
-        Integer qtdParcelas) {
+        Integer qtdParcelas;
 }
+
+
