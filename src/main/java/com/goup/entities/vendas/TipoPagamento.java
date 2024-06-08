@@ -19,7 +19,7 @@ public class TipoPagamento {
     public enum MetodoPagamento{
         CREDITO("Credito"),
         DEBITO("Debito"),
-        PIX("Pix"),
+        PIX("PIX"),
         DINHEIRO("Dinheiro");
 
         private final String metodo;

@@ -45,13 +45,31 @@ public class PagamentoService {
             throw new RegistroConflitanteException("Pagamento Impossivel de ser realizado - A venda foi cancelada");
         }
         if (valorPagoAteMomento + dtoPagamento.getValor() > venda.getValorTotal()){
-            pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, valorRestante, tipoPagamento, venda));
+            if (tipoPagamento.getMetodo().getMetodo().equals("PIX")){
+                pagamento = pagarComPix(dtoPagamento, tipoPagamento, venda);
+            } else {
+                pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, valorRestante, tipoPagamento, venda));
+            }
         } else {
-            pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
+            if (tipoPagamento.getMetodo().getMetodo().equals("PIX")){
+                pagamento = pagarComPix(dtoPagamento, tipoPagamento, venda);
+            } else {
+                  pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
+            }
         }
 
         return PagamentoMapper.entityToDto(pagamento, venda.getValorTotal() - (valorPagoAteMomento + dtoPagamento.getValor()));
     }
+
+    public Pagamento pagarComPix(PagamentoReq dtoPagamento, TipoPagamento tipoPagamento, Venda venda){
+        //todo: lógica para pagar o pix
+
+
+
+        return repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
+    }
+
+
 
     public List<PagamentoRes> listar(){
         List<Pagamento> pagamentos = repository.findAll();
