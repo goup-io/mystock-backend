@@ -31,4 +31,10 @@ public class ProdutoVendaController {
     public ResponseEntity<ProdutoVendaRes> buscarPorId(@PathVariable Integer id){
         return ResponseEntity.status(200).body(produtoVendaService.buscarPorId(id));
     }
+
+    @GetMapping("/venda/{id_venda}")
+    public ResponseEntity<List<ProdutoVendaRes>> listarProdutosDeVendaEspecifica(@PathVariable int id_venda){
+        List<ProdutoVendaRes> produtos = produtoVendaService.listarProdutosDeVendaEspecifica(id_venda);
+        return produtos.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(produtos);
+    }
 }

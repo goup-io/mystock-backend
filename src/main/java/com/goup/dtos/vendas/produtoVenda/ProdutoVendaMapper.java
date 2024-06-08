@@ -58,4 +58,27 @@ public class ProdutoVendaMapper {
     public static List<ProdutoVenda> dtoListToEntityList(List<ProdutoVendaReq> prodVendaReqs, ETP etp, Venda venda){
         return prodVendaReqs.stream().map(prodVendaReq -> ProdutoVendaMapper.dtoToEntity(prodVendaReq, etp, venda)).toList();
     }
+
+    public static ProdutoVendaDetalhamentoRes entityToResDetalhamento(ProdutoVenda p){
+        // Todos atributos são referentes apenas a uma unidade, exceto Subtotal
+        Integer id = p.getId();
+        String codigo = p.getEtp().getProduto().getModelo().getCodigo();
+        String descricao = p.getEtp().getProduto().getNome();
+        Double precoUnitario = p.getValorUnitario();
+        Integer qtd = p.getQuantidade();
+        Double desconto = p.getDesconto();
+        Double descontoUnitario = p.getDesconto() / qtd;
+        Double precoLiquido = precoUnitario - descontoUnitario;
+        Double totalBruto = precoUnitario * qtd;
+        Double subtotal = precoLiquido * qtd;
+
+        ProdutoVendaDetalhamentoRes dto = new ProdutoVendaDetalhamentoRes(
+            id, codigo, descricao, precoUnitario, qtd, desconto, precoLiquido, totalBruto, subtotal
+        );
+        return dto;
+    }
+
+    public static List<ProdutoVendaDetalhamentoRes> entityToResDetalhamento(List<ProdutoVenda> produtosVenda) {
+        return produtosVenda.stream().map(ProdutoVendaMapper::entityToResDetalhamento).toList();
+    }
 }

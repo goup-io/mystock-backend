@@ -1,11 +1,14 @@
 package com.goup.dtos.vendas.venda;
 
+import com.goup.dtos.vendas.produtoVenda.ProdutoVendaDetalhamentoRes;
 import com.goup.entities.usuarios.Usuario;
 import com.goup.entities.vendas.StatusVenda;
 import com.goup.entities.vendas.TipoVenda;
 import com.goup.entities.vendas.Venda;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,4 +60,25 @@ public class VendaMapper {
         return vendas.stream().map(VendaMapper::entityToRes).toList();
     }
 
+    public static VendaDetalhamentoRes entityToResDetalhamento(Venda v, List<ProdutoVendaDetalhamentoRes> produtosDetalhados) {
+        Integer id = v.getId();
+        LocalDate data = v.getDataHora().toLocalDate();
+        LocalTime hora = v.getDataHora().toLocalTime();
+        String nomeVendedor = v.getUsuario().getNome();
+        String tipoVenda = v.getTipoVenda().getTipo().getTipo();
+        Double descontoTipoVenda = v.getTipoVenda().getDesconto();
+        Integer qtdItens = produtosDetalhados.stream().mapToInt(ProdutoVendaDetalhamentoRes::qtd).sum();
+        Double valorBruto = produtosDetalhados.stream().mapToDouble(ProdutoVendaDetalhamentoRes::totalBruto).sum();
+        Double descontoProdutos = produtosDetalhados.stream().mapToDouble(ProdutoVendaDetalhamentoRes::desconto).sum();
+        Double valorLiquido = produtosDetalhados.stream().mapToDouble(ProdutoVendaDetalhamentoRes::subtotal).sum();
+        Double descontoVenda = v.getDesconto();
+        Double valorTotal = v.getValorTotal();
+        String statusVenda = v.getStatusVenda().getStatus().getDescricao();
+
+
+        VendaDetalhamentoRes dto = new VendaDetalhamentoRes(
+            id, data, hora, nomeVendedor, tipoVenda, descontoTipoVenda, qtdItens, valorBruto, descontoProdutos, valorLiquido, descontoVenda, valorTotal, statusVenda, produtosDetalhados
+        );
+        return dto;
+    }
 }

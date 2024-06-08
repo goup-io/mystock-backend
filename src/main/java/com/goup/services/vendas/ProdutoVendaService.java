@@ -60,4 +60,7 @@ public class ProdutoVendaService{
         return ProdutoVendaMapper.entityToResDto(produtoVendaOpt.get());
     }
 
+    public List<ProdutoVendaRes> listarProdutosDeVendaEspecifica(int idVenda) {
+        return ProdutoVendaMapper.dtoListToEntityList(repository.findAllProdutoVendaIdVenda(idVenda));
+    }
 }

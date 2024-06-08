@@ -44,6 +44,15 @@ public class UsuarioService {
         return UsuarioMapper.toListResTable(usuarios);
     }
 
+    public List<UsuarioResTableDto> buscarUsuariosPorLoja(int id_loja){
+        List<Usuario> usuarios = usuarioRepository.findAllByLoja_Id(id_loja);
+        if (usuarios.isEmpty()) {
+            throw new BuscaRetornaVazioException("Nenhum usuário encontrado!");
+        }
+        return UsuarioMapper.toListResTable(usuarios);
+    }
+
+
     public UsuarioResponseDto criarUsuario(UsuarioCadastrarDto novoUsuario) {
         Cargo cargo = buscarCargoPorId(novoUsuario.idCargo());
         if(cargo == null){
