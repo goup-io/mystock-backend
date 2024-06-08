@@ -64,15 +64,16 @@ public class ProdutoVendaMapper {
         Integer id = p.getId();
         String codigo = p.getEtp().getProduto().getModelo().getCodigo();
         String descricao = p.getEtp().getProduto().getNome();
-        Double preco = p.getValorUnitario();
+        Double precoUnitario = p.getValorUnitario();
         Integer qtd = p.getQuantidade();
         Double desconto = p.getDesconto();
-        Double precoLiquido = preco - desconto;
-
+        Double descontoUnitario = p.getDesconto() / qtd;
+        Double precoLiquido = precoUnitario - descontoUnitario;
+        Double totalBruto = precoUnitario * qtd;
         Double subtotal = precoLiquido * qtd;
 
         ProdutoVendaDetalhamentoRes dto = new ProdutoVendaDetalhamentoRes(
-            id, codigo, descricao, preco, qtd, desconto, precoLiquido, subtotal
+            id, codigo, descricao, precoUnitario, qtd, desconto, precoLiquido, totalBruto, subtotal
         );
         return dto;
     }

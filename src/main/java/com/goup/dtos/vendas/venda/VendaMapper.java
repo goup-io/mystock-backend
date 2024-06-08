@@ -65,14 +65,20 @@ public class VendaMapper {
         LocalDate data = v.getDataHora().toLocalDate();
         LocalTime hora = v.getDataHora().toLocalTime();
         String nomeVendedor = v.getUsuario().getNome();
-        TipoVenda tipoVenda = v.getTipoVenda();
-        Integer qtdItens = 0;
-        Double valor = v.getValorTotal();
+        String tipoVenda = v.getTipoVenda().getTipo().getTipo();
+        Double descontoTipoVenda = v.getTipoVenda().getDesconto();
+        Integer qtdItens = produtosDetalhados.stream().mapToInt(ProdutoVendaDetalhamentoRes::qtd).sum();
+        Double valorBruto = produtosDetalhados.stream().mapToDouble(ProdutoVendaDetalhamentoRes::totalBruto).sum();
+        Double descontoProdutos = produtosDetalhados.stream().mapToDouble(ProdutoVendaDetalhamentoRes::desconto).sum();
+        Double valorLiquido = produtosDetalhados.stream().mapToDouble(ProdutoVendaDetalhamentoRes::subtotal).sum();
+        Double descontoVenda = v.getDesconto();
+        Double valorTotal = v.getValorTotal();
         String statusVenda = v.getStatusVenda().getStatus().getDescricao();
-        for(ProdutoVendaDetalhamentoRes p : produtosDetalhados){
-            qtdItens += p.qtd();
-        }
-        VendaDetalhamentoRes dto = new VendaDetalhamentoRes(id, data, hora, nomeVendedor, tipoVenda, qtdItens, valor, statusVenda, produtosDetalhados);
+
+
+        VendaDetalhamentoRes dto = new VendaDetalhamentoRes(
+            id, data, hora, nomeVendedor, tipoVenda, descontoTipoVenda, qtdItens, valorBruto, descontoProdutos, valorLiquido, descontoVenda, valorTotal, statusVenda, produtosDetalhados
+        );
         return dto;
     }
 }

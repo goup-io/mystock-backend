@@ -16,9 +16,14 @@ public record VendaDetalhamentoRes(
     LocalDate data,
     LocalTime hora,
     String nomeVendedor,
-    TipoVenda tipoVenda,
+    String tipoVenda,
+    Double descontoTipoVenda,
     Integer qtdItens,
-    Double valor,
+    Double valorBruto,
+    Double descontoProdutos,
+    Double valorLiquido,
+    Double descontoVenda,
+    Double valorTotal,
     String statusVenda,
     List<ProdutoVendaDetalhamentoRes> produtosVenda
 ) {
