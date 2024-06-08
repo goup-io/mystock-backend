@@ -16,7 +16,11 @@ import com.goup.repositories.vendas.VendaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pix.DadosEnvioPix;
+import pix.QRCodePix;
 
+import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.util.List;
 
 @Service
@@ -44,29 +48,48 @@ public class PagamentoService {
         } else if (venda.getStatusVenda().getStatus() == StatusVenda.Status.CANCELADA) {
             throw new RegistroConflitanteException("Pagamento Impossivel de ser realizado - A venda foi cancelada");
         }
+
+        String base64Image = null;
+
         if (valorPagoAteMomento + dtoPagamento.getValor() > venda.getValorTotal()){
             if (tipoPagamento.getMetodo().getMetodo().equals("PIX")){
-                pagamento = pagarComPix(dtoPagamento, tipoPagamento, venda);
+                base64Image = pagarComPix(dtoPagamento);
+                pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
             } else {
                 pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, valorRestante, tipoPagamento, venda));
             }
         } else {
             if (tipoPagamento.getMetodo().getMetodo().equals("PIX")){
-                pagamento = pagarComPix(dtoPagamento, tipoPagamento, venda);
+                pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
+                base64Image = pagarComPix(dtoPagamento);
             } else {
                   pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
             }
         }
 
-        return PagamentoMapper.entityToDto(pagamento, venda.getValorTotal() - (valorPagoAteMomento + dtoPagamento.getValor()));
+        return PagamentoMapper.entityToDto(pagamento, venda.getValorTotal() - (valorPagoAteMomento + dtoPagamento.getValor()),base64Image);
     }
-
-    public Pagamento pagarComPix(PagamentoReq dtoPagamento, TipoPagamento tipoPagamento, Venda venda){
+//
+    public String pagarComPix(PagamentoReq dtoPagamento){
         //todo: lógica para pagar o pix
 
+            final var imagePath = "qrcode.png";
+
+            final var dadosPix =
+                    new DadosEnvioPix(
+                            "Pérolas Calçados", "11965234200",
+                            new BigDecimal(dtoPagamento.getValor()), "São Paulo", "Pérolas Calçados");
+
+            final var qrCodePix = new QRCodePix(dadosPix);
+                qrCodePix.save(Path.of(imagePath));
+                System.out.println("QRCode:");
+                System.out.println(qrCodePix);
+                System.out.printf("%nArquivo gerado em "+imagePath);
 
 
-        return repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
+        String base64Image = qrCodePix.saveAndGetBytesAsBase64(Path.of(imagePath));
+
+        return base64Image;
     }
 
 
