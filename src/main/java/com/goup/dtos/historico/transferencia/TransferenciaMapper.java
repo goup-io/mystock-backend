@@ -12,21 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TransferenciaMapper {
-/*
-    public static List<Transferencia> reqToEntity(TransferenciaReq transf, ETP etp, Usuario coletor, StatusTransferencia pendente){
-        List<Transferencia> transferencias = new ArrayList<>();
-
-        transf.itens()
-
+    public static Transferencia reqToEntity(ETP etp, Integer qtdSolicitada, Usuario coletor, StatusTransferencia pendente){
+        Transferencia entity = new Transferencia();
         entity.setDataHora(LocalDateTime.now());
         entity.setColetor(coletor);
-        entity.setQuantidadeSolicitada(transf.itens().);
+        entity.setQuantidadeSolicitada(qtdSolicitada);
         entity.setEtp(etp);
         entity.setStatus(pendente);
         return entity;
     }
 
- */
+
 
     public static TransferenciaRes entityToRes(Transferencia transf){
         Integer id = transf.getId();

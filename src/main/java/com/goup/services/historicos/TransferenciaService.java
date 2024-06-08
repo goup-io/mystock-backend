@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,8 +35,9 @@ public class TransferenciaService {
     UsuarioRepository usuarioRepository;
     @Autowired
     StatusTransferenciaRepository statusTransferenciaRepository;
-/*
-    public TransferenciaRes cadastrar(TransferenciaReq transf){
+
+    public List<TransferenciaRes> cadastrar(TransferenciaReq transf){
+        List<Transferencia> transferencias = new ArrayList<>();
         if (!transf.itens().isEmpty()){
             for (TransferenciaETPEQuantidade item : transf.itens()) {
                 Optional<ETP> etp = etpRepository.findById(item.etp_id());
@@ -52,19 +54,16 @@ public class TransferenciaService {
                 }else if(item.quantidadeSolicitada() < 1 || item.quantidadeSolicitada() > etp.get().getQuantidade()){
                     throw new OperacaoInvalidaException("QuantidadeSolicitada não pode ser menor que 1 ou maior que a quantidade disponível!");
                 }
+                Transferencia transferencia = TransferenciaMapper.reqToEntity(etp.get(), item.quantidadeSolicitada(), coletor.get(), status_pendente.get());
+                transferencias.add(transferencia);
             }
-
-
         }
 
-
-
-        Transferencia histCadastrado = repository.save(TransferenciaMapper.reqToEntity(transf, etp.get(), coletor.get(), status_pendente.get()));
-        return TransferenciaMapper.entityToRes(histCadastrado);
+        List<Transferencia> histCadastrado = repository.saveAll(transferencias);
+        return TransferenciaMapper.listToListReq(histCadastrado);
     }
 
 
- */
     public List<TransferenciaRes> listar(){
         List<Transferencia> lista = repository.findAll();
         List<TransferenciaRes> listaDto = TransferenciaMapper.listToListReq(lista);
