@@ -1,4 +1,4 @@
-package com.goup.dtos.historico;
+package com.goup.dtos.historico.transferencia;
 
 import com.goup.entities.usuarios.Usuario;
 

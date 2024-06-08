@@ -21,8 +21,8 @@ public class Transferencia {
     private Integer quantidadeSolicitada;
 
     private Integer quantidadeLiberada;
-
-    private Boolean status;
+    @NotNull @ManyToOne @JoinColumn(name = "status_transferencia_id", referencedColumnName = "id")
+    private StatusTransferencia status;
 
     @NotNull @ManyToOne @JoinColumn(name = "coletor_id", referencedColumnName = "id")
     private Usuario coletor;

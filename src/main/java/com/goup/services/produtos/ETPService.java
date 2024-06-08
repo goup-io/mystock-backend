@@ -55,7 +55,7 @@ public class ETPService {
         }
 
 
-        final ETP savedEtp = repository.save(ETPMapper.reqToEntity(tamanho.get(), produto.get(), loja.get()));
+        final ETP savedEtp = repository.save(ETPMapper.reqToEntity(tamanho.get(), produto.get(), loja.get(), etp.itemPromocional()));
         return ETPMapper.entityToRes(savedEtp);
     }
 
@@ -108,6 +108,7 @@ public class ETPService {
         if (etp.isEmpty()) {
             throw new RegistroNaoEncontradoException("ETP não encontrado!");
         }
+
         if(soma){
             etp.get().setQuantidade(etp.get().getQuantidade() + quantidade);
         }else{

@@ -1,4 +1,4 @@
-package com.goup.dtos.historico;
+package com.goup.dtos.historico.transferencia;
 
 public record TransferenciaReq(
     Integer quantidadeSolicitada,
