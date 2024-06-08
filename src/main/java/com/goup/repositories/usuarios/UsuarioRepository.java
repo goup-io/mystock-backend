@@ -18,4 +18,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query("SELECT MAX(u.id) FROM Usuario u")
     Integer findMaxId();
 
+    Optional<Usuario> findByCodigoVenda(Integer codigoVenda);
+
 }

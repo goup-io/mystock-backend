@@ -9,6 +9,6 @@ public record VendaReq(
         @NotNull
         Integer tipoVendaId,
         @NotNull
-        Integer usuarioId
+        Integer codigoVendedor
 ) {
 }

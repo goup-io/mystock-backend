@@ -112,7 +112,7 @@ public class VendaService {
     }
 
     public VendaRes salvar(@Valid VendaReq req, List<ProdutoVendaReq> retornoETPeQuantidades) {
-        Usuario usuario = usuarioRepository.findById(req.usuarioId())
+        Usuario usuario = usuarioRepository.findByCodigoVenda(req.codigoVendedor())
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Usuario não encontrado"));
 
         TipoVenda tipoVenda = tipoVendaRepository.findById(req.tipoVendaId())
