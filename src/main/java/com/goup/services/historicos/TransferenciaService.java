@@ -34,27 +34,37 @@ public class TransferenciaService {
     UsuarioRepository usuarioRepository;
     @Autowired
     StatusTransferenciaRepository statusTransferenciaRepository;
-
+/*
     public TransferenciaRes cadastrar(TransferenciaReq transf){
-        Optional<ETP> etp = etpRepository.findById(transf.etp_id());
-        Optional<Usuario> coletor = usuarioRepository.findById(transf.coletor_id());
-        Optional<StatusTransferencia> status_pendente = statusTransferenciaRepository.findByStatus(StatusTransferencia.Status.PENDENTE);
-        if(etp.isEmpty()){
-            throw new RegistroNaoEncontradoException("ETP não encontrado!");
-        }else if(coletor.isEmpty()){
-            throw new RegistroNaoEncontradoException("Usuário coletor não encontrado!");
-        }else if(status_pendente.isEmpty()){
-            throw new RegistroNaoEncontradoException("Status de Transferência não encontrado!");
-        }else if(coletor.get().getLoja() == etp.get().getLoja()){
-            throw new OperacaoInvalidaException("Usuário está solicitando item da própria loja!");
-        }else if(transf.quantidadeSolicitada() < 1 || transf.quantidadeSolicitada() > etp.get().getQuantidade()){
-            throw new OperacaoInvalidaException("QuantidadeSolicitada não pode ser menor que 1 ou maior que a quantidade disponível!");
+        if (!transf.itens().isEmpty()){
+            for (TransferenciaETPEQuantidade item : transf.itens()) {
+                Optional<ETP> etp = etpRepository.findById(item.etp_id());
+                Optional<Usuario> coletor = usuarioRepository.findById(transf.coletor_id());
+                Optional<StatusTransferencia> status_pendente = statusTransferenciaRepository.findByStatus(StatusTransferencia.Status.PENDENTE);
+                if(etp.isEmpty()){
+                    throw new RegistroNaoEncontradoException("ETP não encontrado!");
+                }else if(coletor.isEmpty()){
+                    throw new RegistroNaoEncontradoException("Usuário coletor não encontrado!");
+                }else if(status_pendente.isEmpty()){
+                    throw new RegistroNaoEncontradoException("Status de Transferência não encontrado!");
+                }else if(coletor.get().getLoja() == etp.get().getLoja()){
+                    throw new OperacaoInvalidaException("Usuário está solicitando item da própria loja!");
+                }else if(item.quantidadeSolicitada() < 1 || item.quantidadeSolicitada() > etp.get().getQuantidade()){
+                    throw new OperacaoInvalidaException("QuantidadeSolicitada não pode ser menor que 1 ou maior que a quantidade disponível!");
+                }
+            }
+
+
         }
+
+
 
         Transferencia histCadastrado = repository.save(TransferenciaMapper.reqToEntity(transf, etp.get(), coletor.get(), status_pendente.get()));
         return TransferenciaMapper.entityToRes(histCadastrado);
     }
 
+
+ */
     public List<TransferenciaRes> listar(){
         List<Transferencia> lista = repository.findAll();
         List<TransferenciaRes> listaDto = TransferenciaMapper.listToListReq(lista);

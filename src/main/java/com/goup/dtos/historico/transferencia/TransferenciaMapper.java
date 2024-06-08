@@ -8,18 +8,25 @@ import com.goup.entities.historicos.Transferencia;
 import com.goup.entities.usuarios.Usuario;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransferenciaMapper {
-    public static Transferencia reqToEntity(TransferenciaReq transf, ETP etp, Usuario coletor, StatusTransferencia pendente){
-        Transferencia entity = new Transferencia();
+/*
+    public static List<Transferencia> reqToEntity(TransferenciaReq transf, ETP etp, Usuario coletor, StatusTransferencia pendente){
+        List<Transferencia> transferencias = new ArrayList<>();
+
+        transf.itens()
+
         entity.setDataHora(LocalDateTime.now());
         entity.setColetor(coletor);
-        entity.setQuantidadeSolicitada(transf.quantidadeSolicitada());
+        entity.setQuantidadeSolicitada(transf.itens().);
         entity.setEtp(etp);
         entity.setStatus(pendente);
         return entity;
     }
+
+ */
 
     public static TransferenciaRes entityToRes(Transferencia transf){
         Integer id = transf.getId();

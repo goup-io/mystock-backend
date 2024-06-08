@@ -29,19 +29,32 @@ public class Utils {
 
         for (int i = left; i < right + 1; i++) {
             if (leftIndex < lengthLeft && rightIndex < lengthRight) {
-                if (leftArray.getElemento(leftIndex).getProduto().getNome().compareTo(rightArray.getElemento(rightIndex).getProduto().getNome()) < 0) {
-                    array.adiciona(i, leftArray.getElemento(leftIndex));
-                    leftIndex++;
-                } else {
-                    array.adiciona(i, rightArray.getElemento(rightIndex));
-                    rightIndex++;
+                ETP leftElement = leftArray.getElemento(leftIndex);
+                ETP rightElement = rightArray.getElemento(rightIndex);
+
+                if (leftElement != null && rightElement != null &&
+                        leftElement.getProduto() != null && rightElement.getProduto() != null &&
+                        leftElement.getProduto().getNome() != null && rightElement.getProduto().getNome() != null) {
+                    if (leftElement.getProduto().getNome().compareTo(rightElement.getProduto().getNome()) < 0) {
+                        array.adiciona(i, leftElement);
+                        leftIndex++;
+                    } else {
+                        array.adiciona(i, rightElement);
+                        rightIndex++;
+                    }
                 }
             } else if (leftIndex < lengthLeft) {
-                array.adiciona(i, leftArray.getElemento(leftIndex));
-                leftIndex++;
+                ETP leftElement = leftArray.getElemento(leftIndex);
+                if (leftElement != null) {
+                    array.adiciona(i, leftElement);
+                    leftIndex++;
+                }
             } else if (rightIndex < lengthRight) {
-                array.adiciona(i, rightArray.getElemento(rightIndex));
-                rightIndex++;
+                ETP rightElement = rightArray.getElemento(rightIndex);
+                if (rightElement != null) {
+                    array.adiciona(i, rightElement);
+                    rightIndex++;
+                }
             }
         }
     }

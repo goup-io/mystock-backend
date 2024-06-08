@@ -19,11 +19,13 @@ import java.util.List;
 public class TransferenciaController {
     @Autowired
     TransferenciaService service;
-    @PostMapping
+   /* @PostMapping
     public ResponseEntity<TransferenciaRes> cadastrar(@Valid @RequestBody TransferenciaReq transf){
         TransferenciaRes transfCadastrado = service.cadastrar(transf);
         return ResponseEntity.status(201).body(transfCadastrado);
     }
+
+    */
 
     @GetMapping
     public ResponseEntity<List<TransferenciaRes>> listar(){

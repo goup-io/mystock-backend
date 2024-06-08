@@ -65,7 +65,6 @@ public class PagamentoService {
         //todo: lógica para pagar o pix
 
 
-
         return repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
     }
 
