@@ -4,10 +4,7 @@ import com.goup.dtos.historico.produto.HistoricoProdutoReq;
 import com.goup.dtos.vendas.produtoVenda.ProdutoVendaMapper;
 import com.goup.dtos.vendas.produtoVenda.ProdutoVendaReq;
 import com.goup.dtos.vendas.produtoVenda.RetornoETPeQuantidade;
-import com.goup.dtos.vendas.venda.VendaMapper;
-import com.goup.dtos.vendas.venda.VendaReq;
-import com.goup.dtos.vendas.venda.VendaRes;
-import com.goup.dtos.vendas.venda.VendaResTable;
+import com.goup.dtos.vendas.venda.*;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.historicos.StatusHistoricoProduto;
 import com.goup.entities.usuarios.Usuario;
@@ -94,8 +91,6 @@ public class VendaService {
         }
         return VendaMapper.entityToResTableList(vendas, quantidadePorProdutoVenda);
     }
-
-
 
     public VendaResTable buscarPorId(Integer id){
         Optional<Venda> venda = repository.findById(id);
@@ -250,5 +245,9 @@ public class VendaService {
             quantidadePorProdutoVenda.add(qtdTotal);
         }
         return VendaMapper.entityToResTableList(vendas, quantidadePorProdutoVenda);
+    }
+
+    public VendaDetalhamentoRes buscarVendaDetalhadaPorId(Integer idVenda) {
+        return null;
     }
 }

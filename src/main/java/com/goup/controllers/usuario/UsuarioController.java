@@ -40,8 +40,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/loja/{id_loja}")
-    public ResponseEntity<List<UsuarioResTableDto>> buscarUsuariosPorLoja(@PathVariable("id") int id) {
-        List<UsuarioResTableDto> usuarios = usuarioService.buscarUsuariosPorLoja(id);
+    public ResponseEntity<List<UsuarioResTableDto>> buscarUsuariosPorLoja(@PathVariable int id_loja) {
+        List<UsuarioResTableDto> usuarios = usuarioService.buscarUsuariosPorLoja(id_loja);
         return usuarios.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(usuarios);
     }
 
