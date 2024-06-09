@@ -4,6 +4,8 @@ import com.goup.dtos.estoque.ETPEditModal;
 import com.goup.dtos.estoque.ETPMapper;
 import com.goup.dtos.estoque.ETPReq;
 import com.goup.dtos.estoque.ETPTableRes;
+import com.goup.entities.estoque.AlertaInfos;
+import com.goup.entities.estoque.AlertasEstoque;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.estoque.Tamanho;
 import com.goup.entities.estoque.produtos.Produto;
@@ -11,6 +13,7 @@ import com.goup.entities.lojas.Loja;
 import com.goup.exceptions.RegistroConflitanteException;
 import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.lojas.LojaRepository;
+import com.goup.repositories.produtos.AlertasEstoqueRepository;
 import com.goup.repositories.produtos.ETPRepository;
 import com.goup.repositories.produtos.ProdutoRepository;
 import com.goup.repositories.produtos.TamanhoRepository;
@@ -20,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +37,8 @@ public class ETPService {
     private ProdutoRepository produtoRepository;
     @Autowired
     private LojaRepository lojaRepository;
+    @Autowired
+    private AlertasEstoqueRepository alertasEstoqueRepository;
     private Utils utils;
 
     public ETPTableRes cadastrar(ETPReq etp){
@@ -113,6 +119,14 @@ public class ETPService {
             etp.get().setQuantidade(etp.get().getQuantidade() + quantidade);
         }else{
             etp.get().setQuantidade(etp.get().getQuantidade() - quantidade);
+            if(etp.get().getQuantidade() <= AlertaInfos.quantidadeMinima){
+                AlertasEstoque alerta = new AlertasEstoque();
+                alerta.setTitulo("Alerta estoque com quantidade abaixo do ideal!");
+                alerta.setDescricao("Estoque do produto " + etp.get().getProduto().getNome() + "de tamanho " + etp.get().getTamanho() + "está em " + etp.get().getQuantidade() + "!");
+                alerta.setDataHora(LocalDateTime.now());
+                alerta.setEtp(etp.get());
+                alertasEstoqueRepository.save(alerta);
+            }
         }
         ETP savedEtp = repository.save(etp.get());
         return ETPMapper.toTableResponseEntity(savedEtp);

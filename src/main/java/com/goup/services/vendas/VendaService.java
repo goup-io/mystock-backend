@@ -6,6 +6,8 @@ import com.goup.dtos.vendas.produtoVenda.ProdutoVendaMapper;
 import com.goup.dtos.vendas.produtoVenda.ProdutoVendaReq;
 import com.goup.dtos.vendas.produtoVenda.RetornoETPeQuantidade;
 import com.goup.dtos.vendas.venda.*;
+import com.goup.entities.estoque.AlertaInfos;
+import com.goup.entities.estoque.AlertasEstoque;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.historicos.StatusHistoricoProduto;
 import com.goup.entities.usuarios.Usuario;
@@ -16,6 +18,7 @@ import com.goup.entities.vendas.Venda;
 import com.goup.exceptions.BuscaRetornaVazioException;
 import com.goup.exceptions.RegistroConflitanteException;
 import com.goup.exceptions.RegistroNaoEncontradoException;
+import com.goup.repositories.produtos.AlertasEstoqueRepository;
 import com.goup.repositories.produtos.ETPRepository;
 import com.goup.repositories.usuarios.UsuarioRepository;
 import com.goup.repositories.vendas.ProdutoVendaRepository;
@@ -50,6 +53,8 @@ public class VendaService {
     private ProdutoVendaRepository produtoVendaRepository;
     @Autowired
     private HistoricoProdutoService historicoProdutoService;
+    @Autowired
+    private AlertasEstoqueRepository alertasEstoqueRepository;
 
 
     public List<VendaResTable> listar(){
@@ -223,6 +228,14 @@ public class VendaService {
                 etpAtualizar.setQuantidade(etpAtualizar.getQuantidade() + etp.quantidade());
             } else {
                 etpAtualizar.setQuantidade(etpAtualizar.getQuantidade() - etp.quantidade());
+                if(etpAtualizar.getQuantidade() <= AlertaInfos.quantidadeMinima){
+                    AlertasEstoque alerta = new AlertasEstoque();
+                    alerta.setTitulo("Alerta estoque com quantidade abaixo do ideal!");
+                    alerta.setDescricao("Estoque do produto " + etpAtualizar.getProduto().getNome() + "de tamanho " + etpAtualizar.getTamanho() + "está em " + etpAtualizar.getQuantidade() + "!");
+                    alerta.setDataHora(LocalDateTime.now());
+                    alerta.setEtp(etpAtualizar);
+                    alertasEstoqueRepository.save(alerta);
+                }
             }
             etpsSalvos.add(etpAtualizar);
         }

@@ -1,6 +1,8 @@
 package com.goup.services.historicos;
 
 import com.goup.dtos.historico.transferencia.*;
+import com.goup.entities.estoque.AlertaInfos;
+import com.goup.entities.estoque.AlertasEstoque;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.estoque.Tamanho;
 import com.goup.entities.estoque.produtos.Produto;
@@ -13,6 +15,7 @@ import com.goup.exceptions.OperacaoInvalidaException;
 import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.historicos.StatusTransferenciaRepository;
 import com.goup.repositories.historicos.TransferenciaRepository;
+import com.goup.repositories.produtos.AlertasEstoqueRepository;
 import com.goup.repositories.produtos.ETPRepository;
 import com.goup.repositories.usuarios.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,8 @@ public class TransferenciaService {
     UsuarioRepository usuarioRepository;
     @Autowired
     StatusTransferenciaRepository statusTransferenciaRepository;
+    @Autowired
+    AlertasEstoqueRepository alertasEstoqueRepository;
 
     public List<TransferenciaRes> cadastrar(TransferenciaReq transf){
         List<Transferencia> transferencias = new ArrayList<>();
@@ -121,6 +126,15 @@ public class TransferenciaService {
         Integer quantidadeTransf = transfAprovada.getQuantidadeLiberada();
         etpColetor.setQuantidade(etpColetor.getQuantidade() + quantidadeTransf);
         etpLiberador.setQuantidade(etpLiberador.getQuantidade() - quantidadeTransf);
+        if(etpLiberador.getQuantidade() <= AlertaInfos.quantidadeMinima){
+            AlertasEstoque alerta = new AlertasEstoque();
+            alerta.setTitulo("Alerta estoque com quantidade abaixo do ideal!");
+            alerta.setDescricao("Estoque do produto " + etpLiberador.getProduto().getNome() + "de tamanho " + etpLiberador.getTamanho() + "está em " + etpLiberador.getQuantidade() + "!");
+            alerta.setDataHora(LocalDateTime.now());
+            alerta.setEtp(etpLiberador);
+            alertasEstoqueRepository.save(alerta);
+        }
+
         etpRepository.save(etpColetor);
         etpRepository.save(etpLiberador);
         repository.save(transfAprovada);
