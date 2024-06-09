@@ -30,13 +30,21 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<List<UsuarioResTableDto>> listar() {
-        return ResponseEntity.status(200).body(usuarioService.buscarUsuarios());
+        List<UsuarioResTableDto> usuarios = usuarioService.buscarUsuarios();
+        return usuarios.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(usuarios);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponseDto> buscarUsuarioPorId(@PathVariable("id") int id) {
         return ResponseEntity.status(200).body(usuarioService.buscarUsuarioPorId(id));
     }
+
+    @GetMapping("/loja/{id_loja}")
+    public ResponseEntity<List<UsuarioResTableDto>> buscarUsuariosPorLoja(@PathVariable int id_loja) {
+        List<UsuarioResTableDto> usuarios = usuarioService.buscarUsuariosPorLoja(id_loja);
+        return usuarios.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(usuarios);
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseDto> atualizar(@RequestBody @Valid UsuarioAtualizarDto novoUsuario, @PathVariable Integer id) {

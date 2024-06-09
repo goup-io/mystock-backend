@@ -1,10 +1,7 @@
 package com.goup.controllers.vendas;
 
 import com.goup.dtos.vendas.produtoVenda.ProdutoVendaReq;
-import com.goup.dtos.vendas.venda.VendaEProdutosReq;
-import com.goup.dtos.vendas.venda.VendaReq;
-import com.goup.dtos.vendas.venda.VendaRes;
-import com.goup.dtos.vendas.venda.VendaResTable;
+import com.goup.dtos.vendas.venda.*;
 import com.goup.entities.usuarios.Usuario;
 import com.goup.entities.vendas.TipoVenda;
 import com.goup.services.vendas.VendaService;
@@ -40,6 +37,11 @@ public class VendaController {
     @GetMapping("/{id}")
     public ResponseEntity<VendaResTable> buscar(@PathVariable Integer id){
         return ResponseEntity.status(200).body(service.buscarPorId(id));
+    }
+
+    @GetMapping("/detalhamento/{idVenda}")
+    public ResponseEntity<VendaDetalhamentoRes> buscarVendaDetalhadaPorId(@PathVariable Integer idVenda){
+        return ResponseEntity.status(200).body(service.buscarVendaDetalhadaPorId(idVenda));
     }
 
     @PostMapping

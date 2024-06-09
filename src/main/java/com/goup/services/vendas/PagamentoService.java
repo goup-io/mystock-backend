@@ -90,6 +90,7 @@ public class PagamentoService {
         String base64Image = qrCodePix.saveAndGetBytesAsBase64(Path.of(imagePath));
 
         return base64Image;
+        return repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
     }
 
 
