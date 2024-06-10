@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -31,5 +33,6 @@ public class Transferencia {
     private Usuario liberador;
 
     @NotNull @ManyToOne @JoinColumn(name = "etp_id", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private ETP etp;
 }
