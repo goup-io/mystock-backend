@@ -25,6 +25,7 @@ public class ETPMapper {
             req.getQuantidade(),
             req.getProduto().getId());
     }
+
     public static ETPEditModal toEditModalEntity(ETP req) {
         return new ETPEditModal(
                 req.getId(),

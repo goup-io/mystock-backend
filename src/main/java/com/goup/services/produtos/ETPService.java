@@ -1,9 +1,6 @@
 package com.goup.services.produtos;
 
-import com.goup.dtos.estoque.ETPEditModal;
-import com.goup.dtos.estoque.ETPMapper;
-import com.goup.dtos.estoque.ETPReq;
-import com.goup.dtos.estoque.ETPTableRes;
+import com.goup.dtos.estoque.*;
 import com.goup.entities.estoque.AlertaInfos;
 import com.goup.entities.estoque.AlertasEstoque;
 import com.goup.entities.estoque.ETP;
@@ -24,6 +21,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +37,7 @@ public class ETPService {
     private LojaRepository lojaRepository;
     @Autowired
     private AlertasEstoqueRepository alertasEstoqueRepository;
+
     private Utils utils;
 
     public ETPTableRes cadastrar(ETPReq etp){
@@ -130,6 +129,38 @@ public class ETPService {
         }
         ETP savedEtp = repository.save(etp.get());
         return ETPMapper.toTableResponseEntity(savedEtp);
+    }
+
+    public List<ETPTableRes> alterarQuantidade(List<ReqETPeQuantidade> qtdPorETPId, Boolean soma, Integer idLoja){
+        List<ETP> etpsSalvar = new ArrayList<>();
+        for (ReqETPeQuantidade reqETPeQuantidade : qtdPorETPId) {
+            Optional<ETP> etp = repository.findById(reqETPeQuantidade.idEtp());
+
+            if (etp.isEmpty()) {
+                throw new RegistroNaoEncontradoException("ETP não encontrado!");
+            }
+
+            if(soma){
+                etp.get().setQuantidade(etp.get().getQuantidade() + reqETPeQuantidade.quantidade());
+            }else{
+                etp.get().setQuantidade(etp.get().getQuantidade() - reqETPeQuantidade.quantidade());
+                if(etp.get().getQuantidade() <= AlertaInfos.quantidadeMinima){
+                    AlertasEstoque alerta = new AlertasEstoque();
+                    alerta.setTitulo("Alerta estoque com quantidade abaixo do ideal!");
+                    alerta.setDescricao("Estoque do produto " + etp.get().getProduto().getNome() + "de tamanho " + etp.get().getTamanho() + "está em " + etp.get().getQuantidade() + "!");
+                    alerta.setDataHora(LocalDateTime.now());
+                    alerta.setEtp(etp.get());
+                    alertasEstoqueRepository.save(alerta);
+                }
+            }
+
+            if (etp.get().getLoja().getId().equals(idLoja)){
+                ETP savedEtp = repository.save(etp.get());
+                etpsSalvar.add(savedEtp);
+            }
+        }
+
+        return ETPMapper.toTableResponse(etpsSalvar);
     }
 
     public void deletar(Integer id){
