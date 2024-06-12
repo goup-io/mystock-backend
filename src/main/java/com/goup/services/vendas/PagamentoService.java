@@ -32,7 +32,7 @@ public class PagamentoService {
     @Autowired
     private TipoPagamentoRepository tipoPagamentoRepository;
 
-    public PagamentoRes realizarPagamento(@Valid PagamentoReq dtoPagamento){
+    public PagamentoRes realizarPagamento(@Valid PagamentoReq dtoPagamento) {
         Venda venda = vendaRepository.findById(dtoPagamento.getIdVenda())
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Venda não encontrada"));
         TipoPagamento tipoPagamento = tipoPagamentoRepository.findById(dtoPagamento.getIdTipoPagamento())
@@ -41,7 +41,7 @@ public class PagamentoService {
         Double valorPagoAteMomento = repository.sumValorPago(venda.getId()) == null ? 0.0 : repository.sumValorPago(venda.getId());
         Double valorRestante = venda.getValorTotal() - valorPagoAteMomento;
         Pagamento pagamento;
-        if ((valorPagoAteMomento >= venda.getValorTotal())){
+        if ((valorPagoAteMomento >= venda.getValorTotal())) {
             throw new RegistroConflitanteException("Pagamento da Venda já foi realizado");
         } else if (venda.getStatusVenda().getStatus() == StatusVenda.Status.FINALIZADA) {
             throw new RegistroConflitanteException("Pagamento Impossivel de ser realizado - A venda já foi finalizada");
@@ -51,23 +51,29 @@ public class PagamentoService {
 
         String base64Image = null;
 
-        if (valorPagoAteMomento + dtoPagamento.getValor() > venda.getValorTotal()){
+        if (valorPagoAteMomento + dtoPagamento.getValor() < venda.getValorTotal()) {
+            if (tipoPagamento.getMetodo().getMetodo().equals("PIX")) {
+                pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
+                base64Image = pagarComPix(dtoPagamento);
+
+                return PagamentoMapper.entityToDto(pagamento, venda.getValorTotal() - (valorPagoAteMomento + dtoPagamento.getValor()), base64Image);
+
+            } else {
+                return PagamentoMapper.entityToDto(repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda)));
+            }
+        } else if (valorPagoAteMomento + dtoPagamento.getValor() > venda.getValorTotal() && tipoPagamento.getMetodo().getMetodo().equals("Dinheiro")) {
+           return PagamentoMapper.entityToDto(repository.save(PagamentoMapper.dtoToEntity(dtoPagamento,dtoPagamento.getValor(), tipoPagamento, venda)));
+                /*
             if (tipoPagamento.getMetodo().getMetodo().equals("PIX")){
                 base64Image = pagarComPix(dtoPagamento);
                 pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
             } else {
                 pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, valorRestante, tipoPagamento, venda));
             }
-        } else {
-            if (tipoPagamento.getMetodo().getMetodo().equals("PIX")){
-                pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
-                base64Image = pagarComPix(dtoPagamento);
-            } else {
-                  pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
-            }
+            */
+        }else {
+            throw new RegistroConflitanteException("Valor do pagamento excede o valor da venda");
         }
-
-        return PagamentoMapper.entityToDto(pagamento, venda.getValorTotal() - (valorPagoAteMomento + dtoPagamento.getValor()),base64Image);
     }
 //
     public String pagarComPix(PagamentoReq dtoPagamento){
@@ -77,7 +83,7 @@ public class PagamentoService {
 
             final var dadosPix =
                     new DadosEnvioPix(
-                            "Pérolas Calçados", "11965234200",
+                            "Perolas Calcados", "38637406882",
                             new BigDecimal(dtoPagamento.getValor()), "São Paulo", "Pérolas Calçados");
 
             final var qrCodePix = new QRCodePix(dadosPix);
