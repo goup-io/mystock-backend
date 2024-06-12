@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DashboardGeralService {
@@ -29,7 +30,7 @@ public class DashboardGeralService {
     public KpisRes dashGeralBuscarDadosKpi(){
         Double faturamentoMes = pagamentoRepository.sumValorTotalByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
         Double faturamentoDia = pagamentoRepository.sumValorTotalByDayMonthAndYear(LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
-        ETP etpMaisVendido = produtoVendaRepository.findTopETPByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
+        ETP etpMaisVendido = produtoVendaRepository.findTopETPByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear()).orElseThrow(() -> new BuscaRetornaVazioException("Sem vendas realizadas"));
         String modeloMaisVendido = etpMaisVendido.getProduto().getModelo().getNome();
         String produtoMaisVendido = etpMaisVendido.getProduto().getNome();
         Integer produtosEmEstoque = etpRepository.countETPs();
