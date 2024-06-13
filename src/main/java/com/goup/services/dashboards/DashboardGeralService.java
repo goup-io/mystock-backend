@@ -45,13 +45,26 @@ public class DashboardGeralService {
 
         Object[][] faturamentoPorLoja = new Object[lojas.size()][13];
         for (int i = 0; i < lojas.size(); i++){
+            LocalDateTime dataInicial = LocalDateTime.now().minusMonths(12);
+            Integer mesInicial = dataInicial.getMonthValue();
+            Integer anoPesquisar = dataInicial.getYear();
+            int contador = 12;
             faturamentoPorLoja[i][0] = lojas.get(i).getNome();
-            for (int j = 1; j <= 12; j++){
-                Double valorTotal = pagamentoRepository.sumPagamentosByLojaAndMonthAndYear(j, LocalDateTime.now().getYear(), lojas.get(i).getId());
+            for (int j = mesInicial; contador >= 0; j++){
+                if (j == 13){
+                    j = 1;
+                    anoPesquisar += 1;
+                }
+                System.out.println("SEM: " + j);
+                System.out.println("ONA: " + anoPesquisar);
+                Double valorTotal = pagamentoRepository.sumPagamentosByLojaAndMonthAndYear(j, anoPesquisar, lojas.get(i).getId());
+
                 if (valorTotal == null){
                     valorTotal = 0.0;
                 }
+
                 faturamentoPorLoja[i][j] = valorTotal;
+                contador--;
             }
         }
         return faturamentoPorLoja;

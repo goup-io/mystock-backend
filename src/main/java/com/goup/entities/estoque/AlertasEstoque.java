@@ -24,7 +24,7 @@ public class AlertasEstoque {
     @NotNull
     private LocalDateTime dataHora;
 
-    @NotNull @ManyToOne @JoinColumn(name = "loja_id", referencedColumnName = "id")
+    @NotNull @ManyToOne @JoinColumn(name = "etp_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private ETP etp;
 }

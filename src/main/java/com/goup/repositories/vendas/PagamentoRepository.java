@@ -19,7 +19,7 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Integer> {
             "FROM Pagamento p " +
             "JOIN p.venda v " +
             "JOIN v.usuario u " +
-            "WHERE u.loja.id = :lojaId AND MONTH(v.dataHora) = :month AND YEAR(v.dataHora) = :year ")
+            "WHERE u.loja.id = :lojaId AND MONTH(v.dataHora) = :month AND YEAR(v.dataHora) = :year AND v.statusVenda.status = 'FINALIZADA'")
     Double sumPagamentosByLojaAndMonthAndYear(@Param("month") int month, @Param("year") int year, @Param("lojaId") Integer lojaId);
 
 
