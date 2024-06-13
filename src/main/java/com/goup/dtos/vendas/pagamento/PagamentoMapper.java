@@ -24,7 +24,7 @@ public class PagamentoMapper {
                 pagamento.getValor(),
                 pagamento.getQtdParcelas(),
                 valorPago,
-                base64QRCode
+                base64QRCode != null ? base64QRCode : ""
         );
     }
 
@@ -34,7 +34,7 @@ public class PagamentoMapper {
                 VendaMapper.entityToRes(pagamento.getVenda()),
                 pagamento.getValor(),
                 pagamento.getQtdParcelas(),
-                pagamento.getVenda().getValorTotal() - pagamento.getValor(),
+                pagamento.getValor(),
                 null
         );
     }

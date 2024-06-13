@@ -40,7 +40,7 @@ public class PagamentoService {
 
         Double valorPagoAteMomento = repository.sumValorPago(venda.getId()) == null ? 0.0 : repository.sumValorPago(venda.getId());
         Double valorRestante = venda.getValorTotal() - valorPagoAteMomento;
-        Pagamento pagamento;
+        Pagamento pagamento = null;
         if ((valorPagoAteMomento >= venda.getValorTotal())) {
             throw new RegistroConflitanteException("Pagamento da Venda já foi realizado");
         } else if (venda.getStatusVenda().getStatus() == StatusVenda.Status.FINALIZADA) {
@@ -55,30 +55,20 @@ public class PagamentoService {
             if (tipoPagamento.getMetodo().getMetodo().equals("PIX")) {
                 pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
                 base64Image = pagarComPix(dtoPagamento);
-
-                return PagamentoMapper.entityToDto(pagamento, venda.getValorTotal() - (valorPagoAteMomento + dtoPagamento.getValor()), base64Image);
-
             } else {
-                return PagamentoMapper.entityToDto(repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda)));
+                pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, venda.getValorTotal(), tipoPagamento, venda));
             }
+            Double valorQueResta = venda.getValorTotal() - (valorPagoAteMomento + dtoPagamento.getValor());
+            return PagamentoMapper.entityToDto(pagamento, valorQueResta, base64Image);
         } else if (valorPagoAteMomento + dtoPagamento.getValor() > venda.getValorTotal() && tipoPagamento.getMetodo().getMetodo().equals("Dinheiro")) {
-           return PagamentoMapper.entityToDto(repository.save(PagamentoMapper.dtoToEntity(dtoPagamento,dtoPagamento.getValor(), tipoPagamento, venda)));
-                /*
-            if (tipoPagamento.getMetodo().getMetodo().equals("PIX")){
-                base64Image = pagarComPix(dtoPagamento);
-                pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
-            } else {
-                pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, valorRestante, tipoPagamento, venda));
-            }
-            */
-        }else {
+            Double valorQueResta = venda.getValorTotal() - (valorPagoAteMomento + dtoPagamento.getValor());
+            pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, valorRestante, tipoPagamento, venda));
+            return PagamentoMapper.entityToDto(pagamento, valorQueResta, base64Image);        }else {
             throw new RegistroConflitanteException("Valor do pagamento excede o valor da venda");
         }
     }
-//
-    public String pagarComPix(PagamentoReq dtoPagamento){
-        //todo: lógica para pagar o pix
 
+    public String pagarComPix(PagamentoReq dtoPagamento){
             final var imagePath = "qrcode.png";
 
             final var dadosPix =
