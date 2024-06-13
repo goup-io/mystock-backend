@@ -51,7 +51,7 @@ public class PagamentoService {
 
         String base64Image = null;
 
-        if (valorPagoAteMomento + dtoPagamento.getValor() < venda.getValorTotal()) {
+        if (valorPagoAteMomento + dtoPagamento.getValor() <= venda.getValorTotal()) {
             if (tipoPagamento.getMetodo().getMetodo().equals("PIX")) {
                 pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
                 base64Image = pagarComPix(dtoPagamento);
@@ -63,7 +63,8 @@ public class PagamentoService {
         } else if (valorPagoAteMomento + dtoPagamento.getValor() > venda.getValorTotal() && tipoPagamento.getMetodo().getMetodo().equals("Dinheiro")) {
             Double valorQueResta = venda.getValorTotal() - (valorPagoAteMomento + dtoPagamento.getValor());
             pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, valorRestante, tipoPagamento, venda));
-            return PagamentoMapper.entityToDto(pagamento, valorQueResta, base64Image);        }else {
+            return PagamentoMapper.entityToDto(pagamento, valorQueResta, base64Image);
+        } else {
             throw new RegistroConflitanteException("Valor do pagamento excede o valor da venda");
         }
     }

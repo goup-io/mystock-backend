@@ -15,8 +15,13 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Integer> {
     @Query("SELECT SUM(v.valorTotal) FROM Pagamento p JOIN p.venda v WHERE MONTH(v.dataHora) = :month AND YEAR(v.dataHora) = :year")
     Double sumValorTotalByMonthAndYear(@Param("month") int month, @Param("year") int year);
 
-    @Query("SELECT SUM(v.valorTotal) FROM Pagamento p JOIN p.venda v JOIN ProdutoVenda pv ON pv.venda = v JOIN pv.etp e JOIN e.loja l WHERE pv.etp.loja.id = :idLoja AND MONTH(v.dataHora) = :month AND YEAR(v.dataHora) = :year")
-    Double sumValorTotalByMonthAndYearAndLoja(@Param("month") int month, @Param("year") int year, @Param("idLoja") Integer idLoja);
+    @Query("SELECT SUM(p.valor)" +
+            "FROM Pagamento p " +
+            "JOIN p.venda v " +
+            "JOIN v.usuario u " +
+            "WHERE u.loja.id = :lojaId AND MONTH(v.dataHora) = :month AND YEAR(v.dataHora) = :year ")
+    Double sumPagamentosByLojaAndMonthAndYear(@Param("month") int month, @Param("year") int year, @Param("lojaId") Integer lojaId);
+
 
     // soma por vendas naquele dia (faturamento diario) JOIN com entidade Venda para pegar a dataHora
     @Query("SELECT SUM(v.valorTotal) FROM Pagamento p JOIN p.venda v WHERE DAY(v.dataHora) = :day AND MONTH(v.dataHora) = :month AND YEAR(v.dataHora) = :year")

@@ -47,7 +47,7 @@ public class DashboardGeralService {
         for (int i = 0; i < lojas.size(); i++){
             faturamentoPorLoja[i][0] = lojas.get(i).getNome();
             for (int j = 1; j <= 12; j++){
-                Double valorTotal = pagamentoRepository.sumValorTotalByMonthAndYearAndLoja(j, LocalDateTime.now().getYear(), lojas.get(i).getId());
+                Double valorTotal = pagamentoRepository.sumPagamentosByLojaAndMonthAndYear(j, LocalDateTime.now().getYear(), lojas.get(i).getId());
                 if (valorTotal == null){
                     valorTotal = 0.0;
                 }
