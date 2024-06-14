@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,8 +56,6 @@ public class DashboardGeralService {
                     j = 1;
                     anoPesquisar += 1;
                 }
-                System.out.println("SEM: " + j);
-                System.out.println("ONA: " + anoPesquisar);
                 Double valorTotal = pagamentoRepository.sumPagamentosByLojaAndMonthAndYear(j, anoPesquisar, lojas.get(i).getId());
 
                 if (valorTotal == null){
@@ -70,4 +69,33 @@ public class DashboardGeralService {
         return faturamentoPorLoja;
     }
 
+    public Object[][] dashGeralBuscarFaturamentoPorLojaMes() {
+        List<Loja> lojas = lojaRepository.findAll();
+        if (lojas.isEmpty()){
+            throw new BuscaRetornaVazioException("Nenhuma loja encontrada!");
+        }
+
+        Object[][] faturamentoPorLoja = new Object[lojas.size()][32];
+        for (int i = 0; i < lojas.size(); i++){
+            LocalDateTime dataInicial = LocalDateTime.now();
+            Integer mesInicial = dataInicial.getMonthValue();
+            Integer anoPesquisar = dataInicial.getYear();
+            YearMonth yearMonth = YearMonth.of(anoPesquisar, mesInicial);
+            int contador = yearMonth.lengthOfMonth();
+            faturamentoPorLoja[i][0] = lojas.get(i).getNome();
+            for (int j = 1; contador > 0; j++){
+                Double valorTotal = pagamentoRepository.sumPagamentosByLojaAndMonthAndYearAndDay(j, mesInicial, anoPesquisar, lojas.get(i).getId());
+
+                if (valorTotal == null){
+                    valorTotal = 0.0;
+                }
+
+                faturamentoPorLoja[i][j] = valorTotal;
+                contador--;
+            }
+        }
+        return faturamentoPorLoja;
+    }
+
+    
 }

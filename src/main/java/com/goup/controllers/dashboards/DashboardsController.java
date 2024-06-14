@@ -24,4 +24,8 @@ public class DashboardsController {
         return dashboardGeralService.dashGeralBuscarFaturamentoPorLoja();
     }
 
+    @GetMapping("/dashboard-geral/faturamento-por-loja/mes-atual")
+    public Object[][] buscarFaturamentoPorLojaMes() {return dashboardGeralService.dashGeralBuscarFaturamentoPorLojaMes();}
+
+
 }
