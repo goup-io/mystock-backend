@@ -1,12 +1,17 @@
 package com.goup.controllers.dashboards;
 
+import com.azure.core.annotation.Get;
 import com.goup.dtos.dashboards.dashboardGeral.FaturamentoLojaRes;
 import com.goup.dtos.dashboards.dashboardGeral.KpisRes;
+import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
 import com.goup.services.dashboards.DashboardGeralService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/dashboards")
@@ -15,17 +20,18 @@ public class DashboardsController {
     private DashboardGeralService dashboardGeralService;
 
     @GetMapping("/dashboard-geral/kpis")
-    public KpisRes buscarKpis(){
-        return dashboardGeralService.dashGeralBuscarDadosKpi();
+    public ResponseEntity<KpisRes> buscarKpis(){
+        return ResponseEntity.status(200).body(dashboardGeralService.dashGeralBuscarDadosKpi());
     }
 
     @GetMapping("/dashboard-geral/faturamento-por-loja")
-    public Object[][] buscarFaturamentoPorLoja(){
-        return dashboardGeralService.dashGeralBuscarFaturamentoPorLoja();
+    public ResponseEntity<Object[][]> buscarFaturamentoPorLoja(){
+        return ResponseEntity.status(200).body(dashboardGeralService.dashGeralBuscarFaturamentoPorLoja());
     }
 
     @GetMapping("/dashboard-geral/faturamento-por-loja/mes-atual")
-    public Object[][] buscarFaturamentoPorLojaMes() {return dashboardGeralService.dashGeralBuscarFaturamentoPorLojaMes();}
+    public ResponseEntity<Object[][]> buscarFaturamentoPorLojaMes() {
+        return ResponseEntity.status(200).body(dashboardGeralService.dashGeralBuscarFaturamentoPorLojaMes());}
 
 
 }

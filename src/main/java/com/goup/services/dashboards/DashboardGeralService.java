@@ -69,7 +69,7 @@ public class DashboardGeralService {
         return faturamentoPorLoja;
     }
 
-    public Object[][] dashGeralBuscarFaturamentoPorLojaMes() {
+    public Object[][] dashGeralBuscarFaturamentoPorLojaMes(){
         List<Loja> lojas = lojaRepository.findAll();
         if (lojas.isEmpty()){
             throw new BuscaRetornaVazioException("Nenhuma loja encontrada!");
@@ -97,5 +97,5 @@ public class DashboardGeralService {
         return faturamentoPorLoja;
     }
 
-    
+
 }
