@@ -4,6 +4,7 @@ import com.goup.dtos.estoque.ETPEditModal;
 import com.goup.dtos.estoque.ETPReq;
 import com.goup.dtos.estoque.ETPTableRes;
 import com.goup.dtos.estoque.ReqETPeQuantidade;
+import com.goup.entities.estoque.ETP;
 import com.goup.services.produtos.ETPService;
 import jakarta.validation.Valid;
 import org.hibernate.type.internal.UserTypeVersionJavaTypeWrapper;
@@ -61,9 +62,10 @@ public class ETPController {
         @RequestParam(required = false) Integer tamanho,
         @RequestParam(required = false) Double precoMinimo,
         @RequestParam(required = false) Double precoMaximo,
-        @RequestParam(required = false) Integer id_loja
+        @RequestParam(required = false) Integer id_loja,
+        @RequestParam(required = false) String pesquisa // Cod ou Nome Produto
     ){
-        List<ETPTableRes> etps = service.listarPorFiltro(modelo, cor, tamanho, precoMinimo, precoMaximo, id_loja);
+        List<ETPTableRes> etps = service.listarPorFiltro(modelo, cor, tamanho, precoMinimo, precoMaximo, id_loja, pesquisa);
         if(etps.isEmpty()){
             return ResponseEntity.status(204).build();
         }

@@ -101,11 +101,11 @@ public class ETPService {
          @Param("tamanho") Integer tamanho,
          @Param("precoMinimo") Double precoMinimo,
          @Param("precoMaximo") Double precoMaximo,
-         @Param("id_loja") Integer id_loja
+         @Param("id_loja") Integer id_loja,
+         @Param("pesquisa") String pesquisa
     ) {
-        List<ETP> etps = repository.findAllByFiltros(modelo, cor, tamanho, precoMinimo, precoMaximo, id_loja);
-        ListaGenerica<ETP> etpsList = criarListaGenericaOrdenada(etps);
-        return ETPMapper.toTableResponse(etpsList);
+        List<ETP> etps = repository.findAllByFiltros(modelo, cor, tamanho, precoMinimo, precoMaximo, id_loja, pesquisa);
+        return ETPMapper.toTableResponse(etps);
     }
 
     public ETPTableRes alterarQuantidade(Integer id, Integer quantidade, Boolean soma){
