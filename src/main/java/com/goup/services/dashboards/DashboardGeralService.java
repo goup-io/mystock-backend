@@ -1,6 +1,7 @@
 package com.goup.services.dashboards;
 
 import com.goup.dtos.dashboards.dashboardGeral.KpisRes;
+import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.lojas.Loja;
 import com.goup.exceptions.BuscaRetornaVazioException;
@@ -97,5 +98,7 @@ public class DashboardGeralService {
         return faturamentoPorLoja;
     }
 
-
+    public List<ModeloEValorRes> dashGeralBuscarModelosMaisVendidos() {
+        return pagamentoRepository.findTop10ModelosByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
+    }
 }

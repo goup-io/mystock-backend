@@ -1,6 +1,6 @@
 package com.goup.dtos.dashboards.dashboardGeral;
 
-import com.goup.dtos.estoque.produtos.modelos.ModeloRes;
+import com.goup.entities.estoque.produtos.modelos.Modelo;
 
-public record ModeloEValorRes(Double valorVendido, ModeloRes modeloRes) {
+public record ModeloEValorRes(Modelo modelo, Double valorVendido) {
 }

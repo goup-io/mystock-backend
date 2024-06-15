@@ -33,5 +33,10 @@ public class DashboardsController {
     public ResponseEntity<Object[][]> buscarFaturamentoPorLojaMes() {
         return ResponseEntity.status(200).body(dashboardGeralService.dashGeralBuscarFaturamentoPorLojaMes());}
 
+    @GetMapping("/dashboard-geral/modelos-mais-vendido")
+    public ResponseEntity<List<ModeloEValorRes>> buscarModelosMaisVendido(){
+        List<ModeloEValorRes>  modeloEValorRes = dashboardGeralService.dashGeralBuscarModelosMaisVendidos();
+        return modeloEValorRes.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(modeloEValorRes);
+    }
 
 }

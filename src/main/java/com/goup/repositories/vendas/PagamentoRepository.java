@@ -1,13 +1,11 @@
 package com.goup.repositories.vendas;
-
-import com.goup.entities.estoque.ETP;
+import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
 import com.goup.entities.vendas.Pagamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PagamentoRepository extends JpaRepository<Pagamento, Integer> {
@@ -36,5 +34,14 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Integer> {
     // pagamentos por venda
     @Query("SELECT SUM(p.valor) FROM Pagamento p WHERE p.venda.id = :id")
     Double sumValorPago(Integer id);
-}
 
+    @Query("SELECT new com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes(p.etp.produto.modelo, CAST(SUM(p.valorUnitario * p.quantidade) AS DOUBLE)) " +
+            "FROM ProdutoVenda p " +
+            "JOIN p.venda v " +
+            "JOIN Pagamento pg ON pg.venda.id = v.id " +
+            "WHERE MONTH(v.dataHora) = :month AND YEAR(v.dataHora) = :year AND v.statusVenda.status = 'FINALIZADA'" +
+            "GROUP BY p.etp.produto.modelo " +
+            "ORDER BY SUM(p.valorUnitario * p.quantidade) DESC")
+    List<ModeloEValorRes> findTop10ModelosByMonthAndYear(@Param("month") int month, @Param("year") int year);
+
+}
