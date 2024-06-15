@@ -37,8 +37,9 @@ public interface ETPRepository extends JpaRepository<ETP, Integer>{
     // contar quantidade de produtos em estoque
     @Query("SELECT COUNT(etp) FROM ETP etp WHERE etp.loja = :loja")
     Integer countByLoja(Loja loja);
+
     // contar quantidade de produtos em estoque
-    @Query("SELECT COUNT(etp) FROM ETP etp")
-    Integer countETPs();
+    @Query("SELECT sum(etp.quantidade) FROM ETP etp")
+    Integer sumETP_Quantidade();
 
 }

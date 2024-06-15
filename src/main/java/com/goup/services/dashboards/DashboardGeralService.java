@@ -10,6 +10,7 @@ import com.goup.repositories.produtos.ETPRepository;
 import com.goup.repositories.vendas.PagamentoRepository;
 import com.goup.repositories.vendas.ProdutoVendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,12 +31,14 @@ public class DashboardGeralService {
     private LojaRepository lojaRepository;
 
     public KpisRes dashGeralBuscarDadosKpi(){
-        Double faturamentoMes = pagamentoRepository.sumValorTotalByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
-        Double faturamentoDia = pagamentoRepository.sumValorTotalByDayMonthAndYear(LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
-        ETP etpMaisVendido = produtoVendaRepository.findTopETPByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear()).orElseThrow(() -> new BuscaRetornaVazioException("Sem vendas realizadas"));
-        String modeloMaisVendido = etpMaisVendido.getProduto().getModelo().getNome();
-        String produtoMaisVendido = etpMaisVendido.getProduto().getNome();
-        Integer produtosEmEstoque = etpRepository.countETPs();
+        Double faturamentoMes = pagamentoRepository.sumValorTotalByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear()) == null ? 0.0 : pagamentoRepository.sumValorTotalByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
+        Double faturamentoDia = pagamentoRepository.sumValorTotalByDayMonthAndYear(LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear()) == null ? 0.0 : pagamentoRepository.sumValorTotalByDayMonthAndYear(LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
+        PageRequest pegarMaisVendido = PageRequest.of(0, 1);
+        ETP topETP = produtoVendaRepository.findTopETPByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear(), pegarMaisVendido).getContent().get(0);
+        ETP etpMaisVendido = Optional.ofNullable(topETP).orElse(new ETP());
+        String modeloMaisVendido = etpMaisVendido.getId() == 0 ? "Nenhuma venda realizada" : etpMaisVendido.getProduto().getModelo().getNome();
+        String produtoMaisVendido = etpMaisVendido.getId() == 0 ? "Nenhuma venda realizada" :  etpMaisVendido.getProduto().getNome();
+        Integer produtosEmEstoque = etpRepository.sumETP_Quantidade();
         return new KpisRes(faturamentoMes, faturamentoDia, modeloMaisVendido, produtoMaisVendido, produtosEmEstoque);
     }
 
