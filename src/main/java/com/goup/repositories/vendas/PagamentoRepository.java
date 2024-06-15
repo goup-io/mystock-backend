@@ -35,6 +35,9 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Integer> {
     @Query("SELECT SUM(p.valor) FROM Pagamento p WHERE p.venda.id = :id")
     Double sumValorPago(Integer id);
 
+    // Fluxo pagamento
+    List<Pagamento> findAllByVenda_Id (Integer id);
+
     @Query("SELECT new com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes(p.etp.produto.modelo, CAST(SUM(p.valorUnitario * p.quantidade) AS DOUBLE)) " +
             "FROM ProdutoVenda p " +
             "JOIN p.venda v " +

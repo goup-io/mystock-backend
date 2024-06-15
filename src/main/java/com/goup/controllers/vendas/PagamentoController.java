@@ -1,5 +1,6 @@
 package com.goup.controllers.vendas;
 
+import com.goup.dtos.vendas.pagamento.PagamentoFluxoRes;
 import com.goup.dtos.vendas.pagamento.PagamentoReq;
 import com.goup.dtos.vendas.pagamento.PagamentoRes;
 import com.goup.services.vendas.PagamentoService;
@@ -29,5 +30,17 @@ public class PagamentoController {
     @GetMapping("/{id}")
     public ResponseEntity<PagamentoRes> buscarPagamentoPorId(@PathVariable Integer id) {
         return ResponseEntity.status(200).body(pagamentoService.buscarPorId(id));
+    }
+
+    @GetMapping("/fluxo-pagamento/{idVenda}")
+    public ResponseEntity<List<PagamentoFluxoRes>> buscarFluxoPagamentoPorId(@PathVariable Integer idVenda) {
+
+        List<PagamentoFluxoRes> pagamentos = pagamentoService.listarPorVenda(idVenda);
+
+        if (pagamentos.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        return ResponseEntity.status(200).body(pagamentos);
     }
 }
