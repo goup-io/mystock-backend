@@ -1,10 +1,12 @@
 package com.goup.services.dashboards;
 
+import com.goup.dtos.dashboards.dashboardGeral.FluxoEstoqueRes;
 import com.goup.dtos.dashboards.dashboardGeral.KpisRes;
 import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.lojas.Loja;
 import com.goup.exceptions.BuscaRetornaVazioException;
+import com.goup.repositories.historicos.TransferenciaRepository;
 import com.goup.repositories.lojas.LojaRepository;
 import com.goup.repositories.produtos.ETPRepository;
 import com.goup.repositories.vendas.PagamentoRepository;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +33,8 @@ public class DashboardGeralService {
     private ETPRepository etpRepository;
     @Autowired
     private LojaRepository lojaRepository;
+    @Autowired
+    private TransferenciaRepository transferenciaRepository;
 
     public KpisRes dashGeralBuscarDadosKpi(){
         Double faturamentoMes = pagamentoRepository.sumValorTotalByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear()) == null ? 0.0 : pagamentoRepository.sumValorTotalByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
@@ -104,5 +109,23 @@ public class DashboardGeralService {
 
     public List<ModeloEValorRes> dashGeralBuscarModelosMaisVendidos() {
         return pagamentoRepository.findTop10ModelosByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
+    }
+
+    public List<FluxoEstoqueRes> dashGeralBuscarFluxoEstoques(){
+            List<Loja> lojas = lojaRepository.findAll();
+            List<FluxoEstoqueRes> fluxoEstoqueResList = new ArrayList<>();
+
+            for (Loja loja : lojas) {
+                String nomeLoja = loja.getNome();
+
+                Integer qtdAtual = etpRepository.sumETP_QuantidadeByLoja(loja);
+                Integer qtdVendida = produtoVendaRepository.sumQuantidadeVendidaByLoja(loja);
+                Integer qtdTransferida = transferenciaRepository.sumQuantidadeTransferidaByLoja(loja);
+
+                FluxoEstoqueRes fluxoEstoqueRes = new FluxoEstoqueRes(nomeLoja, qtdAtual, qtdVendida, qtdTransferida);
+                fluxoEstoqueResList.add(fluxoEstoqueRes);
+            }
+
+            return fluxoEstoqueResList;
     }
 }

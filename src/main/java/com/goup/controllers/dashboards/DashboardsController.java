@@ -2,6 +2,7 @@ package com.goup.controllers.dashboards;
 
 import com.azure.core.annotation.Get;
 import com.goup.dtos.dashboards.dashboardGeral.FaturamentoLojaRes;
+import com.goup.dtos.dashboards.dashboardGeral.FluxoEstoqueRes;
 import com.goup.dtos.dashboards.dashboardGeral.KpisRes;
 import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
 import com.goup.services.dashboards.DashboardGeralService;
@@ -37,6 +38,12 @@ public class DashboardsController {
     public ResponseEntity<List<ModeloEValorRes>> buscarModelosMaisVendido(){
         List<ModeloEValorRes>  modeloEValorRes = dashboardGeralService.dashGeralBuscarModelosMaisVendidos();
         return modeloEValorRes.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(modeloEValorRes);
+    }
+
+    @GetMapping("/dashboard-geral/fluxo-estoque")
+    public ResponseEntity<List<FluxoEstoqueRes>> buscarFluxoTodasLojas(){
+        List<FluxoEstoqueRes> fluxoEstoqueRes = dashboardGeralService.dashGeralBuscarFluxoEstoques();
+        return fluxoEstoqueRes.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(fluxoEstoqueRes);
     }
 
 }

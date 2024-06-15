@@ -2,6 +2,7 @@ package com.goup.repositories.historicos;
 
 import com.goup.entities.historicos.StatusTransferencia;
 import com.goup.entities.historicos.Transferencia;
+import com.goup.entities.lojas.Loja;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,4 +30,7 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia, In
         @Param("id_loja") Integer id_loja, // LOJA DE QUEM FEZ A SOLICITAÇÃO (coletor)
         @Param("status") StatusTransferencia.Status status
     );
+
+    @Query("SELECT SUM(t.quantidadeLiberada) FROM Transferencia t JOIN t.etp e WHERE e.loja = :loja AND t.status.status = 'ACEITO'")
+    Integer sumQuantidadeTransferidaByLoja(@Param("loja") Loja loja);
 }
