@@ -1,5 +1,6 @@
 package com.goup.services.vendas;
 
+import com.goup.dtos.vendas.pagamento.PagamentoFluxoRes;
 import com.goup.dtos.vendas.pagamento.PagamentoMapper;
 import com.goup.dtos.vendas.pagamento.PagamentoReq;
 import com.goup.dtos.vendas.pagamento.PagamentoRes;
@@ -92,6 +93,7 @@ public class PagamentoService {
 
 
 
+
     public List<PagamentoRes> listar(){
         List<Pagamento> pagamentos = repository.findAll();
         if(pagamentos.isEmpty()){
@@ -106,6 +108,9 @@ public class PagamentoService {
         return PagamentoMapper.entityToDto(pagamento);
     }
 
-
+    public List<PagamentoFluxoRes> listarPorVenda(Integer idVenda){
+        List<Pagamento> pagamentos = repository.findAllByVenda_Id(idVenda);
+        return PagamentoMapper.pagamentoFluxoResList(pagamentos);
+    }
 
 }
