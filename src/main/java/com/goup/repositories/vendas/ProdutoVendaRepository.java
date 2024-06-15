@@ -29,4 +29,10 @@ public interface ProdutoVendaRepository extends JpaRepository<ProdutoVenda, Inte
 
     @Query("SELECT SUM(pv.quantidade) FROM ProdutoVenda pv JOIN pv.etp e WHERE e.loja = :loja AND pv.venda.statusVenda.status = 'FINALIZADA'")
     Integer sumQuantidadeVendidaByLoja(@Param("loja") Loja loja);
+
+    @Query("SELECT SUM(pv.quantidade) FROM ProdutoVenda pv " +
+            "JOIN pv.etp e " +
+            "WHERE e.loja = :loja AND pv.venda.statusVenda.status = 'FINALIZADA' " +
+            "AND MONTH(pv.venda.dataHora) = :month AND YEAR(pv.venda.dataHora) = :year")
+    Integer sumQuantidadeVendidaByLojaAndMesAndAno(@Param("loja") Loja loja, @Param("month") Integer mes, @Param("year") Integer ano);
 }
