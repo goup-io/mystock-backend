@@ -215,4 +215,11 @@ public class DashboardGeralService {
 
         return new FluxoEstoqueRes(nomeLoja, qtdAtual, qtdVendida, qtdTransferida);
     }
+
+    public List<ModeloEValorRes> dashboardLojaBuscarModelosMaisVendidos(Integer idLoja) {
+        Loja loja = lojaRepository.findById(idLoja).orElseThrow(() -> new RegistroNaoEncontradoException("Loja não encontrada!"));
+        return pagamentoRepository.findTop10ModelosByLojaIdMonthAndYear(loja.getId(),LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
+    }
+
+    
 }
