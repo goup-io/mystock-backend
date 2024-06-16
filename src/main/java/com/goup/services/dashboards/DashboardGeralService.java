@@ -266,7 +266,7 @@ public class DashboardGeralService {
             if (valorTotal == null){
                 valorTotal = 0.0;
             }
-            
+
             faturamentoPorLoja.add(valorTotal);
 
             contador++;
@@ -274,4 +274,9 @@ public class DashboardGeralService {
         return faturamentoPorLoja;
     }
 
+    public Double dashboardFuncionarioBuscarFaturamentoPorFuncionarioMes(Integer idFuncionario) {
+        Usuario usuario = usuarioRepository.findById(idFuncionario).orElseThrow(() -> new RegistroNaoEncontradoException("Funcionario não encontrada!"));
+        Double tempValorTotal = pagamentoRepository.sumValorTotalByMonthAndYearAndUsuario(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear(), usuario.getId());
+        return tempValorTotal == null ? 0.0 : tempValorTotal;
+    }
 }
