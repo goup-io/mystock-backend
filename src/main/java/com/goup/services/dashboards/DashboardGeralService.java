@@ -176,4 +176,29 @@ public class DashboardGeralService {
         return faturamentoPorLoja;
 
     }
+
+    public Object[][] dashboardLojaBuscarFaturamentoPorLojaMes(Integer idLoja) {
+        Loja loja = lojaRepository.findById(idLoja).orElseThrow(() -> new RegistroNaoEncontradoException("Loja não encontrada!"));
+
+        Object[][] faturamentoPorLoja = new Object[1][32];
+        for (int i = 0; i < 1; i++){
+            LocalDateTime dataInicial = LocalDateTime.now();
+            Integer mesInicial = dataInicial.getMonthValue();
+            Integer anoPesquisar = dataInicial.getYear();
+            YearMonth yearMonth = YearMonth.of(anoPesquisar, mesInicial);
+            int contador = yearMonth.lengthOfMonth();
+            faturamentoPorLoja[i][0] = loja.getNome();
+            for (int j = 1; contador > 0; j++){
+                Double valorTotal = pagamentoRepository.sumPagamentosByLojaAndMonthAndYearAndDay(j, mesInicial, anoPesquisar, loja.getId());
+
+                if (valorTotal == null){
+                    valorTotal = 0.0;
+                }
+
+                faturamentoPorLoja[i][j] = valorTotal;
+                contador--;
+            }
+        }
+        return faturamentoPorLoja;
+    }
 }
