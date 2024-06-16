@@ -18,15 +18,6 @@ public class ProdutoMapper {
         return entidade;
     }
 
-    public static Produto updateEntity(Produto produtoAtual, ProdutoReqEdit produtoNovo){
-
-        produtoAtual.setNome(produtoNovo.nome());
-        produtoAtual.setValorCusto(produtoNovo.valorCusto());
-        produtoAtual.setValorRevenda(produtoNovo.valorRevenda());
-
-        return produtoAtual;
-    }
-
     public static ProdutoRes entityToRes(Produto produto){
         int id = produto.getId();
         String cor = produto.getCor().getNome();
