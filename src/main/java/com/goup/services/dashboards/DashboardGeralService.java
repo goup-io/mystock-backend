@@ -246,4 +246,32 @@ public class DashboardGeralService {
                         qtdProdutosVendidos == null ? 0 : qtdProdutosVendidos,
                         topETP.isEmpty() ? "Nenhuma venda realizada" : topETP.getContent().get(0).getProduto().getNome());
     }
+
+    public List<Double> dashboardFuncionarioBuscarFaturamentoPorFuncionario(Integer idFuncionario) {
+        Usuario usuario = usuarioRepository.findById(idFuncionario).orElseThrow(() -> new RegistroNaoEncontradoException("Funcionario não encontrada!"));
+        List<Double> faturamentoPorLoja = new ArrayList<>();
+        LocalDateTime dataInicial = LocalDateTime.now().minusMonths(12);
+        Integer mesInicial = dataInicial.getMonthValue() + 1;
+        Integer anoPesquisar = dataInicial.getYear();
+        int contador = 1;
+        for (int j = mesInicial; contador < 13; j++){
+            if (j == 13){
+                j = 1;
+                anoPesquisar += 1;
+            }
+
+            Double valorTotal = pagamentoRepository.sumPagamentosByUsuarioAndMonthAndYear(j, anoPesquisar, usuario.getId());
+
+
+            if (valorTotal == null){
+                valorTotal = 0.0;
+            }
+            
+            faturamentoPorLoja.add(valorTotal);
+
+            contador++;
+        }
+        return faturamentoPorLoja;
+    }
+
 }

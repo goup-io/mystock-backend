@@ -78,4 +78,9 @@ public class DashboardsController {
     public ResponseEntity<KpisFuncionarioRes> buscarKpisFuncionario(@PathVariable Integer idFuncionario){
         return ResponseEntity.status(200).body(dashboardGeralService.dashboardFuncionarioBuscarKpi(idFuncionario));
     }
+
+    @GetMapping("/dashboard-funcionario/{idFuncionario}/faturamento")
+    public ResponseEntity<List<Double>> buscarFaturamentoFuncionario(@PathVariable Integer idFuncionario){
+        return ResponseEntity.status(200).body(dashboardGeralService.dashboardFuncionarioBuscarFaturamentoPorFuncionario(idFuncionario));
+    }
 }
