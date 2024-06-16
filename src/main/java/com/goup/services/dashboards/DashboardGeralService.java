@@ -3,6 +3,7 @@ package com.goup.services.dashboards;
 import com.goup.dtos.dashboards.dashboardGeral.FluxoEstoqueRes;
 import com.goup.dtos.dashboards.dashboardGeral.KpisRes;
 import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
+import com.goup.dtos.dashboards.dashboardGeral.RankingFuncionariosRes;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.lojas.Loja;
 import com.goup.exceptions.BuscaRetornaVazioException;
@@ -10,6 +11,7 @@ import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.historicos.TransferenciaRepository;
 import com.goup.repositories.lojas.LojaRepository;
 import com.goup.repositories.produtos.ETPRepository;
+import com.goup.repositories.usuarios.UsuarioRepository;
 import com.goup.repositories.vendas.PagamentoRepository;
 import com.goup.repositories.vendas.ProdutoVendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,6 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DashboardGeralService {
@@ -36,6 +37,8 @@ public class DashboardGeralService {
     private LojaRepository lojaRepository;
     @Autowired
     private TransferenciaRepository transferenciaRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public KpisRes dashGeralBuscarDadosKpi(){
         Double faturamentoMes = pagamentoRepository.sumValorTotalByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear()) == null ? 0.0 : pagamentoRepository.sumValorTotalByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
@@ -221,5 +224,8 @@ public class DashboardGeralService {
         return pagamentoRepository.findTop10ModelosByLojaIdMonthAndYear(loja.getId(),LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
     }
 
-    
+    public List<RankingFuncionariosRes> dashboardLojaBuscarRankingFuncionarios(Integer idLoja) {
+        Loja loja = lojaRepository.findById(idLoja).orElseThrow(() -> new RegistroNaoEncontradoException("Loja não encontrada!"));
+        return usuarioRepository.sumValorVendidoByUsuario(idLoja);
+    }
 }
