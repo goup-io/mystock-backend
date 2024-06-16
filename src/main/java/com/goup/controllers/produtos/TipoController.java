@@ -4,6 +4,7 @@ import com.goup.dtos.estoque.produtos.modelos.tipo.TipoMapper;
 import com.goup.dtos.estoque.produtos.modelos.tipo.TipoReq;
 import com.goup.entities.estoque.produtos.modelos.Tipo;
 import com.goup.repositories.produtos.TipoRepository;
+import com.goup.services.produtos.TipoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,55 +17,32 @@ import java.util.Optional;
 @RequestMapping("/tipos")
 public class TipoController {
     @Autowired
-    private final TipoRepository repository;
-
-    public TipoController(TipoRepository repository) {
-        this.repository = repository;
-    }
+    private TipoService service;
 
     @PostMapping
     public ResponseEntity<Tipo> cadastrar(@RequestBody @Valid TipoReq tipo) {
-        final Tipo tipoSalvo = this.repository.save(TipoMapper.reqToEntity(tipo));
-        return ResponseEntity.status(201).body(tipoSalvo);
+        return ResponseEntity.status(201).body(service.cadastrar(tipo));
     }
 
     @GetMapping
     public ResponseEntity<List<Tipo>> listar() {
-        List<Tipo> tipos = this.repository.findAll();
-        if (tipos.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(200).body(tipos);
+        List<Tipo> tipos = this.service.listar();
+        return tipos.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(tipos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Tipo> buscarPorId(@PathVariable Integer id) {
-        // Previnir NPE (NullPointerExecption)
-        Optional<Tipo> tipoOpt = repository.findById(id);
-
-        // Retorna 200 com corpo caso encontre ou 404 caso contrário.
-        return ResponseEntity.of(tipoOpt);
+        return ResponseEntity.status(200).body(service.buscarPorId(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Tipo> atualizar(@PathVariable int id, @RequestBody @Valid TipoReq tipoAtualizado) {
-        Optional<Tipo> tipoOpt = repository.findById(id);
-        if (tipoOpt.isPresent()) {
-            tipoOpt.get().setNome(tipoAtualizado.nome());
-            this.repository.save(tipoOpt.get());
-            return ResponseEntity.status(200).body(tipoOpt.get());
-        }
-        return ResponseEntity.status(404).build();
+        return ResponseEntity.status(200).body(service.atualizar(id, tipoAtualizado));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable int id) {
-        if (repository.existsById(id)) {
-            this.repository.deleteById(id);
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(404).build();
+        service.remover(id);
+        return ResponseEntity.status(204).build();
     }
-
-
 }
