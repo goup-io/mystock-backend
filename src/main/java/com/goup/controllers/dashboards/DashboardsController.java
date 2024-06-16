@@ -1,7 +1,5 @@
 package com.goup.controllers.dashboards;
 
-import com.azure.core.annotation.Get;
-import com.goup.dtos.dashboards.dashboardGeral.FaturamentoLojaRes;
 import com.goup.dtos.dashboards.dashboardGeral.FluxoEstoqueRes;
 import com.goup.dtos.dashboards.dashboardGeral.KpisRes;
 import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
@@ -55,6 +53,11 @@ public class DashboardsController {
     @GetMapping("/dashboard-loja/{idLoja}/faturamento-por-loja")
     public ResponseEntity<Object[][]> buscarFaturamentoPorLoja(@PathVariable Integer idLoja){
         return ResponseEntity.status(200).body(dashboardGeralService.dashboardLojaBuscarFaturamentoPorLoja(idLoja));
+    }
+
+    @GetMapping("/dashboard-loja/{idLoja}/faturamento-por-loja/mes-atual")
+    public ResponseEntity<Object[][]> buscarFaturamentoPorLojaMes(@PathVariable Integer idLoja) {
+        return ResponseEntity.status(200).body(dashboardGeralService.dashboardLojaBuscarFaturamentoPorLojaMes(idLoja));
     }
 
 
