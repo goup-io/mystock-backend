@@ -15,13 +15,11 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Integer> {
 
     @Query("SELECT SUM(v.valorTotal) FROM Pagamento p " +
             "JOIN p.venda v " +
-            "JOIN ProdutoVenda pv ON pv.venda.id = v.id " +
-            "JOIN pv.etp e " +
             "WHERE MONTH(v.dataHora) = :month " +
             "AND YEAR(v.dataHora) = :year " +
-            "AND v.statusVenda.status = 'FINALIZADA'" +
-            "AND e.loja.id = :lojaId " +
-            "GROUP BY v.id")
+            "AND v.statusVenda.status = 'FINALIZADA' " +
+            "AND v.usuario.loja.id = :lojaId " +
+            "GROUP BY v.usuario.loja.id")
     Double sumValorTotalByMonthAndYearAndLoja(@Param("month") int month, @Param("year") int year, @Param("lojaId") Integer lojaId);
 
     @Query("SELECT SUM(p.valor)" +
@@ -46,14 +44,12 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Integer> {
     @Query("SELECT SUM(v.valorTotal) " +
             "FROM Pagamento p " +
             "JOIN p.venda v " +
-            "JOIN ProdutoVenda pv ON pv.venda.id = v.id " +
-            "JOIN pv.etp e " +
             "WHERE DAY(v.dataHora) = :day " +
             "AND MONTH(v.dataHora) = :month " +
             "AND YEAR(v.dataHora) = :year " +
             "AND v.statusVenda.status = 'FINALIZADA'" +
-            "AND e.loja.id = :lojaId " +
-            "GROUP BY v.id")
+            "AND v.usuario.loja.id = :lojaId " +
+            "GROUP BY v.usuario.loja.id")
     Double sumValorTotalByDayMonthAndYearAndLoja(@Param("day") int day, @Param("month") int month, @Param("year") int year, @Param("lojaId") Integer lojaId);
 
     // pagamentos por venda
