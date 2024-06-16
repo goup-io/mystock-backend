@@ -147,4 +147,33 @@ public class DashboardGeralService {
         Integer estoque = produtosEmEstoque == null ? 0 : produtosEmEstoque;
         return new KpisRes(faturamentoMes != null ? faturamentoMes : 0.0 , faturamentoDia != null ? faturamentoDia : 0.0, modeloMaisVendido, produtoMaisVendido, estoque);
     }
+
+    public Object[][] dashboardLojaBuscarFaturamentoPorLoja(Integer idLoja) {
+        Loja loja = lojaRepository.findById(idLoja).orElseThrow(() -> new RegistroNaoEncontradoException("Loja não encontrada!"));
+
+        Object[][] faturamentoPorLoja = new Object[1][13];
+        for (int i = 0; i < 1; i++){
+            LocalDateTime dataInicial = LocalDateTime.now().minusMonths(12);
+            Integer mesInicial = dataInicial.getMonthValue();
+            Integer anoPesquisar = dataInicial.getYear();
+            int contador = 12;
+            faturamentoPorLoja[i][0] = loja.getNome();
+            for (int j = mesInicial; contador >= 0; j++){
+                if (j == 13){
+                    j = 1;
+                    anoPesquisar += 1;
+                }
+                Double valorTotal = pagamentoRepository.sumPagamentosByLojaAndMonthAndYear(j, anoPesquisar, loja.getId());
+
+                if (valorTotal == null){
+                    valorTotal = 0.0;
+                }
+
+                faturamentoPorLoja[i][j] = valorTotal;
+                contador--;
+            }
+        }
+        return faturamentoPorLoja;
+
+    }
 }

@@ -52,5 +52,10 @@ public class DashboardsController {
         return ResponseEntity.status(200).body(dashboardGeralService.dashboardLojaBuscarDadosKpi(idLoja));
     }
 
+    @GetMapping("/dashboard-loja/{idLoja}/faturamento-por-loja")
+    public ResponseEntity<Object[][]> buscarFaturamentoPorLoja(@PathVariable Integer idLoja){
+        return ResponseEntity.status(200).body(dashboardGeralService.dashboardLojaBuscarFaturamentoPorLoja(idLoja));
+    }
+
 
 }
