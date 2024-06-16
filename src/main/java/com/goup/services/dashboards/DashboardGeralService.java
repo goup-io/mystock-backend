@@ -201,4 +201,18 @@ public class DashboardGeralService {
         }
         return faturamentoPorLoja;
     }
+
+    public FluxoEstoqueRes dashboardLojaBuscarFluxoEstoques(Integer idLoja) {
+        Loja loja = lojaRepository.findById(idLoja).orElseThrow(() -> new RegistroNaoEncontradoException("Loja não encontrada!"));
+
+        String nomeLoja = loja.getNome();
+        Integer tempQtdAtual = etpRepository.sumETP_QuantidadeByLoja(loja);
+        Integer qtdAtual = tempQtdAtual == null ? 0 : tempQtdAtual;
+        Integer tempQtdVendida = produtoVendaRepository.sumQuantidadeVendidaByLojaAndMesAndAno(loja, LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
+        Integer qtdVendida = tempQtdVendida == null ? 0 : tempQtdVendida;
+        Integer tempQtdTransferida = transferenciaRepository.sumQuantidadeTransferidaByLojaAndMonthAndAno(loja, LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
+        Integer qtdTransferida = tempQtdTransferida == null ? 0 : tempQtdTransferida;
+
+        return new FluxoEstoqueRes(nomeLoja, qtdAtual, qtdVendida, qtdTransferida);
+    }
 }
