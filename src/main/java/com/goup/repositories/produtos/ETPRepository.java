@@ -45,6 +45,7 @@ public interface ETPRepository extends JpaRepository<ETP, Integer>{
     @Query("SELECT SUM(e.quantidade) FROM ETP e WHERE e.loja = :loja")
     Integer sumETP_QuantidadeByLoja(@Param("loja") Loja loja);
 
+
 //    @Query("SELECT " +
 //            "new com.goup.dtos.dashboards.dashboardGeral.FluxoEstoqueRes(" +
 //            "e.loja.nome," +

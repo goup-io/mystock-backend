@@ -6,6 +6,7 @@ import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.lojas.Loja;
 import com.goup.exceptions.BuscaRetornaVazioException;
+import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.historicos.TransferenciaRepository;
 import com.goup.repositories.lojas.LojaRepository;
 import com.goup.repositories.produtos.ETPRepository;
@@ -41,11 +42,8 @@ public class DashboardGeralService {
         Double faturamentoDia = pagamentoRepository.sumValorTotalByDayMonthAndYear(LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear()) == null ? 0.0 : pagamentoRepository.sumValorTotalByDayMonthAndYear(LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
         PageRequest pegarMaisVendido = PageRequest.of(0, 1);
         Page<ETP> topETP = produtoVendaRepository.findTopETPByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear(), pegarMaisVendido);
-        ETP etpMaisVendido = topETP.isEmpty() ? new ETP(): topETP.getContent().get(0);
-        String modeloMaisVendido = etpMaisVendido.getId() == 0 ? "Nenhuma venda realizada" : etpMaisVendido.getProduto().getModelo().getNome();
-        String produtoMaisVendido = etpMaisVendido.getId() == 0 ? "Nenhuma venda realizada" :  etpMaisVendido.getProduto().getNome();
-        Integer produtosEmEstoque = etpRepository.sumETP_Quantidade();
-        return new KpisRes(faturamentoMes, faturamentoDia, modeloMaisVendido, produtoMaisVendido, produtosEmEstoque);
+        Integer produtoEmEstoque = etpRepository.sumETP_Quantidade();
+        return getKpisRes(faturamentoMes, faturamentoDia, topETP, produtoEmEstoque);
     }
 
     public Object[][] dashGeralBuscarFaturamentoPorLoja(){
@@ -130,5 +128,23 @@ public class DashboardGeralService {
             }
 
             return fluxoEstoqueResList;
+    }
+
+    public KpisRes dashboardLojaBuscarDadosKpi(Integer idLoja){
+        Loja loja = lojaRepository.findById(idLoja).orElseThrow(() -> new RegistroNaoEncontradoException("Loja não encontrada!"));
+        Double faturamentoMes = pagamentoRepository.sumValorTotalByMonthAndYearAndLoja(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear(), idLoja);
+        Double faturamentoDia = pagamentoRepository.sumValorTotalByDayMonthAndYearAndLoja(LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear(), idLoja);
+        PageRequest pegarMaisVendido = PageRequest.of(0, 1);
+        Page<ETP> topETP = produtoVendaRepository.findTopETPByMonthAndYearAndLoja(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear(), pegarMaisVendido, idLoja);
+        Integer estoque = etpRepository.sumETP_QuantidadeByLoja(loja);
+        return getKpisRes(faturamentoMes, faturamentoDia, topETP, estoque);
+    }
+
+    private KpisRes getKpisRes(Double faturamentoMes, Double faturamentoDia, Page<ETP> topETP, Integer produtosEmEstoque) {
+        ETP etpMaisVendido = topETP.isEmpty() ? new ETP(): topETP.getContent().get(0);
+        String modeloMaisVendido = etpMaisVendido.getId() == 0 ? "Nenhuma venda realizada" : etpMaisVendido.getProduto().getModelo().getNome();
+        String produtoMaisVendido = etpMaisVendido.getId() == 0 ? "Nenhuma venda realizada" :  etpMaisVendido.getProduto().getNome();
+        Integer estoque = produtosEmEstoque == null ? 0 : produtosEmEstoque;
+        return new KpisRes(faturamentoMes != null ? faturamentoMes : 0.0 , faturamentoDia != null ? faturamentoDia : 0.0, modeloMaisVendido, produtoMaisVendido, estoque);
     }
 }

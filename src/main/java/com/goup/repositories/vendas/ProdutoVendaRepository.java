@@ -27,6 +27,19 @@ public interface ProdutoVendaRepository extends JpaRepository<ProdutoVenda, Inte
             "ORDER BY SUM(p.valor) DESC")
     Page<ETP> findTopETPByMonthAndYear(@Param("month") int month, @Param("year") int year, Pageable pageable);
 
+    @Query("SELECT pv.etp FROM ProdutoVenda pv " +
+            "JOIN pv.venda v " +
+            "JOIN pv.etp e " +
+            "JOIN Pagamento p ON p.venda = v " +
+            "WHERE MONTH(v.dataHora) = :month " +
+            "AND YEAR(v.dataHora) = :year " +
+            "AND v.statusVenda.status = 'FINALIZADA' " +
+            "AND e.loja.id = :idLoja " +
+            "GROUP BY pv.etp " +
+            "ORDER BY SUM(p.valor) DESC")
+    Page<ETP> findTopETPByMonthAndYearAndLoja(@Param("month") int month, @Param("year") int year, Pageable pageable, @Param("idLoja") Integer idLoja);
+
+
     @Query("SELECT SUM(pv.quantidade) FROM ProdutoVenda pv JOIN pv.etp e WHERE e.loja = :loja AND pv.venda.statusVenda.status = 'FINALIZADA'")
     Integer sumQuantidadeVendidaByLoja(@Param("loja") Loja loja);
 
