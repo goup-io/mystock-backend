@@ -39,6 +39,18 @@ public interface ProdutoVendaRepository extends JpaRepository<ProdutoVenda, Inte
             "ORDER BY SUM(p.valor) DESC")
     Page<ETP> findTopETPByMonthAndYearAndLoja(@Param("month") int month, @Param("year") int year, Pageable pageable, @Param("idLoja") Integer idLoja);
 
+    @Query("SELECT pv.etp FROM ProdutoVenda pv " +
+            "JOIN pv.venda v " +
+            "JOIN pv.etp e " +
+            "JOIN Pagamento p ON p.venda = v " +
+            "WHERE MONTH(v.dataHora) = :month " +
+            "AND YEAR(v.dataHora) = :year " +
+            "AND v.statusVenda.status = 'FINALIZADA' " +
+            "AND v.usuario.id = :idUsuario " +
+            "GROUP BY pv.etp " +
+            "ORDER BY SUM(p.valor) DESC")
+    Page<ETP> findTopETPByMonthAndYearAndUsuarioId(@Param("month") int month, @Param("year") int year, Pageable pageable, @Param("idUsuario") Integer idUsuario);
+
 
     @Query("SELECT SUM(pv.quantidade) FROM ProdutoVenda pv JOIN pv.etp e WHERE e.loja = :loja AND pv.venda.statusVenda.status = 'FINALIZADA'")
     Integer sumQuantidadeVendidaByLoja(@Param("loja") Loja loja);
@@ -48,4 +60,14 @@ public interface ProdutoVendaRepository extends JpaRepository<ProdutoVenda, Inte
             "WHERE e.loja = :loja AND pv.venda.statusVenda.status = 'FINALIZADA' " +
             "AND MONTH(pv.venda.dataHora) = :month AND YEAR(pv.venda.dataHora) = :year")
     Integer sumQuantidadeVendidaByLojaAndMesAndAno(@Param("loja") Loja loja, @Param("month") Integer mes, @Param("year") Integer ano);
+
+    @Query("SELECT SUM(pv.quantidade) FROM ProdutoVenda pv " +
+            "JOIN pv.venda v " +
+            "WHERE v.usuario.id = :usuarioId " +
+            "AND v.statusVenda.status = 'FINALIZADA' " +
+            "AND MONTH(v.dataHora) = :mes " +
+            "AND YEAR(v.dataHora) = :ano")
+    Integer sumProdutoVendaByUsuarioIdAndMesAndAno(@Param("usuarioId") Integer usuarioId, @Param("mes") Integer mes, @Param("ano") Integer ano);
+
+
 }

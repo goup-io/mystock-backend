@@ -22,6 +22,16 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Integer> {
             "GROUP BY v.usuario.loja.id")
     Double sumValorTotalByMonthAndYearAndLoja(@Param("month") int month, @Param("year") int year, @Param("lojaId") Integer lojaId);
 
+    @Query("SELECT SUM(v.valorTotal) FROM Pagamento p " +
+            "JOIN p.venda v " +
+            "WHERE MONTH(v.dataHora) = :month " +
+            "AND YEAR(v.dataHora) = :year " +
+            "AND v.statusVenda.status = 'FINALIZADA' " +
+            "AND v.usuario.id = :usuarioId " +
+            "GROUP BY v.usuario.id")
+    Double sumValorTotalByMonthAndYearAndUsuario(@Param("month") int month, @Param("year") int year, @Param("usuarioId") Integer usuarioId);
+
+
     @Query("SELECT SUM(p.valor)" +
             "FROM Pagamento p " +
             "JOIN p.venda v " +
@@ -51,6 +61,19 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Integer> {
             "AND v.usuario.loja.id = :lojaId " +
             "GROUP BY v.usuario.loja.id")
     Double sumValorTotalByDayMonthAndYearAndLoja(@Param("day") int day, @Param("month") int month, @Param("year") int year, @Param("lojaId") Integer lojaId);
+
+    // soma por vendas naquele dia (faturamento diario) JOIN com entidade Venda para pegar a dataHora
+    @Query("SELECT SUM(v.valorTotal) " +
+            "FROM Pagamento p " +
+            "JOIN p.venda v " +
+            "WHERE DAY(v.dataHora) = :day " +
+            "AND MONTH(v.dataHora) = :month " +
+            "AND YEAR(v.dataHora) = :year " +
+            "AND v.statusVenda.status = 'FINALIZADA'" +
+            "AND v.usuario.id = :usuarioId " +
+            "GROUP BY v.usuario.id")
+    Double sumValorTotalByDayMonthAndYearAndUsuario(@Param("day") int day, @Param("month") int month, @Param("year") int year, @Param("usuarioId") Integer usuarioId);
+
 
     // pagamentos por venda
     @Query("SELECT SUM(p.valor) FROM Pagamento p WHERE p.venda.id = :id")
