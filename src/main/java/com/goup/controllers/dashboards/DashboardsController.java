@@ -60,7 +60,7 @@ public class DashboardsController {
         return ResponseEntity.status(200).body(dashboardGeralService.dashboardLojaBuscarFaturamentoPorLojaMes(idLoja));
     }
 
-    @GetMapping("/dashboard-loja/{idLoja}/modelos-mais-vendido")
+    @GetMapping("/dashboard-loja/{idLoja}/fluxo-estoque")
     public ResponseEntity<FluxoEstoqueRes> buscarFluxoLoja(@PathVariable Integer idLoja){
         return ResponseEntity.status(200).body(dashboardGeralService.dashboardLojaBuscarFluxoEstoques(idLoja));
     }
