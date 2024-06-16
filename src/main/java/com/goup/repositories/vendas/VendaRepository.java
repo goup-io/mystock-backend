@@ -25,4 +25,11 @@ public interface VendaRepository extends JpaRepository<Venda, Integer> {
             @Param("data_fim") LocalDateTime dataHoraInicio1,
             @Param("id_loja") Integer id_loja
     );
+
+    @Query("SELECT COUNT(v.valorTotal) FROM Venda v " +
+            "WHERE v.usuario.id = :usuarioId " +
+            "AND MONTH(v.dataHora) = :mes " +
+            "AND YEAR(v.dataHora) = :ano " +
+            "AND v.statusVenda.status = 'FINALIZADA'")
+    Integer countVendasByUsuario(@Param("usuarioId") Integer id_usuario, @Param("mes") Integer mes, @Param("ano") Integer ano);
 }

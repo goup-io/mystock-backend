@@ -1,9 +1,6 @@
 package com.goup.controllers.dashboards;
 
-import com.goup.dtos.dashboards.dashboardGeral.FluxoEstoqueRes;
-import com.goup.dtos.dashboards.dashboardGeral.KpisRes;
-import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
-import com.goup.dtos.dashboards.dashboardGeral.RankingFuncionariosRes;
+import com.goup.dtos.dashboards.dashboardGeral.*;
 import com.goup.services.dashboards.DashboardGeralService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -77,4 +74,8 @@ public class DashboardsController {
         return ResponseEntity.status(200).body(dashboardGeralService.dashboardLojaBuscarRankingFuncionarios(idLoja));
     }
 
+    @GetMapping("/dashboard-funcionario/{idFuncionario}/kpis")
+    public ResponseEntity<KpisFuncionarioRes> buscarKpisFuncionario(@PathVariable Integer idFuncionario){
+        return ResponseEntity.status(200).body(dashboardGeralService.dashboardFuncionarioBuscarKpi(idFuncionario));
+    }
 }

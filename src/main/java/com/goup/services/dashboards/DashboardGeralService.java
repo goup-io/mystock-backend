@@ -1,11 +1,9 @@
 package com.goup.services.dashboards;
 
-import com.goup.dtos.dashboards.dashboardGeral.FluxoEstoqueRes;
-import com.goup.dtos.dashboards.dashboardGeral.KpisRes;
-import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
-import com.goup.dtos.dashboards.dashboardGeral.RankingFuncionariosRes;
+import com.goup.dtos.dashboards.dashboardGeral.*;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.lojas.Loja;
+import com.goup.entities.usuarios.Usuario;
 import com.goup.exceptions.BuscaRetornaVazioException;
 import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.historicos.TransferenciaRepository;
@@ -14,6 +12,7 @@ import com.goup.repositories.produtos.ETPRepository;
 import com.goup.repositories.usuarios.UsuarioRepository;
 import com.goup.repositories.vendas.PagamentoRepository;
 import com.goup.repositories.vendas.ProdutoVendaRepository;
+import com.goup.repositories.vendas.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +38,8 @@ public class DashboardGeralService {
     private TransferenciaRepository transferenciaRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private VendaRepository vendaRepository;
 
     public KpisRes dashGeralBuscarDadosKpi(){
         Double faturamentoMes = pagamentoRepository.sumValorTotalByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear()) == null ? 0.0 : pagamentoRepository.sumValorTotalByMonthAndYear(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
@@ -227,5 +228,22 @@ public class DashboardGeralService {
     public List<RankingFuncionariosRes> dashboardLojaBuscarRankingFuncionarios(Integer idLoja) {
         Loja loja = lojaRepository.findById(idLoja).orElseThrow(() -> new RegistroNaoEncontradoException("Loja não encontrada!"));
         return usuarioRepository.sumValorVendidoByUsuario(idLoja);
+    }
+
+    public KpisFuncionarioRes dashboardFuncionarioBuscarKpi(Integer idFuncionario){
+        Usuario usuario = usuarioRepository.findById(idFuncionario).orElseThrow(() -> new RegistroNaoEncontradoException("Funcionário não encontrado!"));
+        Double faturamentoMes = pagamentoRepository.sumValorTotalByMonthAndYearAndUsuario(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear(), usuario.getId());
+        Double faturamentoDia = pagamentoRepository.sumValorTotalByDayMonthAndYearAndUsuario(LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear(), usuario.getId());
+        Integer qtdVendas = vendaRepository.countVendasByUsuario(usuario.getId(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
+        Integer qtdProdutosVendidos = produtoVendaRepository.sumProdutoVendaByUsuarioIdAndMesAndAno(usuario.getId(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
+        PageRequest pegarMaisVendido = PageRequest.of(0, 1);
+        Page<ETP> topETP = produtoVendaRepository.findTopETPByMonthAndYearAndUsuarioId(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear(), pegarMaisVendido, usuario.getId());
+        return
+                new KpisFuncionarioRes(
+                        faturamentoMes == null ? 0.0 : faturamentoMes,
+                        faturamentoDia == null ? 0.0 : faturamentoDia,
+                        qtdVendas == null ? 0 : qtdVendas,
+                        qtdProdutosVendidos == null ? 0 : qtdProdutosVendidos,
+                        topETP.isEmpty() ? "Nenhuma venda realizada" : topETP.getContent().get(0).getProduto().getNome());
     }
 }
