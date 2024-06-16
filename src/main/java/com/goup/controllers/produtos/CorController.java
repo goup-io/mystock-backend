@@ -4,6 +4,7 @@ import com.goup.dtos.estoque.produtos.cor.CorMapper;
 import com.goup.dtos.estoque.produtos.cor.CorReq;
 import com.goup.entities.estoque.produtos.Cor;
 import com.goup.repositories.produtos.CorRepository;
+import com.goup.services.produtos.CorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,22 +17,16 @@ import java.util.Optional;
 @RequestMapping("/cores")
 public class CorController {
     @Autowired
-    private final CorRepository repository;
-
-    public CorController(CorRepository repository) {
-        this.repository = repository;
-    }
+    private CorService service;
 
     @PostMapping
     public ResponseEntity<Cor> cadastrar(@RequestBody @Valid CorReq categoria) {
-        final Cor corSalva = this.repository.save(CorMapper.reqToEntity(categoria));
-        return ResponseEntity.status(201).body(corSalva);
+        return ResponseEntity.status(201).body(service.cadastrar(categoria));
     }
 
     @GetMapping
     public ResponseEntity<List<Cor>> listar() {
-        List<Cor> cores = this.repository.findAll();
-
+        List<Cor> cores = this.service.listar();
         if (cores.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
@@ -40,32 +35,18 @@ public class CorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Cor> buscarPorId(@PathVariable Integer id) {
-
-        // Previnir NPE (NullPointerExecption)
-        Optional<Cor> corOpt = repository.findById(id);
-
-        // Retorna 200 com corpo caso encontre ou 404 caso contrário.
-        return ResponseEntity.of(corOpt);
+        return ResponseEntity.status(200).body(service.buscarPorId(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Cor> atualizar(@PathVariable int id, @RequestBody @Valid CorReq corAtualizada) {
-        Optional<Cor> corOpt = repository.findById(id);
-        if (corOpt.isPresent()) {
-            corOpt.get().setNome(corAtualizada.nome());
-            this.repository.save(corOpt.get());
-            return ResponseEntity.status(200).body(corOpt.get());
-        }
-        return ResponseEntity.status(404).build();
+        return ResponseEntity.status(200).body(service.atualizar(id, corAtualizada));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable int id) {
-        if (repository.existsById(id)) {
-            this.repository.deleteById(id);
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(404).build();
+        this.service.remover(id);
+        return ResponseEntity.status(204).build();
     }
 }
 
