@@ -12,6 +12,9 @@ public interface ModeloRepository extends JpaRepository<Modelo, Integer> {
     List<Modelo> findAllByNomeIgnoreCase(String nome);
     List<Modelo> findAllByCategoria_NomeIgnoreCase(String categoria);
 
+    @Query("SELECT m FROM Modelo m join Produto p on m.id = p.modelo.id join ETP e on p.id = e.produto.id where e.loja.id = :loja_id")
+    List<Modelo> findAllByLoja(@Param("loja_id") Integer loja_id);
+
     Optional<Modelo> findByCodigo(String codigo);
 
     boolean existsById(int id);

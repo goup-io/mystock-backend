@@ -5,6 +5,7 @@ import com.goup.dtos.estoque.produtos.ProdutoRes;
 import com.goup.entities.historicos.StatusTransferencia;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public record TransferenciaRes(
     Integer id,
@@ -20,4 +21,5 @@ public record TransferenciaRes(
     String liberador
 ) {
 
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 }

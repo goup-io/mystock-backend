@@ -1,5 +1,6 @@
 package com.goup.repositories.historicos;
 
+import com.goup.dtos.historico.transferencia.TransferenciaRes;
 import com.goup.entities.historicos.StatusTransferencia;
 import com.goup.entities.historicos.Transferencia;
 import com.goup.entities.lojas.Loja;
@@ -11,6 +12,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TransferenciaRepository extends JpaRepository<Transferencia, Integer> {
+
+    @Query("SELECT t FROM Transferencia t WHERE t.coletor.loja = :loja")
+    List<Transferencia> findAllByLoja(@Param("loja") Loja loja);
 
     @Query("SELECT hist FROM Transferencia hist JOIN hist.etp etp JOIN etp.produto produto " +
             "WHERE (:modelo IS NULL OR lower(produto.modelo.nome) LIKE lower(concat('%',:modelo, '%')))" +
