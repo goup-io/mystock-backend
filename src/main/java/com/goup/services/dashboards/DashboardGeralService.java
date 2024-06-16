@@ -279,4 +279,9 @@ public class DashboardGeralService {
         Double tempValorTotal = pagamentoRepository.sumValorTotalByMonthAndYearAndUsuario(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear(), usuario.getId());
         return tempValorTotal == null ? 0.0 : tempValorTotal;
     }
+
+    public List<ModeloEValorRes> dashboardFuncionarioBuscarModelosMaisVendidos(Integer idFuncionario) {
+        Usuario usuario = usuarioRepository.findById(idFuncionario).orElseThrow(() -> new RegistroNaoEncontradoException("Funcionario não encontrada!"));
+        return pagamentoRepository.findTop10ModelosByUsuarioIdMonthAndYear(usuario.getId(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
+    }
 }

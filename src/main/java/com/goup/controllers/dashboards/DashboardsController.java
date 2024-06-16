@@ -89,4 +89,10 @@ public class DashboardsController {
         return ResponseEntity.status(200).body(dashboardGeralService.dashboardFuncionarioBuscarFaturamentoPorFuncionarioMes(idFuncionario));
     }
 
+    @GetMapping("/dashboard-funcionario/{idFuncionario}/modelos-mais-vendido")
+    public ResponseEntity<List<ModeloEValorRes>> buscarModelosMaisVendidoFuncionario(@PathVariable Integer idFuncionario){
+        List<ModeloEValorRes>  modeloEValorRes = dashboardGeralService.dashboardFuncionarioBuscarModelosMaisVendidos(idFuncionario);
+        return modeloEValorRes.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(modeloEValorRes);
+    }
+
 }
