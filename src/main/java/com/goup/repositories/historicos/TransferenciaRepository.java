@@ -14,6 +14,7 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia, In
 
     @Query("SELECT hist FROM Transferencia hist JOIN hist.etp etp JOIN etp.produto produto " +
             "WHERE (:modelo IS NULL OR lower(produto.modelo.nome) LIKE lower(concat('%',:modelo, '%')))" +
+            "AND (:produto IS NULL OR lower(produto.nome) LIKE lower(concat('%',:produto, '%')))" +
             "AND (:cor IS NULL OR lower(produto.cor.nome) LIKE lower(concat('%', :cor, '%')))" +
             "AND (:tamanho IS NULL OR etp.tamanho.numero = :tamanho) " +
             "AND (:id_loja IS NULL OR hist.coletor.loja.id = :id_loja) " +
@@ -26,6 +27,7 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia, In
         @Param("dataInicio") LocalDateTime dataInicio,
         @Param("dataFim") LocalDateTime dataFim,
         @Param("modelo") String modelo,
+        @Param("produto") String produto,
         @Param("cor") String cor,
         @Param("tamanho") Integer tamanho,
         @Param("id_loja") Integer id_loja, // LOJA DE QUEM FEZ A SOLICITAÇÃO (coletor)

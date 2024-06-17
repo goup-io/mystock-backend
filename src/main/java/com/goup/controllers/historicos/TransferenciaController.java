@@ -43,13 +43,14 @@ public class TransferenciaController {
             @RequestParam(required = false) LocalDateTime dataInicio,
             @RequestParam(required = false) LocalDateTime dataFim,
             @RequestParam(required = false) String modelo,
+            @RequestParam(required = false) String produto,
             @RequestParam(required = false) String cor,
             @RequestParam(required = false) Integer tamanho,
             @RequestParam(required = false) Integer id_loja,
             @RequestParam(required = false) StatusTransferencia.Status status,
             @RequestParam(required = false) String pesquisa
     ){
-        List<TransferenciaRes> lista = service.listarPorFiltro(dataInicio, dataFim, modelo, cor, tamanho, id_loja, status, pesquisa);
+        List<TransferenciaRes> lista = service.listarPorFiltro(dataInicio, dataFim, modelo, produto, cor, tamanho, id_loja, status, pesquisa);
         if(lista.isEmpty()){
             return ResponseEntity.status(204).build();
         }
