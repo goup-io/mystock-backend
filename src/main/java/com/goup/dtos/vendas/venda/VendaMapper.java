@@ -56,9 +56,19 @@ public class VendaMapper {
         return vendaResTables;
     }
 
+    public static List<VendaResTable> listToListRes (List<Venda> vendas){
+        List<VendaResTable> res = new ArrayList<>();
+        for (Venda v : vendas) {
+            res.add(entityToResTable(v, 0));
+        }
+        return res;
+    }
+
     public static List<VendaRes> entityToRes(List<Venda> vendas){
         return vendas.stream().map(VendaMapper::entityToRes).toList();
     }
+
+
 
     public static VendaDetalhamentoRes entityToResDetalhamento(Venda v, List<ProdutoVendaDetalhamentoRes> produtosDetalhados) {
         Integer id = v.getId();
@@ -81,4 +91,6 @@ public class VendaMapper {
         );
         return dto;
     }
+
+
 }

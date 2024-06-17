@@ -16,4 +16,5 @@ public record VendaResTable(
         Double valor,
         String statusVenda
 )  {
+
 }

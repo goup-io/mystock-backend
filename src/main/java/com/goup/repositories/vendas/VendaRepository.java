@@ -25,4 +25,7 @@ public interface VendaRepository extends JpaRepository<Venda, Integer> {
             @Param("data_fim") LocalDateTime dataHoraInicio1,
             @Param("id_loja") Integer id_loja
     );
+
+    @Query("SELECT venda FROM Venda venda INNER JOIN venda.usuario usuario WHERE usuario.loja.id = 3")
+    List <Venda> findAllByLoja(Integer id);
 }
