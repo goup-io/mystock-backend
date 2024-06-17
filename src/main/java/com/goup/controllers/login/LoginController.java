@@ -207,6 +207,9 @@ public class LoginController {
             }
             return ResponseEntity.status(400).build();
         } else {
+            if (usuarioLoginrepository.findByUsername(loginDto.username()) != null || lojaLoginRepository.findByUsername(loginDto.username()) != null) {
+                return ResponseEntity.status(409).build();
+            }
             loginEncontrado.setUsername(loginDto.username());
             String senhaEncrypted = new BCryptPasswordEncoder().encode(loginEncontrado.getSenha());
             loginEncontrado.setSenha(senhaEncrypted);
