@@ -1,3 +1,3 @@
 package com.goup.dtos.historico.transferencia;
-public record TransferenciaReqRejeitar(Integer id_liberador) {
+public record TransferenciaReqRejeitar(Integer cod_liberador) {
 }

@@ -79,13 +79,14 @@ public class TransferenciaService {
             @Param("dataInicio") LocalDateTime dataInicio,
             @Param("dataFim") LocalDateTime dataFim,
             @Param("modelo") String modelo,
+            @Param("produto") String produto,
             @Param("cor") String cor,
             @Param("tamanho") Integer tamanho,
             @Param("tamanho") Integer id_loja,
             @Param("status") StatusTransferencia.Status status,
             @Param("pesquisa") String pesquisa
     ){
-        List<Transferencia> lista = repository.findAllByFiltro(dataInicio, dataFim, modelo, cor, tamanho, id_loja, status, pesquisa);
+        List<Transferencia> lista = repository.findAllByFiltro(dataInicio, dataFim, modelo, produto, cor, tamanho, id_loja, status, pesquisa);
         List<TransferenciaRes> listaDto = TransferenciaMapper.listToListReq(lista);
         return listaDto;
     }
@@ -93,7 +94,7 @@ public class TransferenciaService {
 
     public TransferenciaRes aprovar(int id, TransferenciaReqAprovar aprovacao) {
         Optional<Transferencia> transf = repository.findById(id);
-        Optional<Usuario> liberador = usuarioRepository.findById(aprovacao.id_liberador());
+        Optional<Usuario> liberador = usuarioRepository.findByCodigoVenda(aprovacao.cod_liberador());
         Optional<StatusTransferencia> status_aceite = statusTransferenciaRepository.findByStatus(StatusTransferencia.Status.ACEITO);
         validarProcessamento(transf, liberador, status_aceite); // Joga exceções se não atender os requisitos de processamento
 
@@ -146,7 +147,7 @@ public class TransferenciaService {
 
     public TransferenciaRes rejeitar(int id, TransferenciaReqRejeitar rejeicao){
         Optional<Transferencia> transf = repository.findById(id);
-        Optional<Usuario> liberador = usuarioRepository.findById(rejeicao.id_liberador());
+        Optional<Usuario> liberador = usuarioRepository.findByCodigoVenda(rejeicao.cod_liberador());
         Optional<StatusTransferencia> status_negado = statusTransferenciaRepository.findByStatus(StatusTransferencia.Status.NEGADO);
         validarProcessamento(transf, liberador, status_negado); // Joga exceções se não atender os requisitos de processamento
 
