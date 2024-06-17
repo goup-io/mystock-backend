@@ -1,5 +1,7 @@
 package com.goup.services.dashboards;
 
+import com.goup.dtos.dashboards.dashboardFuncionario.KpisFuncionarioRes;
+import com.goup.dtos.dashboards.dashboardFuncionario.TotaisItensVendidosRes;
 import com.goup.dtos.dashboards.dashboardGeral.*;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.lojas.Loja;
@@ -283,5 +285,38 @@ public class DashboardGeralService {
     public List<ModeloEValorRes> dashboardFuncionarioBuscarModelosMaisVendidos(Integer idFuncionario) {
         Usuario usuario = usuarioRepository.findById(idFuncionario).orElseThrow(() -> new RegistroNaoEncontradoException("Funcionario não encontrada!"));
         return pagamentoRepository.findTop10ModelosByUsuarioIdMonthAndYear(usuario.getId(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
+    }
+
+    public List<TotaisItensVendidosRes> dashboardFuncionarioBuscarTotaisItensVendidos(Integer idFuncionario) {
+        Usuario usuario = usuarioRepository.findById(idFuncionario).orElseThrow(() -> new RegistroNaoEncontradoException("Funcionario não encontrada!"));
+        List<TotaisItensVendidosRes> faturamentoPorLoja = new ArrayList<>();
+        LocalDateTime dataInicial = LocalDateTime.now().minusMonths(12);
+        Integer mesInicial = dataInicial.getMonthValue() + 1;
+        Integer anoPesquisar = dataInicial.getYear();
+        int contador = 1;
+        for (int j = mesInicial; contador < 13; j++){
+            if (j == 13){
+                j = 1;
+                anoPesquisar += 1;
+            }
+
+            Integer qtdTotalVendidos = produtoVendaRepository.sumProdutoVendaByUsuarioIdAndMesAndAno(usuario.getId(), j, LocalDateTime.now().getYear());
+            Integer qtdTotalVendidosPromocao = produtoVendaRepository.sumProdutoVendaPromocaoByUsuarioIdAndMesAndAno(j, anoPesquisar, usuario.getId());
+
+            System.out.println("anoPesquisar:" + anoPesquisar + "mesPesquisar:" + j + "idUsuario:" + usuario.getId());
+            System.out.println("AAAAAAAAAAAAAAAAAAA:" + qtdTotalVendidosPromocao + "bbbbbbbbbbbbbbbbbbbbbb" + qtdTotalVendidos);
+            faturamentoPorLoja.add(new TotaisItensVendidosRes(qtdTotalVendidos == null ? 0 : qtdTotalVendidos, qtdTotalVendidosPromocao == null ? 0 : qtdTotalVendidosPromocao));
+
+            contador++;
+        }
+        return faturamentoPorLoja;
+    }
+
+    public TotaisItensVendidosRes dashboardFuncionarioBuscarTotaisItensVendidosMes(Integer idFuncionario) {
+        Usuario usuario = usuarioRepository.findById(idFuncionario).orElseThrow(() -> new RegistroNaoEncontradoException("Funcionario não encontrada!"));
+        Integer qtdTotalVendidos = produtoVendaRepository.sumProdutoVendaByUsuarioIdAndMesAndAno(usuario.getId(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
+        Integer qtdTotalVendidosPromocao = produtoVendaRepository.sumProdutoVendaPromocaoByUsuarioIdAndMesAndAno(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear(), usuario.getId());
+
+        return new TotaisItensVendidosRes(qtdTotalVendidos == null ? 0 : qtdTotalVendidos, qtdTotalVendidosPromocao == null ? 0 : qtdTotalVendidosPromocao);
     }
 }

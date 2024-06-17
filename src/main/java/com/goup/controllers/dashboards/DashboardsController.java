@@ -1,5 +1,7 @@
 package com.goup.controllers.dashboards;
 
+import com.goup.dtos.dashboards.dashboardFuncionario.TotaisItensVendidosRes;
+import com.goup.dtos.dashboards.dashboardFuncionario.KpisFuncionarioRes;
 import com.goup.dtos.dashboards.dashboardGeral.*;
 import com.goup.services.dashboards.DashboardGeralService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,6 +95,16 @@ public class DashboardsController {
     public ResponseEntity<List<ModeloEValorRes>> buscarModelosMaisVendidoFuncionario(@PathVariable Integer idFuncionario){
         List<ModeloEValorRes>  modeloEValorRes = dashboardGeralService.dashboardFuncionarioBuscarModelosMaisVendidos(idFuncionario);
         return modeloEValorRes.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(modeloEValorRes);
+    }
+
+    @GetMapping("/dashboard-funcionario/{idFuncionario}/totais-de-itens-vendidos")
+    public ResponseEntity<List<TotaisItensVendidosRes>> buscarTotaisItensVendidosFuncionario(@PathVariable Integer idFuncionario){
+        return ResponseEntity.status(200).body(dashboardGeralService.dashboardFuncionarioBuscarTotaisItensVendidos(idFuncionario));
+    }
+
+    @GetMapping("/dashboard-funcionario/{idFuncionario}/totais-de-itens-vendidos/mes-atual")
+    public ResponseEntity<TotaisItensVendidosRes> buscarTotaisItensVendidosFuncionarioMes(@PathVariable Integer idFuncionario){
+        return ResponseEntity.status(200).body(dashboardGeralService.dashboardFuncionarioBuscarTotaisItensVendidosMes(idFuncionario));
     }
 
 }

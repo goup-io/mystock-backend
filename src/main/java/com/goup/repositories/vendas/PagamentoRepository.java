@@ -1,4 +1,5 @@
 package com.goup.repositories.vendas;
+import com.goup.dtos.dashboards.dashboardFuncionario.TotaisItensVendidosRes;
 import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
 import com.goup.entities.vendas.Pagamento;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -55,6 +56,16 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Integer> {
             "AND v.statusVenda.status = 'FINALIZADA'")
     Double sumPagamentosByUsuarioAndMonthAndYear(@Param("month") int month, @Param("year") int year, @Param("usuarioId") Integer usuarioId);
 
+    @Query("SELECT SUM(pv.quantidade) " +
+            "FROM Pagamento p " +
+            "JOIN p.venda v " +
+            "JOIN ProdutoVenda pv on pv.venda = v " +
+            "WHERE v.usuario.id = :usuarioId " +
+            "AND MONTH(v.dataHora) = :month " +
+            "AND YEAR(v.dataHora) = :year " +
+            "AND v.statusVenda.status = 'FINALIZADA'" +
+            "GROUP BY v.usuario.id")
+    Integer sumTotalVendidos(@Param("month") int month, @Param("year") int year, @Param("usuarioId") Integer usuarioId);
 
     // soma por vendas naquele dia (faturamento diario) JOIN com entidade Venda para pegar a dataHora
     @Query("SELECT SUM(v.valorTotal) FROM Pagamento p JOIN p.venda v WHERE DAY(v.dataHora) = :day AND MONTH(v.dataHora) = :month AND YEAR(v.dataHora) = :year AND v.statusVenda.status = 'FINALIZADA'")
