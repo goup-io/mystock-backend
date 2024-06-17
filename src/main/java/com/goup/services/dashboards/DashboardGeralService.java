@@ -229,7 +229,7 @@ public class DashboardGeralService {
 
     public List<RankingFuncionariosRes> dashboardLojaBuscarRankingFuncionarios(Integer idLoja) {
         Loja loja = lojaRepository.findById(idLoja).orElseThrow(() -> new RegistroNaoEncontradoException("Loja não encontrada!"));
-        return usuarioRepository.sumValorVendidoByUsuario(idLoja);
+        return usuarioRepository.sumValorVendidoByUsuario(idLoja, LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
     }
 
     public KpisFuncionarioRes dashboardFuncionarioBuscarKpi(Integer idFuncionario){

@@ -28,7 +28,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
             "JOIN v.usuario u " +
             "WHERE u.loja.id = :idLoja " +
             "AND v.statusVenda.status = 'FINALIZADA'" +
+            "AND MONTH(v.dataHora) = :mes " +
+            "AND YEAR(v.dataHora) = :ano  " +
             "GROUP BY u.id " +
             "ORDER BY SUM(v.valorTotal) DESC")
-    List<RankingFuncionariosRes> sumValorVendidoByUsuario(@Param("idLoja") Integer idLoja);
+    List<RankingFuncionariosRes> sumValorVendidoByUsuario(@Param("idLoja") Integer idLoja, @Param("mes") Integer mes, @Param("ano") Integer ano);
 }

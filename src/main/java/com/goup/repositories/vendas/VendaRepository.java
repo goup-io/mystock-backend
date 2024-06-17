@@ -37,4 +37,25 @@ public interface VendaRepository extends JpaRepository<Venda, Integer> {
             "AND YEAR(v.dataHora) = :ano " +
             "AND v.statusVenda.status = 'FINALIZADA'")
     Integer countVendasByUsuario(@Param("usuarioId") Integer id_usuario, @Param("mes") Integer mes, @Param("ano") Integer ano);
+
+
+
+    @Query("SELECT SUM(p.valorRevenda) FROM Venda v " +
+            "JOIN ProdutoVenda pv ON v.id = pv.venda.id " +
+            "JOIN pv.etp e " +
+            "JOIN e.produto p " +
+            "WHERE v.dataHora >= :startDate " +
+            "AND v.statusVenda.status = 'FINALIZADA'")
+    Double sumValorVendasPrecoRevenda(@Param("startDate") LocalDateTime startDate);
+
+
+
+    @Query("SELECT SUM(p.valorCusto) FROM Venda v " +
+            "JOIN ProdutoVenda pv ON v.id = pv.venda.id " +
+            "JOIN pv.etp e " +
+            "JOIN e.produto p " +
+            "WHERE v.dataHora >= :startDate " +
+            "AND v.statusVenda.status = 'FINALIZADA'")
+    Double sumValorVendasPrecoCusto(@Param("startDate") LocalDateTime startDate);
+
 }
