@@ -1,9 +1,6 @@
 package com.goup.controllers.produtos;
 
-import com.goup.dtos.estoque.ETPEditModal;
-import com.goup.dtos.estoque.ETPReq;
-import com.goup.dtos.estoque.ETPTableRes;
-import com.goup.dtos.estoque.ReqETPeQuantidade;
+import com.goup.dtos.estoque.*;
 import com.goup.entities.estoque.ETP;
 import com.goup.services.produtos.ETPService;
 import jakarta.validation.Valid;
@@ -70,6 +67,11 @@ public class ETPController {
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(200).body(etps);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ETPTableRes> atualizar(@PathVariable Integer id, @RequestBody @Valid ETPReqEdit atualizado){
+        return ResponseEntity.status(200).body(service.atualizar(id, atualizado));
     }
 
     @PatchMapping("/{id}/{quantidade}")

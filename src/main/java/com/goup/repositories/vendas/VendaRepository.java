@@ -28,4 +28,11 @@ public interface VendaRepository extends JpaRepository<Venda, Integer> {
 
     @Query("SELECT venda FROM Venda venda INNER JOIN venda.usuario usuario WHERE usuario.loja.id = 3")
     List <Venda> findAllByLoja(Integer id);
+    
+    @Query("SELECT COUNT(v.valorTotal) FROM Venda v " +
+            "WHERE v.usuario.id = :usuarioId " +
+            "AND MONTH(v.dataHora) = :mes " +
+            "AND YEAR(v.dataHora) = :ano " +
+            "AND v.statusVenda.status = 'FINALIZADA'")
+    Integer countVendasByUsuario(@Param("usuarioId") Integer id_usuario, @Param("mes") Integer mes, @Param("ano") Integer ano);
 }

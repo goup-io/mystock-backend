@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -162,7 +163,27 @@ public class ETPService {
 
         return ETPMapper.toTableResponse(etpsSalvar);
     }
+    public ETPTableRes atualizar(Integer id, ETPReqEdit atualizado) {
+        Optional<ETP> etp = repository.findById(id);
+        if(etp.isEmpty()){
+            throw new RegistroNaoEncontradoException("ETP não encontrado");
+        }
 
+        Optional<Produto> produto = produtoRepository.findById(etp.get().getProduto().getId());
+        if(produto.isEmpty()){
+            throw new RegistroNaoEncontradoException("Produto não encontrado");
+        }
+
+        produto.get().setValorRevenda(atualizado.valorRevenda());
+        produto.get().setValorCusto(atualizado.valorCusto());
+        produto.get().setNome(atualizado.nome());
+        produtoRepository.save(produto.get()); // Atualiza e salva produto;
+
+
+        etp.get().setItemPromocional(atualizado.itemPromocional());
+        repository.save(etp.get()); // Atualiza e salva ETP
+        return ETPMapper.toTableResponseEntity(etp.get()); // retorna
+    }
     public void deletar(Integer id){
         Optional<ETP> etp = repository.findById(id);
         if (etp.isEmpty()) {
@@ -180,4 +201,6 @@ public class ETPService {
         utils.ordenarNome(etpsList, 0, etpsList.getTamanho());
         return etpsList;
     }
+
+
 }

@@ -1,9 +1,11 @@
 package com.goup.repositories.usuarios;
 
+import com.goup.dtos.dashboards.dashboardGeral.RankingFuncionariosRes;
 import com.goup.entities.lojas.Loja;
 import com.goup.entities.usuarios.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import javax.swing.text.html.Option;
 import java.util.List;
@@ -22,4 +24,11 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     Optional<Usuario> findByCodigoVenda(Integer codigoVenda);
 
+    @Query("SELECT new com.goup.dtos.dashboards.dashboardGeral.RankingFuncionariosRes(u.id, u.nome, SUM(v.valorTotal)) FROM Venda v " +
+            "JOIN v.usuario u " +
+            "WHERE u.loja.id = :idLoja " +
+            "AND v.statusVenda.status = 'FINALIZADA'" +
+            "GROUP BY u.id " +
+            "ORDER BY SUM(v.valorTotal) DESC")
+    List<RankingFuncionariosRes> sumValorVendidoByUsuario(@Param("idLoja") Integer idLoja);
 }

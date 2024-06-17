@@ -4,7 +4,6 @@ import com.goup.dtos.estoque.ETPMapper;
 import com.goup.dtos.estoque.ETPReq;
 import com.goup.dtos.estoque.produtos.ProdutoMapper;
 import com.goup.dtos.estoque.produtos.ProdutoReq;
-import com.goup.dtos.estoque.produtos.ProdutoReqEdit;
 import com.goup.dtos.estoque.produtos.ProdutoRes;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.estoque.Tamanho;
@@ -83,15 +82,6 @@ public class ProdutoService {
             return ProdutoMapper.entityToRes(produtoOpt.get());
         }
         throw new RegistroNaoEncontradoException("Produto não encontrado!");
-    }
-
-    public ProdutoRes atualizar(int id, ProdutoReqEdit produtoNovo){
-        Optional<Produto> produtoAtual = repository.findById(id);
-        if(produtoAtual.isEmpty()){
-            throw new RegistroNaoEncontradoException("Produto não encontrado");
-        }
-        final Produto produtoAtualizado = this.repository.save(ProdutoMapper.updateEntity(produtoAtual.get(), produtoNovo));
-        return ProdutoMapper.entityToRes(produtoAtualizado);
     }
 
     public void deletar(int id){
