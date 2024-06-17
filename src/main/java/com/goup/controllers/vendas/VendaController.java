@@ -3,6 +3,7 @@ package com.goup.controllers.vendas;
 import com.goup.dtos.vendas.produtoVenda.ProdutoVendaReq;
 import com.goup.dtos.vendas.venda.*;
 import com.goup.entities.usuarios.Usuario;
+import com.goup.entities.vendas.StatusVenda;
 import com.goup.entities.vendas.TipoVenda;
 import com.goup.services.vendas.VendaService;
 import jakarta.validation.Valid;
@@ -25,13 +26,15 @@ public class VendaController {
     }
     @GetMapping("/filtro")
     public ResponseEntity<List<VendaResTable>> listarPorFiltro(
-        @RequestParam(required = false) TipoVenda tipoVenda,
+        @RequestParam(required = false) Integer id_tipo_venda,
         @RequestParam(required = false) Integer id_vendedor,
         @RequestParam(required = false) LocalDateTime dataHoraInicio,
         @RequestParam(required = false) LocalDateTime dataHoraFim,
-        @RequestParam(required = false) Integer id_loja
+        @RequestParam(required = false) Integer id_loja,
+        @RequestParam(required = false) Integer id_status
     ){
-        return ResponseEntity.status(200).body(service.listarPorFiltro(tipoVenda, id_vendedor, dataHoraInicio, dataHoraFim, id_loja));
+        List<VendaResTable> vendas = service.listarPorFiltro(id_tipo_venda, id_vendedor, dataHoraInicio, dataHoraFim, id_loja, id_status);
+        return vendas.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(vendas);
     }
 
     @GetMapping("/{id}")

@@ -32,6 +32,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,16 +77,24 @@ public class VendaService {
     }
 
     public List<VendaResTable> listarPorFiltro(
-        @Param("tipo_venda") TipoVenda tipoVenda,
+        @Param("tipo_venda") Integer id_tipo_venda,
         @Param("id_vendedor") Integer id_vendedor,
         @Param("data_inicio") LocalDateTime dataHoraInicio,
         @Param("data_fim") LocalDateTime dataHoraFim,
-        @Param("id_loja") Integer id_loja
+        @Param("id_loja") Integer id_loja,
+        @Param("status") Integer id_status
     ){
-        List<Venda> vendas = repository.findAllByFiltros(tipoVenda, id_vendedor, dataHoraInicio, dataHoraFim, id_loja);
-        if (vendas.isEmpty()){
-            throw new BuscaRetornaVazioException("Venda não encontrou algum resultado");
+        if (id_tipo_venda != null) {
+            Optional<TipoVenda> tipoVenda = tipoVendaRepository.findById(id_tipo_venda);
+            if (tipoVenda.isEmpty()) throw new RegistroNaoEncontradoException("TipoVenda não encontrada");
+        }else if (id_status != null) {
+            Optional<StatusVenda> statusVenda = statusVendaRepository.findById(id_status);
+            if (statusVenda.isEmpty()) throw new RegistroNaoEncontradoException("StatusVenda não encontrado");
         }
+
+        List<Venda> vendas = repository.findAllByFiltros(id_tipo_venda, id_vendedor, dataHoraInicio, dataHoraFim, id_loja, id_status);
+
+
         List<Integer> quantidadePorProdutoVenda = new ArrayList<>();
         for (int i = 0; i < vendas.size(); i++) {
             List<RetornoETPeQuantidade> itensDaVenda = produtoVendaRepository.findAllEtpsByVendaId(vendas.get(i).getId());
