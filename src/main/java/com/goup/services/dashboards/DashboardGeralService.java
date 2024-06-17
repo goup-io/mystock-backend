@@ -303,8 +303,6 @@ public class DashboardGeralService {
             Integer qtdTotalVendidos = produtoVendaRepository.sumProdutoVendaByUsuarioIdAndMesAndAno(usuario.getId(), j, LocalDateTime.now().getYear());
             Integer qtdTotalVendidosPromocao = produtoVendaRepository.sumProdutoVendaPromocaoByUsuarioIdAndMesAndAno(j, anoPesquisar, usuario.getId());
 
-            System.out.println("anoPesquisar:" + anoPesquisar + "mesPesquisar:" + j + "idUsuario:" + usuario.getId());
-            System.out.println("AAAAAAAAAAAAAAAAAAA:" + qtdTotalVendidosPromocao + "bbbbbbbbbbbbbbbbbbbbbb" + qtdTotalVendidos);
             faturamentoPorLoja.add(new TotaisItensVendidosRes(qtdTotalVendidos == null ? 0 : qtdTotalVendidos, qtdTotalVendidosPromocao == null ? 0 : qtdTotalVendidosPromocao));
 
             contador++;

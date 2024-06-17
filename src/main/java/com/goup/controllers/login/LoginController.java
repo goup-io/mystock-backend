@@ -2,6 +2,7 @@ package com.goup.controllers.login;
 
 import com.goup.dtos.login.LoginDto;
 import com.goup.dtos.login.LoginResponseDTO;
+import com.goup.dtos.login.UpdateLoginReq;
 import com.goup.dtos.login.redefinirSenha.RedefinirDto;
 import com.goup.dtos.login.RegisterDTO;
 import com.goup.dtos.login.redefinirSenha.RedefinirMapper;
@@ -16,6 +17,7 @@ import com.goup.entities.usuarios.login.Login;
 import com.goup.entities.usuarios.login.RedefinirSenha;
 import com.goup.entities.usuarios.login.UserRole;
 import com.goup.entities.usuarios.Usuario;
+import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.observer.redefinirsenha.EmailObserver;
 import com.goup.repositories.lojas.AcessoLojaRepository;
 import com.goup.repositories.lojas.LoginLojaRepository;
@@ -177,6 +179,40 @@ public class LoginController {
 
         return ResponseEntity.status(201).build();
 
+    }
+
+    @PutMapping("/atualizar-login/{idUsuario}")
+    public ResponseEntity<Login> atualizarLogin(@PathVariable Integer idUsuario, @RequestBody @Valid UpdateLoginReq loginDto) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado!"));
+        Login loginEncontrado = usuarioLoginrepository.findLoginByIdUsuario(idUsuario);
+        if (loginEncontrado == null ){
+            if (usuarioLoginrepository.findByUsername(loginDto.username()) != null || lojaLoginRepository.findByUsername(loginDto.username()) != null) {
+                return ResponseEntity.status(409).build();
+            }
+
+            if(usuario.getCargo().getNome().equals("Gerente") || usuario.getCargo().getNome().equals("Admin")){
+                    UserRole userRole = null;
+                    try {
+                        userRole = UserRole.valueOf(usuario.getCargo().getNome().toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        return ResponseEntity.status(400).build();
+                    }
+
+                    String senhaEncrypted = new BCryptPasswordEncoder().encode(loginDto.senha());
+                    System.out.println("ROLA DO CARA:"+userRole.getRole());
+                    Login novoLogin = new Login(loginDto.username(), senhaEncrypted, usuario, userRole);
+
+                    usuarioLoginrepository.save(novoLogin);
+                    return ResponseEntity.status(201).body(novoLogin);
+            }
+            return ResponseEntity.status(400).build();
+        } else {
+            loginEncontrado.setUsername(loginDto.username());
+            String senhaEncrypted = new BCryptPasswordEncoder().encode(loginEncontrado.getSenha());
+            loginEncontrado.setSenha(senhaEncrypted);
+            usuarioLoginrepository.save(loginEncontrado);
+            return ResponseEntity.status(200).body(loginEncontrado);
+        }
     }
 
     @PostMapping("/redefinir-senha/enviar-email/{email}")
