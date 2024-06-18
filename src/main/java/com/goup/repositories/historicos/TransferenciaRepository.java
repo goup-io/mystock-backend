@@ -40,4 +40,11 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia, In
             "JOIN t.etp e " +
             "WHERE e.loja = :loja AND t.status.status = 'ACEITO' AND MONTH(t.dataHora) = :month AND YEAR(t.dataHora) = :year")
     Integer sumQuantidadeTransferidaByLojaAndMonthAndAno(@Param("loja") Loja loja, @Param("month") Integer mes, @Param("year") Integer ano);
+
+    @Query("SELECT SUM(t.quantidadeLiberada) FROM Transferencia t " +
+            "JOIN t.etp e " +
+            "WHERE t.status.status = 'ACEITO'" +
+            "AND t.dataHora >= :dataInicial")
+    Integer sumQuantidadeTransferidaByPeriod(@Param("dataInicial") LocalDateTime dataInicial);
+
 }
