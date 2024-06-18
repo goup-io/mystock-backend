@@ -40,14 +40,16 @@ public interface VendaRepository extends JpaRepository<Venda, Integer> {
 
 
 
-    @Query("SELECT SUM(p.valorRevenda) FROM Venda v " +
-            "JOIN ProdutoVenda pv ON v.id = pv.venda.id " +
-            "JOIN pv.etp e " +
-            "JOIN e.produto p " +
-            "WHERE v.dataHora >= :startDate " +
-            "AND v.statusVenda.status = 'FINALIZADA'")
-    Double sumValorVendasPrecoRevenda(@Param("startDate") LocalDateTime startDate);
-
+//
+//    @Query("SELECT SUM(pg.valor) FROM Venda v " +
+//            "JOIN ProdutoVenda pv ON v.id = pv.venda.id " +
+//            "JOIN pv.etp e " +
+//            "JOIN e.produto p " +
+//            "JOIN Pagamento pg ON pg.venda = v " +
+//            "WHERE v.dataHora >= :startDate " +
+//            "AND v.dataHora <= :endDate " +
+//            "AND v.statusVenda.status = 'FINALIZADA'")
+//    Double sumValorVendasPrecoRevendaBeteweenDates(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
 
     @Query("SELECT SUM(p.valorCusto) FROM Venda v " +
@@ -57,5 +59,33 @@ public interface VendaRepository extends JpaRepository<Venda, Integer> {
             "WHERE v.dataHora >= :startDate " +
             "AND v.statusVenda.status = 'FINALIZADA'")
     Double sumValorVendasPrecoCusto(@Param("startDate") LocalDateTime startDate);
+
+    @Query("SELECT SUM(p.valorCusto) FROM Venda v " +
+            "JOIN ProdutoVenda pv ON v.id = pv.venda.id " +
+            "JOIN pv.etp e " +
+            "JOIN e.produto p " +
+            "WHERE v.dataHora >= :startDate " +
+            "AND  v.dataHora <= :endDate " +
+            "AND v.statusVenda.status = 'FINALIZADA'")
+    Double sumValorVendasPrecoCustoBeteweenDates(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+
+    @Query("SELECT SUM(p.valor)" +
+            "FROM Pagamento p " +
+            "JOIN p.venda v " +
+            "WHERE v.dataHora >= :startDate " +
+            "AND  v.dataHora <= :endDate " +
+            "AND v.statusVenda.status = 'FINALIZADA'")
+    Double sumValorVendasPrecoRevendaBeteweenDates(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+
+    @Query("SELECT SUM(p.valor)" +
+            "FROM Pagamento p " +
+            "JOIN p.venda v " +
+            "WHERE v.dataHora >= :startDate " +
+            "AND v.statusVenda.status = 'FINALIZADA'")
+    Double sumValorVendasPrecoRevenda(@Param("startDate") LocalDateTime startDate);
+
+
 
 }
