@@ -4,8 +4,10 @@ import com.goup.entities.estoque.AlertasEstoque;
 import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.produtos.AlertasEstoqueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,5 +31,13 @@ public class AlertasEstoqueService {
             throw new RegistroNaoEncontradoException("Alerta não encontrado");
         }
         return alerta.get();
+    }
+
+    public List<AlertasEstoque> listarPorFiltro(
+            @Param("dataInicio") LocalDateTime dataInicio,
+            @Param("dataFim") LocalDateTime dataFim,
+            @Param("id_loja") Integer id_loja
+    ) {
+        return repository.findAllByFiltro(dataInicio, dataFim, id_loja);
     }
 }

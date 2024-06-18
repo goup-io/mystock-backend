@@ -12,6 +12,7 @@ import com.goup.repositories.produtos.CategoriaRepository;
 import com.goup.repositories.produtos.ModeloRepository;
 import com.goup.repositories.produtos.TipoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,10 +45,10 @@ public class ModeloService {
     }
 
     public List<ModeloRes> listarPorFiltro(
-        @RequestParam(required = false) String categoria,
-        @RequestParam(required = false) String tipo,
-        @RequestParam(required = false) String modelo,
-        @RequestParam(required = false) String codigo)
+        @Param("categoria") String categoria,
+        @Param("tipo") String tipo,
+        @Param("modelo") String modelo,
+        @Param("codigo") String codigo)
     {
         List<Modelo> modelos = repository.findAllByFiltro(categoria, tipo, modelo, codigo);
         return ModeloMapper.listToListRes(modelos);
