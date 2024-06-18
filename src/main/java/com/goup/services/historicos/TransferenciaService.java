@@ -131,7 +131,7 @@ public class TransferenciaService {
         if(etpLiberador.getQuantidade() <= AlertaInfos.quantidadeMinima){
             AlertasEstoque alerta = new AlertasEstoque();
             alerta.setTitulo("Alerta estoque com quantidade abaixo do ideal!");
-            alerta.setDescricao("Estoque do produto " + etpLiberador.getProduto().getNome() + "de tamanho " + etpLiberador.getTamanho() + "está em " + etpLiberador.getQuantidade() + "!");
+            alerta.setDescricao("Estoque do produto " + etpLiberador.getProduto().getNome() + " de tamanho " + etpLiberador.getTamanho().getNumero() + " está em " + etpLiberador.getQuantidade() + "!");
             alerta.setDataHora(LocalDateTime.now());
             alerta.setEtp(etpLiberador);
             alertasEstoqueRepository.save(alerta);

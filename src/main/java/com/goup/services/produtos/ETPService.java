@@ -122,7 +122,7 @@ public class ETPService {
             if(etp.get().getQuantidade() <= AlertaInfos.quantidadeMinima){
                 AlertasEstoque alerta = new AlertasEstoque();
                 alerta.setTitulo("Alerta estoque com quantidade abaixo do ideal!");
-                alerta.setDescricao("Estoque do produto " + etp.get().getProduto().getNome() + "de tamanho " + etp.get().getTamanho() + "está em " + etp.get().getQuantidade() + "!");
+                alerta.setDescricao("Estoque do produto " + etp.get().getProduto().getNome() + " de tamanho " + etp.get().getTamanho().getNumero() + " está em " + etp.get().getQuantidade() + "!");
                 alerta.setDataHora(LocalDateTime.now());
                 alerta.setEtp(etp.get());
                 alertasEstoqueRepository.save(alerta);
@@ -148,7 +148,7 @@ public class ETPService {
                 if(etp.get().getQuantidade() <= AlertaInfos.quantidadeMinima){
                     AlertasEstoque alerta = new AlertasEstoque();
                     alerta.setTitulo("Alerta estoque com quantidade abaixo do ideal!");
-                    alerta.setDescricao("Estoque do produto " + etp.get().getProduto().getNome() + "de tamanho " + etp.get().getTamanho() + "está em " + etp.get().getQuantidade() + "!");
+                    alerta.setDescricao("Estoque do produto " + etp.get().getProduto().getNome() + " de tamanho " + etp.get().getTamanho().getNumero() + " está em " + etp.get().getQuantidade() + "!");
                     alerta.setDataHora(LocalDateTime.now());
                     alerta.setEtp(etp.get());
                     alertasEstoqueRepository.save(alerta);
