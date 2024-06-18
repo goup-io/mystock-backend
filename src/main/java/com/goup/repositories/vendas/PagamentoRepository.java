@@ -136,4 +136,16 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Integer> {
             "GROUP BY p.etp.produto.modelo " +
             "ORDER BY SUM(p.valorUnitario * p.quantidade) DESC")
     List<ModeloEValorRes> findTop10ModelosByUsuarioIdMonthAndYear(@Param("usuarioId") Integer usuarioId, @Param("month") int monthValue, @Param("year") int year);
+
+    @Query("SELECT new com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes(p.etp.produto.modelo, CAST(SUM(p.valorUnitario * p.quantidade) AS DOUBLE)) " +
+            "FROM ProdutoVenda p " +
+            "JOIN p.venda v " +
+            "JOIN Pagamento pg ON pg.venda.id = v.id " +
+            "WHERE v.dataHora >= :dataInicial " +
+            "AND v.statusVenda.status = 'FINALIZADA'" +
+            "GROUP BY p.etp.produto.modelo " +
+            "ORDER BY SUM(p.valorUnitario * p.quantidade) DESC")
+    List<ModeloEValorRes> findTop10ModelosByPeriod(@Param("dataInicial") LocalDateTime dataInicial);
+
+
 }

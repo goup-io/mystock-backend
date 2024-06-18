@@ -1,16 +1,21 @@
 package com.goup.services.relatorios;
 
+import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
 import com.goup.dtos.relatorios.ResumoRes;
+import com.goup.repositories.vendas.PagamentoRepository;
 import com.goup.repositories.vendas.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class RelatorioService {
     @Autowired
     private VendaRepository vendaRepository;
+    @Autowired
+    private PagamentoRepository pagamentoRepository;
 
     public ResumoRes buscarResumoVendas(Integer qtdDias) {
         LocalDateTime dataMenosQtdDias = LocalDateTime.now().minusDays(qtdDias);
@@ -39,13 +44,6 @@ public class RelatorioService {
 
         lucroOperacionalDiasAnterior = entradaDiasAnterior - saidaDiasAnterior;
 
-        System.out.println("ENTRADAANTERIORTEMPANTES"+ entradaDiasAnterior);
-        System.out.println("asdsdsadsadassd"+ saldoDiasAnteriorTemp);
-        System.out.println("PRECODEREVENDA: " + entrada);
-        System.out.println("PRECOCUSTO: " + saida);
-        System.out.println("LUCROOPERACIONALDASEMANA: " + lucroOperacional);
-        System.out.println("LUCROOPERACIONALDASSEMANAANTERIOR: " + lucroOperacionalDiasAnterior);
-
         if (lucroOperacionalDiasAnterior != 0.0) {
             porcentagemLucro = ((lucroOperacional - lucroOperacionalDiasAnterior) / lucroOperacionalDiasAnterior) * 100;
         } else if (lucroOperacional > 0.0) {
@@ -55,5 +53,10 @@ public class RelatorioService {
         }
 
         return new ResumoRes(entrada, saida, lucroOperacional, porcentagemLucro);
+    }
+
+    public List<ModeloEValorRes> buscarSecaoVendas(Integer qtdDias) {
+        LocalDateTime dataMenosQtdDias = LocalDateTime.now().minusDays(qtdDias);
+        return pagamentoRepository.findTop10ModelosByPeriod(dataMenosQtdDias);
     }
 }
