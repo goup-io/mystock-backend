@@ -1,6 +1,8 @@
 package com.goup.controllers.relatorios;
 
 import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
+import com.goup.dtos.relatorios.FluxoEstoqueRes;
+import com.goup.dtos.relatorios.ProdutoAcabandoRes;
 import com.goup.dtos.relatorios.RankingFuncionariosVendas;
 import com.goup.dtos.relatorios.ResumoRes;
 import com.goup.services.relatorios.RelatorioService;
@@ -40,4 +42,19 @@ public class RelatoriosController {
         if(ranking.isEmpty()) return ResponseEntity.status(204).build();
         return ResponseEntity.status(200).body(ranking);
     }
+
+    @GetMapping("/secao-estoque/produtos-acabando")
+    public ResponseEntity<List<ProdutoAcabandoRes>> buscarProdutosAcabando(){
+        List<ProdutoAcabandoRes> produtosAcabando = service.buscarProdutosAcabando();
+        if(produtosAcabando.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(produtosAcabando);
+    }
+
+    @GetMapping("/secao-estoque/fluxo-estoque")
+    public ResponseEntity<FluxoEstoqueRes> buscarFluxoEstoque(
+            @RequestParam(required = true) Integer qtdDias
+    ){
+        return ResponseEntity.status(200).body(service.buscarFluxoEstoque(qtdDias));
+    }
+
 }
