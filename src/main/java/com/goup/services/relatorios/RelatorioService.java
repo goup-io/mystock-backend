@@ -1,13 +1,17 @@
 package com.goup.services.relatorios;
 
 import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
+import com.goup.dtos.dashboards.dashboardGeral.RankingFuncionariosRes;
+import com.goup.dtos.relatorios.RankingFuncionariosVendas;
 import com.goup.dtos.relatorios.ResumoRes;
+import com.goup.repositories.usuarios.UsuarioRepository;
 import com.goup.repositories.vendas.PagamentoRepository;
 import com.goup.repositories.vendas.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,6 +20,8 @@ public class RelatorioService {
     private VendaRepository vendaRepository;
     @Autowired
     private PagamentoRepository pagamentoRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public ResumoRes buscarResumoVendas(Integer qtdDias) {
         LocalDateTime dataMenosQtdDias = LocalDateTime.now().minusDays(qtdDias);
@@ -59,4 +65,12 @@ public class RelatorioService {
         LocalDateTime dataMenosQtdDias = LocalDateTime.now().minusDays(qtdDias);
         return pagamentoRepository.findTop10ModelosByPeriod(dataMenosQtdDias);
     }
+
+    public List<RankingFuncionariosVendas> dashboardLojaBuscarRankingFuncionarios(Integer qtdDias) {
+            List<RankingFuncionariosVendas> ranking = usuarioRepository.sumValorVendidoByUsuarioPeriod(LocalDateTime.now().minusDays(qtdDias));
+            if (ranking.isEmpty()) {
+                return new ArrayList<>();
+            }
+            return ranking;
+        }
 }
