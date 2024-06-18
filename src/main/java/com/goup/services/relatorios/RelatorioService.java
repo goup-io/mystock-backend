@@ -2,8 +2,11 @@ package com.goup.services.relatorios;
 
 import com.goup.dtos.dashboards.dashboardGeral.ModeloEValorRes;
 import com.goup.dtos.dashboards.dashboardGeral.RankingFuncionariosRes;
+import com.goup.dtos.relatorios.ProdutoAcabandoRes;
 import com.goup.dtos.relatorios.RankingFuncionariosVendas;
 import com.goup.dtos.relatorios.ResumoRes;
+import com.goup.entities.estoque.ETP;
+import com.goup.repositories.produtos.ETPRepository;
 import com.goup.repositories.usuarios.UsuarioRepository;
 import com.goup.repositories.vendas.PagamentoRepository;
 import com.goup.repositories.vendas.VendaRepository;
@@ -22,6 +25,8 @@ public class RelatorioService {
     private PagamentoRepository pagamentoRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private ETPRepository etpRepository;
 
     public ResumoRes buscarResumoVendas(Integer qtdDias) {
         LocalDateTime dataMenosQtdDias = LocalDateTime.now().minusDays(qtdDias);
@@ -73,4 +78,17 @@ public class RelatorioService {
             }
             return ranking;
         }
+
+    public List<ProdutoAcabandoRes> buscarProdutosAcabando() {
+        List<ETP> produtosAcabando = etpRepository.findAllByQuantidadeBeforeOrderByQuantidadeAsc(20);
+        if (produtosAcabando.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<ProdutoAcabandoRes> produtosAcabandoRes = new ArrayList<>();
+        for (ETP etp : produtosAcabando) {
+            produtosAcabandoRes.add(
+                    new ProdutoAcabandoRes(etp.getProduto().getNome(), etp.getQuantidade(), etp.getLoja().getNome()));
+        }
+        return produtosAcabandoRes;
+    }
 }
