@@ -1,5 +1,6 @@
 package com.goup.controllers.produtos;
 
+import com.goup.dtos.estoque.Notificacao;
 import com.goup.entities.estoque.AlertasEstoque;
 import com.goup.services.produtos.AlertasEstoqueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,11 @@ public class AlertasEstoqueController {
     @GetMapping("/{id}")
     public ResponseEntity<AlertasEstoque> buscarPorId(@PathVariable Integer id){
         return ResponseEntity.status(200).body(service.buscarPorId(id));
+    }
+
+
+    @GetMapping("/ultimo-aviso/{id_loja}")
+    public ResponseEntity<Notificacao> listarUltimoAviso(@PathVariable Integer id_loja){
+        return ResponseEntity.status(200).body(service.listarUltimoAviso(id_loja));
     }
 }
