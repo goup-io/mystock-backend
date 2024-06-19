@@ -123,4 +123,13 @@ public class UsuarioService {
             return null;
         }
     }
+
+    public UsuarioResponseDto buscarUsuarioPorCodigo(Integer codigo) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByCodigoVenda(codigo);
+        if(usuarioOpt.isPresent()) {
+            return UsuarioMapper.entityToReponse(usuarioOpt.get());
+        } else {
+            throw new RegistroNaoEncontradoException("Usuário não encontrado!");
+        }
+    }
 }

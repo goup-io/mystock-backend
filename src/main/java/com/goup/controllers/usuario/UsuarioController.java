@@ -39,6 +39,12 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuarioService.buscarUsuarioPorId(id));
     }
 
+    @GetMapping("/{codigoVenda}")
+    public ResponseEntity<UsuarioResponseDto> buscarUsuarioPorCodigo(@PathVariable("codigoVenda") Integer codigoVenda) {
+        return ResponseEntity.status(200).body(usuarioService.buscarUsuarioPorCodigo(codigoVenda));
+    }
+
+
     @GetMapping("/loja/{id_loja}")
     public ResponseEntity<List<UsuarioResTableDto>> buscarUsuariosPorLoja(@PathVariable int id_loja) {
         List<UsuarioResTableDto> usuarios = usuarioService.buscarUsuariosPorLoja(id_loja);

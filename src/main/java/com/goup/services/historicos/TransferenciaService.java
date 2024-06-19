@@ -46,7 +46,7 @@ public class TransferenciaService {
         if (!transf.itens().isEmpty()){
             for (TransferenciaETPEQuantidade item : transf.itens()) {
                 Optional<ETP> etp = etpRepository.findById(item.etp_id());
-                Optional<Usuario> coletor = usuarioRepository.findById(transf.coletor_id());
+                Optional<Usuario> coletor = usuarioRepository.findByCodigoVenda(transf.coletor_cod());
                 Optional<StatusTransferencia> status_pendente = statusTransferenciaRepository.findByStatus(StatusTransferencia.Status.PENDENTE);
                 if(etp.isEmpty()){
                     throw new RegistroNaoEncontradoException("ETP não encontrado!");

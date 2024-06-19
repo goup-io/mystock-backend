@@ -47,5 +47,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
             "ORDER BY SUM(v.valorTotal) DESC")
     List<RankingFuncionariosVendas> sumValorVendidoByUsuarioPeriod(@Param("dataInicial")LocalDateTime dataInicial);
 
-
 }
