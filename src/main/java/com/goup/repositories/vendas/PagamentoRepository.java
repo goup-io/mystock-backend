@@ -148,4 +148,12 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Integer> {
     List<ModeloEValorRes> findTop10ModelosByPeriod(@Param("dataInicial") LocalDateTime dataInicial);
 
 
+
+    @Query("SELECT SUM(p.valor)" +
+            "FROM Pagamento p " +
+            "JOIN p.venda v " +
+            "JOIN v.usuario u " +
+            "WHERE u.id = :usuarioId AND DAY(v.dataHora) = :day AND MONTH(v.dataHora) = :month AND YEAR(v.dataHora) = :year AND v.statusVenda.status = 'FINALIZADA'")
+    Double sumPagamentosByFuncionarioAndMonthAndYearAndDay(@Param("day") int day, @Param("month") int month, @Param("year") int year, @Param("usuarioId") Integer usuarioId);
+
 }

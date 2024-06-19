@@ -87,7 +87,7 @@ public class DashboardsController {
     }
 
     @GetMapping("/dashboard-funcionario/{idFuncionario}/faturamento-mes-atual")
-    public ResponseEntity<Double> buscarFaturamentoFuncionarioMes(@PathVariable Integer idFuncionario){
+    public ResponseEntity<List<Double>> buscarFaturamentoFuncionarioMes(@PathVariable Integer idFuncionario){
         return ResponseEntity.status(200).body(dashboardGeralService.dashboardFuncionarioBuscarFaturamentoPorFuncionarioMes(idFuncionario));
     }
 
