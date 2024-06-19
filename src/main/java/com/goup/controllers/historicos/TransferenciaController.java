@@ -57,6 +57,26 @@ public class TransferenciaController {
         return ResponseEntity.status(200).body(lista);
     }
 
+    @GetMapping("/filtro/liberador")
+    public ResponseEntity<List<TransferenciaRes>> listarPorFiltroLiberador(
+            @RequestParam(required = false) LocalDateTime dataInicio,
+            @RequestParam(required = false) LocalDateTime dataFim,
+            @RequestParam(required = false) String modelo,
+            @RequestParam(required = false) String produto,
+            @RequestParam(required = false) String cor,
+            @RequestParam(required = false) Integer tamanho,
+            @RequestParam(required = false) Integer id_loja,
+            @RequestParam(required = false) StatusTransferencia.Status status,
+            @RequestParam(required = false) String pesquisa
+    ){
+        List<TransferenciaRes> lista = service.listarPorFiltroLiberador(dataInicio, dataFim, modelo, produto, cor, tamanho, id_loja, status, pesquisa);
+        if(lista.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(lista);
+    }
+
+
     @PostMapping("/{id}/aprovar")
     public ResponseEntity<TransferenciaRes> aprovar(@PathVariable int id, @Valid @RequestBody TransferenciaReqAprovar transf){
         TransferenciaRes aprovada = service.aprovar(id, transf);
