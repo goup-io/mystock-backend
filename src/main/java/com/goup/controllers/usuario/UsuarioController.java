@@ -39,7 +39,7 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuarioService.buscarUsuarioPorId(id));
     }
 
-    @GetMapping("/{codigoVenda}")
+    @GetMapping("/codigo/{codigoVenda}")
     public ResponseEntity<UsuarioResponseDto> buscarUsuarioPorCodigo(@PathVariable("codigoVenda") Integer codigoVenda) {
         return ResponseEntity.status(200).body(usuarioService.buscarUsuarioPorCodigo(codigoVenda));
     }
