@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,5 +25,6 @@ public interface AlertasEstoqueRepository extends JpaRepository<AlertasEstoque, 
     );
 
     @Query("SELECT ae FROM AlertasEstoque ae WHERE ae.etp.loja.id = :idLoja ORDER BY ae.dataHora DESC")
-    Optional<AlertasEstoque> findLastAlertByLoja(@Param("idLoja") int idLoja);
+    List<AlertasEstoque> findLastAlertByLoja(@Param("idLoja") int idLoja);
+
 }

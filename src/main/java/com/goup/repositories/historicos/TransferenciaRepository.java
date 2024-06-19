@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -73,5 +74,6 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia, In
     Integer sumQuantidadeTransferidaByLojaAndMonthAndAno(@Param("loja") Loja loja, @Param("month") Integer mes, @Param("year") Integer ano);
 
     @Query("SELECT t FROM Transferencia t WHERE t.etp.loja.id = :idLoja ORDER BY t.dataHora DESC")
-    Optional<Transferencia> findLastTransferenciaByLoja(@Param("idLoja") int idLoja);
+    List<Transferencia> findLastTransferenciaByLoja(@Param("idLoja") int idLoja);
+
 }

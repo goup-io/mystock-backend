@@ -48,29 +48,30 @@ public class AlertasEstoqueService {
 
     public Notificacao listarUltimoAviso(
             @Param("id_loja") Integer id_loja) {
-        Optional<AlertasEstoque> alerta = repository.findLastAlertByLoja(id_loja);
-        Optional<Transferencia> transf = transferenciaRepository.findLastTransferenciaByLoja(id_loja);
-        if(alerta.isPresent() && transf.isPresent()){
-            LocalDateTime alertaDt = alerta.get().getDataHora();
-            LocalDateTime transfDt = transf.get().getDataHora();
+
+        List<AlertasEstoque> alerta = repository.findLastAlertByLoja(id_loja);
+        List<Transferencia> transf = transferenciaRepository.findLastTransferenciaByLoja(id_loja);
+        if(!alerta.isEmpty() && !transf.isEmpty()){
+            LocalDateTime alertaDt = alerta.get(0).getDataHora();
+            LocalDateTime transfDt = transf.get(0).getDataHora();
             if(alertaDt.isAfter(transfDt)){
                 return new Notificacao(alertaDt,
-                        alerta.get().getDescricao());
+                        alerta.get(0).getDescricao());
             }
-            Transferencia t = transf.get();
+            Transferencia t = transf.get(0);
             String nomeProduto = t.getEtp().getProduto().getNome();
             Integer tamanho = t.getEtp().getTamanho().getNumero();
             String lojaColetora = t.getColetor().getLoja().getNome();
             return new Notificacao(
                     transfDt,
                     String.format("Transferência de produto %s de tamanho %d, solicitado pela %s ", nomeProduto, tamanho, lojaColetora));
-        }else if(alerta.isPresent()){
-            LocalDateTime alertaDt = alerta.get().getDataHora();
+        }else if(!alerta.isEmpty()){
+            LocalDateTime alertaDt = alerta.get(0).getDataHora();
             return new Notificacao(alertaDt,
-                    alerta.get().getDescricao());
-        }else if(transf.isPresent()){
-            LocalDateTime transfDt = transf.get().getDataHora();
-            Transferencia t = transf.get();
+                    alerta.get(0).getDescricao());
+        }else if(!transf.isEmpty()){
+            LocalDateTime transfDt = transf.get(0).getDataHora();
+            Transferencia t = transf.get(0);
             String nomeProduto = t.getEtp().getProduto().getNome();
             Integer tamanho = t.getEtp().getTamanho().getNumero();
             String lojaColetora = t.getColetor().getLoja().getNome();
