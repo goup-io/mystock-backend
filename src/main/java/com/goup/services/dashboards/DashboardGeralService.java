@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
@@ -324,12 +325,30 @@ public class DashboardGeralService {
         }
         return faturamentoPorLoja;
     }
+    public List<TotaisItensVendidosRes> dashboardFuncionarioBuscarTotaisItensVendidosMes(Integer idFuncionario) {
+        Usuario usuario = usuarioRepository.findById(idFuncionario).orElseThrow(() -> new RegistroNaoEncontradoException("usuario não encontrada!"));
 
-    public TotaisItensVendidosRes dashboardFuncionarioBuscarTotaisItensVendidosMes(Integer idFuncionario) {
-        Usuario usuario = usuarioRepository.findById(idFuncionario).orElseThrow(() -> new RegistroNaoEncontradoException("Funcionario não encontrada!"));
-        Integer qtdTotalVendidos = produtoVendaRepository.sumProdutoVendaByUsuarioIdAndMesAndAno(usuario.getId(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear());
-        Integer qtdTotalVendidosPromocao = produtoVendaRepository.sumProdutoVendaPromocaoByUsuarioIdAndMesAndAno(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear(), usuario.getId());
+        List<TotaisItensVendidosRes> totaisItensVendidosResList = new ArrayList<>();
+        LocalDateTime dataInicial = LocalDateTime.now();
+        Integer mesInicial = dataInicial.getMonthValue();
+        Integer anoPesquisar = dataInicial.getYear();
+        YearMonth yearMonth = YearMonth.of(anoPesquisar, mesInicial);
 
-        return new TotaisItensVendidosRes(qtdTotalVendidos == null ? 0 : qtdTotalVendidos, qtdTotalVendidosPromocao == null ? 0 : qtdTotalVendidosPromocao);
+        int totalDiasMes = yearMonth.lengthOfMonth();
+
+        for (int dia = 1; dia <= totalDiasMes; dia++){
+            Integer qtdTotalVendidos = produtoVendaRepository.sumProdutoVendaByUsuarioIdAndMesAndAnoAndDay(usuario.getId(), mesInicial, anoPesquisar, dia);
+            Integer qtdTotalVendidosPromocao = produtoVendaRepository.sumProdutoVendaPromocaoByUsuarioIdAndMesAndAnoAndDay(mesInicial, anoPesquisar, usuario.getId(), dia);
+
+            System.out.println("dia:" + dia + "mes"  + mesInicial + "ano: " + anoPesquisar + " valor: " + qtdTotalVendidos + "promocao: " + qtdTotalVendidosPromocao);
+            totaisItensVendidosResList.add(
+                    new TotaisItensVendidosRes(
+                            qtdTotalVendidos == null ? 0 : qtdTotalVendidos,
+                            qtdTotalVendidosPromocao == null ? 0 : qtdTotalVendidosPromocao
+                    )
+            );
+        }
+
+        return totaisItensVendidosResList;
     }
 }
