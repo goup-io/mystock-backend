@@ -57,7 +57,7 @@ public class PagamentoService {
                 pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
                 base64Image = pagarComPix(dtoPagamento);
             } else {
-                pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, venda.getValorTotal(), tipoPagamento, venda));
+                pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
             }
             Double valorQueResta = venda.getValorTotal() - (valorPagoAteMomento + dtoPagamento.getValor());
             return PagamentoMapper.entityToDto(pagamento, valorQueResta, base64Image);
