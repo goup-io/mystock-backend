@@ -63,21 +63,23 @@ public class DashboardGeralService {
             LocalDateTime dataInicial = LocalDateTime.now().minusMonths(12);
             Integer mesInicial = dataInicial.getMonthValue();
             Integer anoPesquisar = dataInicial.getYear();
-            int contador = 12;
+            int contador = 0;
             faturamentoPorLoja[i][0] = lojas.get(i).getNome();
-            for (int j = mesInicial; contador >= 0; j++){
-                if (j == 13){
-                    j = 1;
-                    anoPesquisar += 1;
-                }
-                Double valorTotal = pagamentoRepository.sumPagamentosByLojaAndMonthAndYear(j, anoPesquisar, lojas.get(i).getId());
+            for (int j = mesInicial; contador < 12; j++){
+                Double valorTotal = pagamentoRepository.sumPagamentosByLojaAndMonthAndYear((j + 1), anoPesquisar, lojas.get(i).getId());
 
                 if (valorTotal == null){
                     valorTotal = 0.0;
                 }
 
-                faturamentoPorLoja[i][j] = valorTotal;
-                contador--;
+                System.out.println("mes:" + j + " ano: " + anoPesquisar + " valor: " + valorTotal);
+                faturamentoPorLoja[i][contador + 1] = valorTotal;
+
+                if (j == 12){
+                    j = 0;
+                    anoPesquisar += 1;
+                }
+                contador++;
             }
         }
         return faturamentoPorLoja;
@@ -158,29 +160,27 @@ public class DashboardGeralService {
         Loja loja = lojaRepository.findById(idLoja).orElseThrow(() -> new RegistroNaoEncontradoException("Loja não encontrada!"));
 
         Object[][] faturamentoPorLoja = new Object[1][13];
-        for (int i = 0; i < 1; i++){
-            LocalDateTime dataInicial = LocalDateTime.now().minusMonths(12);
-            Integer mesInicial = dataInicial.getMonthValue();
-            Integer anoPesquisar = dataInicial.getYear();
-            int contador = 12;
-            faturamentoPorLoja[i][0] = loja.getNome();
-            for (int j = mesInicial; contador >= 0; j++){
-                if (j == 13){
-                    j = 1;
-                    anoPesquisar += 1;
-                }
-                Double valorTotal = pagamentoRepository.sumPagamentosByLojaAndMonthAndYear(j, anoPesquisar, loja.getId());
+        LocalDateTime dataInicial = LocalDateTime.now().minusMonths(12);
+        Integer mesInicial = dataInicial.getMonthValue();
+        Integer anoPesquisar = dataInicial.getYear();
+        int contador = 0;
+        faturamentoPorLoja[0][0] = loja.getNome();
+        for (int j = mesInicial; contador < 12; j++){
+            Double valorTotal = pagamentoRepository.sumPagamentosByLojaAndMonthAndYear((j + 1), anoPesquisar, loja.getId());
 
-                if (valorTotal == null){
-                    valorTotal = 0.0;
-                }
-
-                faturamentoPorLoja[i][j] = valorTotal;
-                contador--;
+            if (valorTotal == null){
+                valorTotal = 0.0;
             }
+
+            faturamentoPorLoja[0][contador + 1] = valorTotal;
+
+            if (j == 12){
+                j = 0; // reset month to January
+                anoPesquisar += 1; // increment year
+            }
+            contador++;
         }
         return faturamentoPorLoja;
-
     }
 
     public Object[][] dashboardLojaBuscarFaturamentoPorLojaMes(Integer idLoja) {
@@ -251,35 +251,50 @@ public class DashboardGeralService {
 
     public List<Double> dashboardFuncionarioBuscarFaturamentoPorFuncionario(Integer idFuncionario) {
         Usuario usuario = usuarioRepository.findById(idFuncionario).orElseThrow(() -> new RegistroNaoEncontradoException("Funcionario não encontrada!"));
-        List<Double> faturamentoPorLoja = new ArrayList<>();
+        List<Double> faturamentoFuncionario = new ArrayList<>();
         LocalDateTime dataInicial = LocalDateTime.now().minusMonths(12);
-        Integer mesInicial = dataInicial.getMonthValue() + 1;
+        Integer mesInicial = dataInicial.getMonthValue();
         Integer anoPesquisar = dataInicial.getYear();
-        int contador = 1;
-        for (int j = mesInicial; contador < 13; j++){
-            if (j == 13){
-                j = 1;
-                anoPesquisar += 1;
-            }
-
-            Double valorTotal = pagamentoRepository.sumPagamentosByUsuarioAndMonthAndYear(j, anoPesquisar, usuario.getId());
-
+        int contador = 0;
+        for (int j = mesInicial; contador < 12; j++){
+            Double valorTotal = pagamentoRepository.sumPagamentosByUsuarioAndMonthAndYear((j + 1), anoPesquisar, usuario.getId());
 
             if (valorTotal == null){
                 valorTotal = 0.0;
             }
 
-            faturamentoPorLoja.add(valorTotal);
+            faturamentoFuncionario.add(valorTotal);
 
+            if (j == 12){
+                j = 0;
+                anoPesquisar += 1;
+            }
             contador++;
         }
-        return faturamentoPorLoja;
+        return faturamentoFuncionario;
     }
 
-    public Double dashboardFuncionarioBuscarFaturamentoPorFuncionarioMes(Integer idFuncionario) {
+    public List<Double> dashboardFuncionarioBuscarFaturamentoPorFuncionarioMes(Integer idFuncionario) {
         Usuario usuario = usuarioRepository.findById(idFuncionario).orElseThrow(() -> new RegistroNaoEncontradoException("Funcionario não encontrada!"));
-        Double tempValorTotal = pagamentoRepository.sumValorTotalByMonthAndYearAndUsuario(LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear(), usuario.getId());
-        return tempValorTotal == null ? 0.0 : tempValorTotal;
+
+        List<Double> faturamentoFuncionario = new ArrayList<>();
+        for (int i = 0; i < 1; i++){
+            LocalDateTime dataInicial = LocalDateTime.now();
+            Integer mesInicial = dataInicial.getMonthValue();
+            Integer anoPesquisar = dataInicial.getYear();
+            YearMonth yearMonth = YearMonth.of(anoPesquisar, mesInicial);
+            int contador = yearMonth.lengthOfMonth();
+            for (int j = 1; j <= contador; j++){
+                Double valorTotal = pagamentoRepository.sumPagamentosByFuncionarioAndMonthAndYearAndDay(j, mesInicial, anoPesquisar, usuario.getId());
+
+                if (valorTotal == null){
+                    valorTotal = 0.0;
+                }
+
+                faturamentoFuncionario.add(valorTotal);
+            }
+        }
+        return faturamentoFuncionario;
     }
 
     public List<ModeloEValorRes> dashboardFuncionarioBuscarModelosMaisVendidos(Integer idFuncionario) {
