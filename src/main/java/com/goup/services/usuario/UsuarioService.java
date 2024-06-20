@@ -44,6 +44,15 @@ public class UsuarioService {
         return UsuarioMapper.toListResTable(usuarios);
     }
 
+    public List<UsuarioResTableDto> buscarUsuariosPorLoja(int id_loja){
+        List<Usuario> usuarios = usuarioRepository.findAllByLoja_Id(id_loja);
+        if (usuarios.isEmpty()) {
+            throw new BuscaRetornaVazioException("Nenhum usuário encontrado!");
+        }
+        return UsuarioMapper.toListResTable(usuarios);
+    }
+
+
     public UsuarioResponseDto criarUsuario(UsuarioCadastrarDto novoUsuario) {
         Cargo cargo = buscarCargoPorId(novoUsuario.idCargo());
         if(cargo == null){
@@ -112,6 +121,15 @@ public class UsuarioService {
             return lojaSearch.get();
         } else {
             return null;
+        }
+    }
+
+    public UsuarioResponseDto buscarUsuarioPorCodigo(Integer codigo) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByCodigoVenda(codigo);
+        if(usuarioOpt.isPresent()) {
+            return UsuarioMapper.entityToReponse(usuarioOpt.get());
+        } else {
+            throw new RegistroNaoEncontradoException("Usuário não encontrado!");
         }
     }
 }

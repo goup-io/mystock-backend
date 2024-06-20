@@ -35,4 +35,17 @@ public class Usuario {
     public void setCodigoVenda() {
         this.codigoVenda = this.id + 100;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", codigoVenda=" + codigoVenda +
+                ", nome='" + nome + '\'' +
+                ", cargo=" + cargo +
+                ", email='" + email + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", loja=" + loja +
+                '}';
+    }
 }

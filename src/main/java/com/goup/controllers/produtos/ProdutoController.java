@@ -1,7 +1,6 @@
 package com.goup.controllers.produtos;
 
 import com.goup.dtos.estoque.produtos.ProdutoReq;
-import com.goup.dtos.estoque.produtos.ProdutoReqEdit;
 import com.goup.dtos.estoque.produtos.ProdutoRes;
 import com.goup.entities.estoque.produtos.Produto;
 import com.goup.services.produtos.ProdutoService;
@@ -39,15 +38,14 @@ public class ProdutoController {
         return ResponseEntity.status(200).body(produto);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ProdutoRes> atualizar(@PathVariable int id, @RequestBody @Valid ProdutoReqEdit produtoNovo){
-        ProdutoRes produtoAtualizado = service.atualizar(id, produtoNovo);
-        return ResponseEntity.status(200).body(produtoAtualizado);
-    }
+
+    /*
+    Devido ao relacionamento entre Produto e ETP, a funcionalidade de deletar produto não vai existir.
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable int id) {
         service.deletar(id);
         return ResponseEntity.status(204).build();
     }
+     */
 }

@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +24,7 @@ public class AlertasEstoque {
     @NotNull
     private LocalDateTime dataHora;
 
-    @NotNull @ManyToOne @JoinColumn(name = "loja_id", referencedColumnName = "id")
+    @NotNull @ManyToOne @JoinColumn(name = "etp_id", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private ETP etp;
 }

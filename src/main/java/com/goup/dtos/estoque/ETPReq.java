@@ -1,4 +1,6 @@
 package com.goup.dtos.estoque;
 
-public record ETPReq(Integer idProduto, Integer idLoja, Integer idTamanho){
+import com.goup.entities.vendas.ItemPromocional;
+
+public record ETPReq(Integer idProduto, Integer idLoja, Integer idTamanho, ItemPromocional itemPromocional){
 }

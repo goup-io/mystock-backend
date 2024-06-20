@@ -1,5 +1,7 @@
 package com.goup.dtos.estoque;
 
+import com.goup.entities.vendas.ItemPromocional;
+
 public record ETPTableRes(
         Integer id,
         String codigo,
@@ -9,5 +11,8 @@ public record ETPTableRes(
         String cor,
         Double preco,
         String loja,
-        Integer quantidade) {
+        ItemPromocional itemPromocional,
+        Integer quantidade,
+        Integer idProduto
+) {
 }

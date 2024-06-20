@@ -1,9 +1,9 @@
 package com.goup.controllers.produtos;
 
-import com.goup.dtos.estoque.ETPEditModal;
-import com.goup.dtos.estoque.ETPReq;
-import com.goup.dtos.estoque.ETPTableRes;
+import com.goup.dtos.estoque.*;
+import com.goup.entities.estoque.ETP;
 import com.goup.services.produtos.ETPService;
+import jakarta.validation.Valid;
 import org.hibernate.type.internal.UserTypeVersionJavaTypeWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -59,18 +59,33 @@ public class ETPController {
         @RequestParam(required = false) Integer tamanho,
         @RequestParam(required = false) Double precoMinimo,
         @RequestParam(required = false) Double precoMaximo,
-        @RequestParam(required = false) Integer id_loja
+        @RequestParam(required = false) Integer id_loja,
+        @RequestParam(required = false) String pesquisa // Cod ou Nome Produto
     ){
-        List<ETPTableRes> etps = service.listarPorFiltro(modelo, cor, tamanho, precoMinimo, precoMaximo, id_loja);
+        List<ETPTableRes> etps = service.listarPorFiltro(modelo, cor, tamanho, precoMinimo, precoMaximo, id_loja, pesquisa);
         if(etps.isEmpty()){
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(200).body(etps);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ETPTableRes> atualizar(@PathVariable Integer id, @RequestBody @Valid ETPReqEdit atualizado){
+        return ResponseEntity.status(200).body(service.atualizar(id, atualizado));
+    }
+
     @PatchMapping("/{id}/{quantidade}")
     public ResponseEntity<ETPTableRes> alterarQuantidade(@PathVariable Integer id, @PathVariable Integer quantidade, @RequestParam Boolean soma){
         ETPTableRes etpAtualizado = service.alterarQuantidade(id, quantidade, soma);
+        return ResponseEntity.status(200).body(etpAtualizado);
+    }
+
+    @PatchMapping("/adicionar-estoque/{idLoja}")
+    public ResponseEntity<List<ETPTableRes>> alterarQuantidade(@Valid @RequestBody List<ReqETPeQuantidade> etpEQuantidade, @RequestParam Boolean soma, @PathVariable Integer idLoja){
+        List<ETPTableRes> etpAtualizado = service.alterarQuantidade(etpEQuantidade, soma, idLoja);
+        if (etpAtualizado.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
         return ResponseEntity.status(200).body(etpAtualizado);
     }
 

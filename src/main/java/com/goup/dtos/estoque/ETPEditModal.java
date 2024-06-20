@@ -1,5 +1,7 @@
 package com.goup.dtos.estoque;
 
+import com.goup.entities.vendas.ItemPromocional;
+
 public record ETPEditModal(
         Integer id,
         String codigo,
@@ -11,5 +13,6 @@ public record ETPEditModal(
         Double precoRevenda,
         Integer idLoja,
         Integer idProduto,
+        ItemPromocional itemPromocional,
         Integer quantidade) {
 }
