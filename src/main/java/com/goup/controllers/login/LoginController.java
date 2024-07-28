@@ -38,6 +38,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -96,7 +97,6 @@ public class LoginController {
         Usuario userLogged;
         Loja lojaLogged;
         String token;
- //       UsernamePasswordAuthenticationToken userAuthToken = null;
         if (tipoLogin instanceof Login) {
             usuario = loginService.buscarLogin(loginDTO.user());
             if (!loginService.validarLogin(usuario, loginDTO.senha())){
@@ -104,10 +104,9 @@ public class LoginController {
             }
             token = tokenService.gerarToken(usuario);
             userLogged = ((Login) usuario).getUsuario();
-            ((Login) usuario).setRole(UserRole.valueOf(userLogged.getCargo().getNome().toUpperCase()));
-
-            //Authentication authenticate = this.authenticationManager.authenticate(userAuthToken);
-
+            Authentication userAuthToken = new UsernamePasswordAuthenticationToken(loginDTO.user(), loginDTO.senha(), usuario.getAuthorities());
+            Authentication authenticate = this.authenticationManager.authenticate(userAuthToken);
+            SecurityContextHolder.getContext().setAuthentication(authenticate);
             return ResponseEntity.status(200).body(new LoginResponseDTO(token, userLogged.getId(), "usuario", UserRole.valueOf(userLogged.getCargo().getNome().toUpperCase()).toString(), userLogged.getLoja().getId()));
         } else {
             usuario = loginService.buscarLogin(loginDTO.user());
@@ -116,7 +115,9 @@ public class LoginController {
             }
             token = tokenService.gerarToken(usuario);
             lojaLogged = ((LojaLogin) usuario).getLoja();
-            ((LojaLogin) usuario).setRole(((LojaLogin) usuario).getAcessoLoja().getTipo());
+            Authentication userAuthToken = new UsernamePasswordAuthenticationToken(loginDTO.user(), loginDTO.senha(), usuario.getAuthorities());
+            Authentication authenticate = this.authenticationManager.authenticate(userAuthToken);
+            SecurityContextHolder.getContext().setAuthentication(authenticate);
             return ResponseEntity.status(200).body(new LojaLoginResponseDTO(token, lojaLogged.getId(), ((LojaLogin) usuario).getRole(), "loja"));
         }
     }
@@ -204,14 +205,14 @@ public class LoginController {
             }
 
             if(usuario.getCargo().getNome().equals("Gerente") || usuario.getCargo().getNome().equals("Admin")){
-                    UserRole userRole = null;
+                    UserRole userRole;
                     try {
                         userRole = UserRole.valueOf(usuario.getCargo().getNome().toUpperCase());
                     } catch (IllegalArgumentException e) {
                         return ResponseEntity.status(400).build();
                     }
 
-                    String senhaEncrypted = new BCryptPasswordEncoder().encode(loginDto.senha());
+                    String senhaEncrypted = encoder.encode(loginDto.senha());
                     Login novoLogin = new Login(loginDto.username(), senhaEncrypted, usuario, userRole);
 
                     usuarioLoginrepository.save(novoLogin);
@@ -223,7 +224,7 @@ public class LoginController {
                 return ResponseEntity.status(409).build();
             }
             loginEncontrado.setUsername(loginDto.username());
-            String senhaEncrypted = new BCryptPasswordEncoder().encode(loginEncontrado.getSenha());
+            String senhaEncrypted = encoder.encode(loginDto.senha());
             loginEncontrado.setSenha(senhaEncrypted);
             usuarioLoginrepository.save(loginEncontrado);
             return ResponseEntity.status(200).body(loginEncontrado);
@@ -260,13 +261,13 @@ public class LoginController {
         if (tipoLogin instanceof Login) {
             Integer usuarioId = tokenEncontrado.get().getLogin().getUsuario().getId();
             Login login = usuarioLoginrepository.findLoginByIdUsuario(usuarioId);
-            login.setSenha(new BCryptPasswordEncoder().encode(redefinirDto.senha()));
+            login.setSenha(encoder.encode(redefinirDto.senha()));
             usuarioLoginrepository.save(login);
             redefinirSenha.setAtivo(false);
             redefinirSenhaRepository.save(redefinirSenha);
         } else {
             LojaLogin login = lojaLoginRepository.findById(tokenEncontrado.get().getLogin().getId()).get();
-            login.setSenha(new BCryptPasswordEncoder().encode(redefinirDto.senha()));
+            login.setSenha(encoder.encode(redefinirDto.senha()));
             lojaLoginRepository.save(login);
             redefinirSenha.setAtivo(false);
             redefinirSenhaRepository.save(redefinirSenha);

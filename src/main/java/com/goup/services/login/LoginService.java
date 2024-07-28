@@ -1,9 +1,9 @@
 package com.goup.services.login;
 
 import com.goup.entities.lojas.LojaLogin;
+import com.goup.entities.lojas.TipoLogin;
 import com.goup.entities.usuarios.login.Login;
-import com.goup.exceptions.LoginInvalidoException;
-import com.goup.exceptions.RegistroNaoEncontradoException;
+import com.goup.entities.usuarios.login.UserRole;
 import com.goup.repositories.lojas.LoginLojaRepository;
 import com.goup.repositories.usuarios.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ public class LoginService {
 
     @Autowired
     private static LoginRepository usuarioLoginrepository;
+
 
     @Autowired
     private PasswordEncoder encoder;
@@ -45,8 +46,10 @@ public class LoginService {
         Login loginUser = (Login) usuarioLoginrepository.findByUsername(username);
         LojaLogin loginLoja = (LojaLogin) lojaLoginRepository.findByUsername(username);
         if (loginUser != null){
+            ((Login) loginUser).setRole(UserRole.valueOf(loginUser.getUsuario().getCargo().getNome().toUpperCase()));
             return loginUser;
         } else if (loginLoja != null) {
+            ((LojaLogin) loginLoja).setRole(TipoLogin.valueOf(loginLoja.getAcessoLoja().getTipo().toString().toUpperCase()));
             return loginLoja;
         }
         return null;
