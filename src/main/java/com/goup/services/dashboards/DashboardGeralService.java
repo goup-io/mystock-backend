@@ -73,7 +73,6 @@ public class DashboardGeralService {
                     valorTotal = 0.0;
                 }
 
-                System.out.println("mes:" + j + " ano: " + anoPesquisar + " valor: " + valorTotal);
                 faturamentoPorLoja[i][contador + 1] = valorTotal;
 
                 if (j == 12){

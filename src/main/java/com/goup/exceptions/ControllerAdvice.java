@@ -6,14 +6,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 @org.springframework.web.bind.annotation.ControllerAdvice
-public class ControllerAdvice{
+public class ControllerAdvice extends ResponseEntityExceptionHandler {
     static class ErrorResponse {
         public LocalDateTime timestamp;
         public int status;
@@ -76,5 +78,20 @@ public class ControllerAdvice{
 
         ErrorResponse response = new ErrorResponse(timestamp, status, error, message, path, errors);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleLoginInvalido(LoginInvalidoException ex, WebRequest request) {
+        LocalDateTime timestamp = LocalDateTime.now();
+        int status = HttpStatus.UNAUTHORIZED.value();
+        String error = HttpStatus.UNAUTHORIZED.toString();
+        String message = "Credenciais inválidas!";
+        String path = request.getDescription(false);
+        Map<String, String> errors = new HashMap<>();
+        String nomeCampo = Arrays.stream(ex.getMessage().split(" ")).toList().get(0).toLowerCase();
+        errors.put(nomeCampo, ex.getMessage());
+
+        ErrorResponse response = new ErrorResponse(timestamp, status, error, message, path, errors);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 }

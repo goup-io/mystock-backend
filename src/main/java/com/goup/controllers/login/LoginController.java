@@ -17,6 +17,7 @@ import com.goup.entities.usuarios.login.Login;
 import com.goup.entities.usuarios.login.RedefinirSenha;
 import com.goup.entities.usuarios.login.UserRole;
 import com.goup.entities.usuarios.Usuario;
+import com.goup.exceptions.LoginInvalidoException;
 import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.observer.redefinirsenha.EmailObserver;
 import com.goup.repositories.lojas.AcessoLojaRepository;
@@ -39,6 +40,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -78,6 +80,9 @@ public class LoginController {
     private InMemoryTokenBlacklist invalidateTokenService;
 
     @Autowired
+    private PasswordEncoder encoder;
+
+    @Autowired
     private EmailService emailService;
 
     @Autowired
@@ -85,22 +90,30 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid LoginDto loginDTO) {
-        UsernamePasswordAuthenticationToken userAuthToken = new UsernamePasswordAuthenticationToken(loginDTO.user(), loginDTO.senha());
-        Authentication authenticate = this.authenticationManager.authenticate(userAuthToken);
-
         Object tipoLogin = loginService.verificaTipoLogin(loginDTO.user());
+
         UserDetails usuario;
         Usuario userLogged;
         Loja lojaLogged;
         String token;
+ //       UsernamePasswordAuthenticationToken userAuthToken = null;
         if (tipoLogin instanceof Login) {
-            usuario = (Login) authenticate.getPrincipal();
+            usuario = loginService.buscarLogin(loginDTO.user());
+            if (!loginService.validarLogin(usuario, loginDTO.senha())){
+                throw new LoginInvalidoException("Credenciais inválidas para o login: " + loginDTO.user());
+            }
             token = tokenService.gerarToken(usuario);
             userLogged = ((Login) usuario).getUsuario();
             ((Login) usuario).setRole(UserRole.valueOf(userLogged.getCargo().getNome().toUpperCase()));
+
+            //Authentication authenticate = this.authenticationManager.authenticate(userAuthToken);
+
             return ResponseEntity.status(200).body(new LoginResponseDTO(token, userLogged.getId(), "usuario", UserRole.valueOf(userLogged.getCargo().getNome().toUpperCase()).toString(), userLogged.getLoja().getId()));
         } else {
-            usuario = (LojaLogin) authenticate.getPrincipal();
+            usuario = loginService.buscarLogin(loginDTO.user());
+            if (!loginService.validarLogin(usuario, loginDTO.senha())){
+                throw new LoginInvalidoException("Credenciais inválidas para o login: " + loginDTO.user());
+            }
             token = tokenService.gerarToken(usuario);
             lojaLogged = ((LojaLogin) usuario).getLoja();
             ((LojaLogin) usuario).setRole(((LojaLogin) usuario).getAcessoLoja().getTipo());
@@ -199,7 +212,6 @@ public class LoginController {
                     }
 
                     String senhaEncrypted = new BCryptPasswordEncoder().encode(loginDto.senha());
-                    System.out.println("ROLA DO CARA:"+userRole.getRole());
                     Login novoLogin = new Login(loginDto.username(), senhaEncrypted, usuario, userRole);
 
                     usuarioLoginrepository.save(novoLogin);

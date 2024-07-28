@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,21 +31,12 @@ public class Configurations {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                                .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
-                                .requestMatchers("/swagger-ui.html").permitAll()
-                                .requestMatchers("/swagger-resources").permitAll()
-                                .requestMatchers("/swagger-ui.resources/**").permitAll()
-                                .requestMatchers("/configuration/ui").permitAll()
-                                .requestMatchers("/webjars/**").permitAll()
-                                .requestMatchers("/swagger-ui.html").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .requestMatchers("/h2-console/**").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/h2-console").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/h2-console/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/default").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/usuarios").hasAnyAuthority("ROLE_ADMIN", "ROLE_AREA_VENDA")
-                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
