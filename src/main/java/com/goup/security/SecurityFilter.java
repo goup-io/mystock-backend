@@ -13,11 +13,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -41,34 +45,37 @@ public class SecurityFilter extends OncePerRequestFilter {
             if (token != null) {
                 if (tokenBlacklist.isBlacklisted(token)) {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    SecurityContextHolder.clearContext();
                     return;
                 }
 
-                var userName = tokenService.validateToken(token);
+                String userName = tokenService.validateToken(token);
 
                 Login loginInfos = (Login) loginRepository.findByUsername(userName) == null ? null : (Login) loginRepository.findByUsername(userName);
                 LojaLogin lojaLoginInfos = (LojaLogin) loginLojaRepository.findByUsername(userName) == null ? null : (LojaLogin) loginLojaRepository.findByUsername(userName);
 
-                var authentication = new UsernamePasswordAuthenticationToken(null, null, null);
+                UsernamePasswordAuthenticationToken authentication = null;
+
                 if (loginInfos != null) {
-                    loginInfos.setRole(UserRole.valueOf(loginInfos.getUsuario().getCargo().getNome().toUpperCase()));
-                    authentication = new UsernamePasswordAuthenticationToken(loginInfos, null, loginInfos.getAuthorities());
+                    List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_"+UserRole.valueOf(loginInfos.getUsuario().getCargo().getNome().toUpperCase()).toString()));
+                    authentication = new UsernamePasswordAuthenticationToken(loginInfos, null, authorities);
                 }
                 if (lojaLoginInfos != null) {
-                    lojaLoginInfos.setRole(lojaLoginInfos.getAcessoLoja().getTipo());
-                    authentication = new UsernamePasswordAuthenticationToken(lojaLoginInfos, null, lojaLoginInfos.getAuthorities());
-                }
-                if (loginInfos == null && lojaLoginInfos == null) {
-                    throw new RuntimeException("Usuário não encontrado");
+                    List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_"+lojaLoginInfos.getAcessoLoja().getTipo().toString()));
+                    authentication = new UsernamePasswordAuthenticationToken(lojaLoginInfos, null, authorities);
                 }
 
+                if (loginInfos == null && lojaLoginInfos == null) {
+                    SecurityContextHolder.clearContext();
+                    throw new RuntimeException("Usuário não encontrado");
+                }
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (JWTCreationException e){
             throw new RuntimeException(e);
         } catch (Exception e){
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Token vencido (EXPIROU)");
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("Token inválido");
             return;
         }
 
@@ -82,4 +89,5 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
         return authHeader.replace("Bearer ", "");
     }
+
 }

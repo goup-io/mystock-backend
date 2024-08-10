@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 public interface LoginRepository extends JpaRepository<Login, Integer> {
     UserDetails findByUsername(String username);
 
+    boolean existsByUsername(String username);
+
     @Query("SELECT l FROM Login l JOIN l.usuario u WHERE u.email = :email")
     Login findLoginByEmail(String email);
 
