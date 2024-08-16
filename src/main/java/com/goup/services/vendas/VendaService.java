@@ -16,6 +16,7 @@ import com.goup.entities.vendas.StatusVenda;
 import com.goup.entities.vendas.TipoVenda;
 import com.goup.entities.vendas.Venda;
 import com.goup.exceptions.BuscaRetornaVazioException;
+import com.goup.exceptions.OperacaoInvalidaException;
 import com.goup.exceptions.RegistroConflitanteException;
 import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.produtos.AlertasEstoqueRepository;
@@ -131,6 +132,10 @@ public class VendaService {
         StatusVenda statusEmAndamento = statusVendaRepository.findByStatus(StatusVenda.Status.PENDENTE)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("StatusVenda não encontrado"));
 
+        if (!isQuantidadeValida(retornoETPeQuantidades)) {
+            throw new OperacaoInvalidaException("Quantidade de produtos insuficiente");
+        }
+
         Venda venda = repository.save(VendaMapper.reqToEntity(req, usuario, tipoVenda, statusEmAndamento));
 
         double valorTotal = calcularEAdicionarProdutos(venda, retornoETPeQuantidades);
@@ -142,6 +147,19 @@ public class VendaService {
         alterarEtpBaseadoVenda(venda.getId(), false);
 
         return VendaMapper.entityToRes(venda);
+    }
+
+    private boolean isQuantidadeValida(List<ProdutoVendaReq> retornoETPeQuantidades) {
+        for (ProdutoVendaReq produtoVendaReq : retornoETPeQuantidades) {
+            ETP etp = etpRepository.findById(produtoVendaReq.etpId())
+                    .orElseThrow(() -> new RegistroNaoEncontradoException("ETP não encontrado"));
+
+            if (etp.getQuantidade() < produtoVendaReq.quantidade()) {
+                return false;
+            }
+
+        }
+        return true;
     }
 
     private double calcularEAdicionarProdutos(Venda venda, List<ProdutoVendaReq> retornoETPeQuantidades) {

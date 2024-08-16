@@ -203,9 +203,8 @@ VALUES
     ('FINALIZADA'),
     ('CANCELADA');
 
-
+/*
 -- Inserção na tabela Venda
--- Inserção na tabela Venda com vendas em diversos meses
 INSERT INTO Venda (data_Hora, desconto, valor_Total, status_Venda_id, tipo_Venda_id, usuario_id)
 VALUES
     ('2024-06-03 23:24:29', 0.00, 234.00, 1, 1, 1),
@@ -234,35 +233,35 @@ VALUES
     ('2023-09-22 11:00:00', 5.00, 230.00, 2, 1, 3),
     ('2023-09-05 13:45:50', 9.00, 210.00, 2, 2, 3);
 
-
--- Inserção na tabela Pagamento
+-- Inserção na tabela Pagamento (valores corrigidos para não exceder o valor total da venda)
 INSERT INTO Pagamento (tipo_Pagamento_id, venda_id, valor, qtd_Parcelas)
 VALUES
-    (1, 1, 150.00, 1),
-    (2, 2, 190.00, 3),
-    (1, 3, 100.00, 1),
-    (1, 4, 150.00, 1),
-    (2, 5, 190.00, 3),
-    (1, 6, 100.00, 1),
-    (1, 7, 250.00, 1),
-    (2, 8, 300.00, 3),
-    (1, 9, 175.00, 1),
-    (1, 10, 225.00, 1),
-    (2, 11, 190.00, 3),
-    (1, 12, 130.00, 1),
-    (1, 13, 210.00, 1),
-    (2, 14, 250.00, 3),
-    (1, 15, 275.00, 1),
-    (1, 16, 180.00, 1),
-    (2, 17, 220.00, 3),
-    (1, 18, 240.00, 1),
-    (1, 19, 260.00, 1),
-    (2, 20, 290.00, 3),
-    (1, 21, 220.00, 1),
-    (2, 22, 180.00, 3),
-    (1, 23, 200.00, 1),
-    (1, 24, 250.00, 1);
+    (1, 1, 233.00, 1),  -- Corrigido para ser menor que 234.00
+    (2, 2, 149.00, 3),  -- Corrigido para ser menor que 150.00
+    (1, 3, 199.00, 1),  -- Corrigido para ser menor que 200.00
+    (1, 4, 99.00, 1),   -- Corrigido para ser menor que 100.00
+    (2, 5, 289.00, 3),  -- Corrigido para ser menor que 290.00
+    (1, 6, 219.00, 1),  -- Corrigido para ser menor que 220.00
+    (1, 7, 179.00, 1),  -- Corrigido para ser menor que 180.00
+    (2, 8, 249.00, 3),  -- Corrigido para ser menor que 250.00
+    (1, 9, 274.00, 1),  -- Corrigido para ser menor que 275.00
+    (1, 10, 219.00, 1), -- Corrigido para ser menor que 220.00
+    (2, 11, 179.00, 3), -- Corrigido para ser menor que 180.00
+    (1, 12, 249.00, 1), -- Corrigido para ser menor que 250.00
+    (1, 13, 274.00, 1), -- Corrigido para ser menor que 275.00
+    (2, 14, 219.00, 3), -- Corrigido para ser menor que 220.00
+    (1, 15, 219.00, 1), -- Corrigido para ser menor que 220.00
+    (1, 16, 179.00, 1), -- Corrigido para ser menor que 180.00
+    (2, 17, 199.00, 3), -- Corrigido para ser menor que 200.00
+    (1, 18, 239.00, 1), -- Corrigido para ser menor que 240.00
+    (1, 19, 259.00, 1), -- Corrigido para ser menor que 260.00
+    (2, 20, 189.00, 3), -- Corrigido para ser menor que 190.00
+    (1, 21, 199.00, 1), -- Corrigido para ser menor que 200.00
+    (2, 22, 229.00, 3), -- Corrigido para ser menor que 230.00
+    (1, 23, 209.00, 1), -- Corrigido para ser menor que 210.00
+    (1, 24, 229.00, 1); -- Corrigido para ser menor que 230.00
 
+*/
 /*
 -- Inserção na tabela HistoricoProduto
 INSERT INTO Historico_Produto (data_Hora, produto_Venda_id, status_Historico_Produto_id)
