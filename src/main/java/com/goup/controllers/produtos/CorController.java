@@ -19,11 +19,6 @@ public class CorController {
     @Autowired
     private CorService service;
 
-    @PostMapping
-    public ResponseEntity<Cor> cadastrar(@RequestBody @Valid CorReq categoria) {
-        return ResponseEntity.status(201).body(service.cadastrar(categoria));
-    }
-
     @GetMapping
     public ResponseEntity<List<Cor>> listar() {
         List<Cor> cores = this.service.listar();
@@ -36,17 +31,6 @@ public class CorController {
     @GetMapping("/{id}")
     public ResponseEntity<Cor> buscarPorId(@PathVariable Integer id) {
         return ResponseEntity.status(200).body(service.buscarPorId(id));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Cor> atualizar(@PathVariable int id, @RequestBody @Valid CorReq corAtualizada) {
-        return ResponseEntity.status(200).body(service.atualizar(id, corAtualizada));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> remover(@PathVariable int id) {
-        this.service.remover(id);
-        return ResponseEntity.status(204).build();
     }
 }
 
