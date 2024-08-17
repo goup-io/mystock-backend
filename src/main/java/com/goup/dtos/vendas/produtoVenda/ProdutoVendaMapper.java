@@ -19,7 +19,7 @@ public class ProdutoVendaMapper {
         produtoVenda.setValorUnitario(produtoVendaReq.valorUnitario());
         produtoVenda.setQuantidade(produtoVendaReq.quantidade());
         produtoVenda.setDesconto(produtoVendaReq.desconto());
-//        produtoVenda.setItemPromocional(produtoVendaReq.itemPromocional());
+        produtoVenda.setItemPromocional(etp.getItemPromocional());
         produtoVenda.setEtp(etp);
         produtoVenda.setVenda(venda);
         return produtoVenda;
@@ -31,7 +31,7 @@ public class ProdutoVendaMapper {
         produtoVendaRes.setValorUnitario(produtoVenda.getValorUnitario());
         produtoVendaRes.setQuantidade(produtoVenda.getQuantidade());
         produtoVendaRes.setDesconto(produtoVenda.getDesconto());
-//        produtoVendaRes.setItemPromocional(produtoVenda.getItemPromocional().name());
+        produtoVendaRes.setItemPromocional(produtoVenda.getItemPromocional());
         produtoVendaRes.setVenda(VendaMapper.entityToRes(produtoVenda.getVenda()));
         produtoVendaRes.setEtp(ETPMapper.toTableResponseEntity(produtoVenda.getEtp()));
         List<HistoricoProduto> historicoProduto = produtoVenda.getHistoricoProduto();
@@ -73,7 +73,7 @@ public class ProdutoVendaMapper {
         Double subtotal = precoLiquido * qtd;
 
         ProdutoVendaDetalhamentoRes dto = new ProdutoVendaDetalhamentoRes(
-            id, codigo, descricao, precoUnitario, qtd, desconto, precoLiquido, totalBruto, subtotal
+            id, codigo, descricao, precoUnitario, qtd, desconto, precoLiquido, totalBruto, subtotal, p.getItemPromocional()
         );
         return dto;
     }
