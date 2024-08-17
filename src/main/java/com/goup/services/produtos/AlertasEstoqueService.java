@@ -2,10 +2,12 @@ package com.goup.services.produtos;
 
 import com.goup.dtos.estoque.Notificacao;
 import com.goup.entities.estoque.AlertasEstoque;
+import com.goup.entities.estoque.ETP;
 import com.goup.entities.historicos.Transferencia;
 import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.historicos.TransferenciaRepository;
 import com.goup.repositories.produtos.AlertasEstoqueRepository;
+import com.goup.services.alertas.AlertasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,10 @@ public class AlertasEstoqueService {
     AlertasEstoqueRepository repository;
     @Autowired
     TransferenciaRepository transferenciaRepository;
+    @Autowired
+    AlertasEstoqueRepository alertasEstoqueRepository;
+    @Autowired
+    AlertasService alertasService;
 
 
     public List<AlertasEstoque> listar() {
@@ -36,6 +42,18 @@ public class AlertasEstoqueService {
             throw new RegistroNaoEncontradoException("Alerta não encontrado");
         }
         return alerta.get();
+    }
+
+    public void criarAlertaEstoque(ETP etp){
+        Integer quantidadeMinimaEstoque = alertasService.buscarLimiteAlertasLoja(etp.getLoja().getId());
+        if(etp.getQuantidade() <= quantidadeMinimaEstoque){
+            AlertasEstoque alerta = new AlertasEstoque();
+            alerta.setTitulo("Alerta estoque com quantidade abaixo do ideal!");
+            alerta.setDescricao("Estoque do produto " + etp.getProduto().getNome() + "de tamanho " + etp.getTamanho().getNumero() + " está em " + etp.getQuantidade() + "!");
+            alerta.setDataHora(LocalDateTime.now());
+            alerta.setEtp(etp);
+            alertasEstoqueRepository.save(alerta);
+        }
     }
 
     public List<AlertasEstoque> listarPorFiltro(

@@ -27,6 +27,7 @@ import com.goup.repositories.vendas.StatusVendaRepository;
 import com.goup.repositories.vendas.TipoVendaRepository;
 import com.goup.repositories.vendas.VendaRepository;
 import com.goup.services.historicos.HistoricoProdutoService;
+import com.goup.services.produtos.AlertasEstoqueService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -57,6 +58,8 @@ public class VendaService {
     private HistoricoProdutoService historicoProdutoService;
     @Autowired
     private AlertasEstoqueRepository alertasEstoqueRepository;
+    @Autowired
+    private AlertasEstoqueService alertasEstoqueService;
 
 
     public List<VendaResTable> listar(){
@@ -255,14 +258,7 @@ public class VendaService {
                 etpAtualizar.setQuantidade(etpAtualizar.getQuantidade() + etp.quantidade());
             } else {
                 etpAtualizar.setQuantidade(etpAtualizar.getQuantidade() - etp.quantidade());
-                if(etpAtualizar.getQuantidade() <= AlertaInfos.quantidadeMinima){
-                    AlertasEstoque alerta = new AlertasEstoque();
-                    alerta.setTitulo("Alerta estoque com quantidade abaixo do ideal!");
-                    alerta.setDescricao("Estoque do produto " + etpAtualizar.getProduto().getNome() + "de tamanho " + etpAtualizar.getTamanho() + "está em " + etpAtualizar.getQuantidade() + "!");
-                    alerta.setDataHora(LocalDateTime.now());
-                    alerta.setEtp(etpAtualizar);
-                    alertasEstoqueRepository.save(alerta);
-                }
+                alertasEstoqueService.criarAlertaEstoque(etpAtualizar);
             }
             etpsSalvos.add(etpAtualizar);
         }
