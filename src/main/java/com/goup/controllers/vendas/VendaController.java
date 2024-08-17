@@ -6,6 +6,7 @@ import com.goup.entities.usuarios.Usuario;
 import com.goup.entities.vendas.StatusVenda;
 import com.goup.entities.vendas.TipoVenda;
 import com.goup.services.vendas.VendaService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ public class VendaController {
     public ResponseEntity<List<VendaResTable>> listar(){
         return ResponseEntity.status(200).body(service.listar());
     }
+    @Operation(description = descricao)
     @GetMapping("/filtro")
     public ResponseEntity<List<VendaResTable>> listarPorFiltro(
         @RequestParam(required = false) Integer id_tipo_venda,
@@ -66,4 +68,20 @@ public class VendaController {
     public ResponseEntity<List<VendaResTable>> listarVendasPendentes(@PathVariable Integer idLoja){
         return ResponseEntity.status(200).body(service.listarVendasPendentesPorLoja(idLoja));
     }
+
+
+    private static final String descricao = """
+        <p>StatusVenda:</p>
+        <ul>
+            <li>1 - Pendente</li>
+            <li>2 - Finalizada</li>
+            <li>3 - Cancelada</li>      
+        </ul>
+        <p>TipoVenda:</p>
+        <ul>
+            <li>1 - Varejo</li>
+            <li>2 - Atacado</li>
+            <li>3 - Especial</li>
+        </ul>
+        """;
 }
