@@ -1,5 +1,7 @@
 package com.goup.dtos.vendas.produtoVenda;
 
+import com.goup.entities.vendas.ItemPromocional;
+
 public record ProdutoVendaDetalhamentoRes(
     Integer id,
     String codigo,
@@ -9,6 +11,7 @@ public record ProdutoVendaDetalhamentoRes(
     Double desconto, // Esse desconto é um só, caso queira o desconto que está sendo atribuido unitáriamente, o calculo é desconto / qtd
     Double precoLiquidoUnitario, // Preco liquido unitario, ou seja, preco - desconto
     Double totalBruto, // PreçoUnitario * qtd
-    Double subtotal // Preço liquido unitario * quantidade
+    Double subtotal, // Preço liquido unitario * quantidade
+    ItemPromocional itemPromocional
 ){
 }

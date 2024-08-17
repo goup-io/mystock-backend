@@ -3,6 +3,7 @@ package com.goup.dtos.vendas.produtoVenda;
 import com.goup.dtos.estoque.ETPTableRes;
 import com.goup.dtos.vendas.venda.VendaRes;
 import com.goup.entities.historicos.StatusHistoricoProduto;
+import com.goup.entities.vendas.ItemPromocional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class ProdutoVendaRes{
         private Double valorUnitario;
         private Integer quantidade;
         private Double desconto;
-//        private ItemPromocional itemPromocional;
+        private ItemPromocional itemPromocional;
         private VendaRes venda;
         private ETPTableRes etp;
         private List<HistoricoProdutoListagem> historicos;
