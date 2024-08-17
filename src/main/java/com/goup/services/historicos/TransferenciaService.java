@@ -18,6 +18,7 @@ import com.goup.repositories.historicos.TransferenciaRepository;
 import com.goup.repositories.produtos.AlertasEstoqueRepository;
 import com.goup.repositories.produtos.ETPRepository;
 import com.goup.repositories.usuarios.UsuarioRepository;
+import com.goup.services.produtos.AlertasEstoqueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,8 @@ public class TransferenciaService {
     StatusTransferenciaRepository statusTransferenciaRepository;
     @Autowired
     AlertasEstoqueRepository alertasEstoqueRepository;
+    @Autowired
+    AlertasEstoqueService alertasEstoqueService;
 
     public List<TransferenciaRes> cadastrar(TransferenciaReq transf){
         List<Transferencia> transferencias = new ArrayList<>();
@@ -144,14 +147,7 @@ public class TransferenciaService {
         Integer quantidadeTransf = transfAprovada.getQuantidadeLiberada();
         etpColetor.setQuantidade(etpColetor.getQuantidade() + quantidadeTransf);
         etpLiberador.setQuantidade(etpLiberador.getQuantidade() - quantidadeTransf);
-        if(etpLiberador.getQuantidade() <= AlertaInfos.quantidadeMinima){
-            AlertasEstoque alerta = new AlertasEstoque();
-            alerta.setTitulo("Alerta estoque com quantidade abaixo do ideal!");
-            alerta.setDescricao("Estoque do produto " + etpLiberador.getProduto().getNome() + " de tamanho " + etpLiberador.getTamanho().getNumero() + " está em " + etpLiberador.getQuantidade() + "!");
-            alerta.setDataHora(LocalDateTime.now());
-            alerta.setEtp(etpLiberador);
-            alertasEstoqueRepository.save(alerta);
-        }
+        alertasEstoqueService.criarAlertaEstoque(etpLiberador);
 
         etpRepository.save(etpColetor);
         etpRepository.save(etpLiberador);

@@ -387,3 +387,11 @@ VALUES
     ('2024-05-24 20:25:00', 25, 24, 1, 4, 1, 18),
     ('2024-05-24 20:30:00', 30, 29, 2, 3, 1, 19),
     ('2024-05-24 20:35:00', 28, 27, 3, 2, 1, 20);
+
+
+--- Dados para a configuração inicial das lojas
+INSERT INTO Configuracao_Loja(loja_id, limite_Estoque_Alerta)
+VALUES
+    (1, 25),
+    (2, 50),
+    (3, 100);
