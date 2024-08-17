@@ -18,10 +18,6 @@ import java.util.Optional;
 public class TamanhoController {
     @Autowired
     private TamanhoService service;
-    @PostMapping
-    public ResponseEntity<Tamanho> cadastrar(@RequestBody @Valid TamanhoReq tamanho) {
-        return ResponseEntity.status(201).body(service.cadastrar(tamanho));
-    }
 
     @GetMapping
     public ResponseEntity<List<Tamanho>> listar() {
@@ -35,11 +31,5 @@ public class TamanhoController {
     @GetMapping("/{tamanho}")
     public ResponseEntity<Tamanho> buscarPorNumeracao(@PathVariable Integer tamanho) {
         return ResponseEntity.status(200).body(this.service.buscarPorNumeracao(tamanho));
-    }
-
-    @DeleteMapping("/{tamanho}")
-    public ResponseEntity<Void> deletar(@PathVariable Integer tamanho){
-        service.deletar(tamanho);
-        return ResponseEntity.status(204).build();
     }
 }

@@ -67,8 +67,7 @@ public class ETPService {
 
     public List<ETPTableRes> listar(){
         List<ETP> etps = repository.findAll();
-        ListaGenerica<ETP> eptsList = criarListaGenericaOrdenada(etps);
-        return ETPMapper.toTableResponse(eptsList);
+        return ETPMapper.toTableResponse(etps);
     }
 
     public ETPTableRes buscarPorId(Integer id){

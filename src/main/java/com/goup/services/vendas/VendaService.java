@@ -27,6 +27,7 @@ import com.goup.repositories.vendas.StatusVendaRepository;
 import com.goup.repositories.vendas.TipoVendaRepository;
 import com.goup.repositories.vendas.VendaRepository;
 import com.goup.services.historicos.HistoricoProdutoService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
