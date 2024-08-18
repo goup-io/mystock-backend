@@ -13,8 +13,8 @@ public record ProdutoVendaReq(
         @NotNull @NotBlank @DecimalMin("1.0")
         Integer quantidade,
         @DecimalMin("0.0")
-        Double desconto
-//        @NotNull @NotBlank
-//        ItemPromocional itemPromocional
+        Double desconto,
+        @NotNull @NotBlank
+        ItemPromocional itemPromocional
 ) {
 }

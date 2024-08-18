@@ -86,26 +86,23 @@ public interface ProdutoVendaRepository extends JpaRepository<ProdutoVenda, Inte
             "AND DAY(v.dataHora) = :dia ")
     Integer sumProdutoVendaByUsuarioIdAndMesAndAnoAndDay(@Param("usuarioId") Integer usuarioId, @Param("mes") Integer mes, @Param("ano") Integer ano, @Param("dia") Integer dia);
 
-
     @Query("SELECT SUM(pv.quantidade) FROM ProdutoVenda pv " +
             "JOIN pv.venda v " +
-            "JOIN pv.etp e " +
             "WHERE v.usuario.id = :usuarioId " +
             "AND v.statusVenda.status = 'FINALIZADA' " +
             "AND MONTH(v.dataHora) = :mes " +
             "AND YEAR(v.dataHora) = :ano " +
-            "AND e.itemPromocional = 'SIM'")
+            "AND pv.itemPromocional = com.goup.entities.vendas.ItemPromocional.SIM")
     Integer sumProdutoVendaPromocaoByUsuarioIdAndMesAndAno(@Param("mes") int mes, @Param("ano") Integer ano, @Param("usuarioId") Integer usuarioId);
 
     @Query("SELECT SUM(pv.quantidade) FROM ProdutoVenda pv " +
             "JOIN pv.venda v " +
-            "JOIN pv.etp e " +
             "WHERE v.usuario.id = :usuarioId " +
             "AND v.statusVenda.status = 'FINALIZADA' " +
             "AND MONTH(v.dataHora) = :mes " +
             "AND YEAR(v.dataHora) = :ano " +
             "AND DAY(v.dataHora) = :dia " +
-            "AND e.itemPromocional = 'SIM'")
+            "AND pv.itemPromocional = com.goup.entities.vendas.ItemPromocional.SIM")
     Integer sumProdutoVendaPromocaoByUsuarioIdAndMesAndAnoAndDay(@Param("mes") int mes, @Param("ano") Integer ano, @Param("usuarioId") Integer usuarioId, @Param("dia") Integer dia);
 
 }
