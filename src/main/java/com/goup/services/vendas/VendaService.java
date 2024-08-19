@@ -39,7 +39,9 @@ import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class VendaService {
@@ -58,9 +60,9 @@ public class VendaService {
     @Autowired
     private HistoricoProdutoService historicoProdutoService;
     @Autowired
-    private AlertasEstoqueRepository alertasEstoqueRepository;
-    @Autowired
     private AlertasEstoqueService alertasEstoqueService;
+    @Autowired
+    private VendaRepository vendaRepository;
 
 
     public List<VendaResTable> listar(){
@@ -294,5 +296,111 @@ public class VendaService {
         List<ProdutoVendaDetalhamentoRes> produtosDetalhados = ProdutoVendaMapper.entityToResDetalhamento(produtosVenda);
         VendaDetalhamentoRes vendaDetalhada = VendaMapper.entityToResDetalhamento(venda.get(), produtosDetalhados);
         return vendaDetalhada;
+    }
+
+    // Trocas segue a seguinte lógica:
+    // Pegue a venda que foi realizada e então altere os produtos dela.
+    // Dados a ser atualizados: itens da venda + status para pendente novamente + usuario + item_promocional
+    // Pegar os ProdutoVenda e alterar seus status e voltar para o estoque ou subtrair + gerar alerta caso necessário
+    public VendaRes realizarTroca(Integer idVenda, TrocaReq req, List<ProdutoVendaReq> retornoETPeQuantidades) {
+        Usuario usuario = usuarioRepository.findByCodigoVenda(req.codigoVendedor())
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Usuario não encontrado"));
+
+        StatusVenda statusEmAndamento = statusVendaRepository.findByStatus(StatusVenda.Status.PENDENTE)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("StatusVenda não encontrado"));
+        
+        Venda venda = vendaRepository.findById(idVenda).orElseThrow(() -> new RegistroNaoEncontradoException("Venda não encontrada"));
+
+        // Neste caso eu pego os produtosVendas que já estavam na venda e verifico se eles alteraram algo
+        List<ProdutoVenda> allEtpsByVendaId = produtoVendaRepository.findAllProdutoVendaIdVenda(idVenda);
+        for (ProdutoVenda produtoVendaAnterior : allEtpsByVendaId) {
+            // O que eu estou fazendo é verificando se o id de um etp é encontrado nas duas listas
+            // (no de itens que já estava na venda e na lista de novos produtos da venda)
+            Optional<ProdutoVendaReq> produtoVendaOptional = retornoETPeQuantidades.stream().filter(etpNovo -> etpNovo.etpId().equals(produtoVendaAnterior.getEtp().getId())).findAny();
+            // significa: o mesmo produto venda não foi substituido, talvez a sua quantidade sim.
+            ProdutoVendaReq produtoVendaEncontrado = null;
+            if (produtoVendaOptional.isPresent()) {
+                // nós encontramos o mesmo produtoVenda que estava na venda, na nova requisição.
+                produtoVendaEncontrado = produtoVendaOptional.get();
+                Optional<ETP> etpDoProdutoVendaOptional = etpRepository.findById(produtoVendaEncontrado.etpId());
+                ETP etpDoProdutoVenda = null;
+                // verificando se teve alteração na quantidade do produtoVenda
+                int diferenca = produtoVendaAnterior.getQuantidade() - produtoVendaEncontrado.quantidade();
+                if (diferenca < 0){
+                    // Eu recebi mais itens de um mesmo ProdutoVenda do que já tinha na venda
+                    // (recebido mais itens do mesmo item)
+
+                    if (etpDoProdutoVendaOptional.isPresent()){
+                        etpDoProdutoVenda = etpDoProdutoVendaOptional.get();
+                        boolean isDiferenciaValida =
+                                produtoVendaAnterior.getQuantidade() + etpDoProdutoVenda.getQuantidade() >= produtoVendaEncontrado.quantidade();
+                        if (isDiferenciaValida){
+                            produtoVendaAnterior.setQuantidade(produtoVendaEncontrado.quantidade());
+                            produtoVendaRepository.save(produtoVendaAnterior);
+                        } else {
+                            throw new OperacaoInvalidaException("ProdutoVenda - Quantidade de itens não pod ser maior o que tem em estoque");
+                        }
+                    }
+                } else if(diferenca >= 1){
+                    // nessa nova venda um produto foi retirado deste ProdutoVenda
+                    if (etpDoProdutoVendaOptional.isPresent()){
+                        etpDoProdutoVenda = etpDoProdutoVendaOptional.get();
+                        produtoVendaAnterior.setQuantidade(produtoVendaEncontrado.quantidade());
+                        if (produtoVendaAnterior.getQuantidade() <= 0){
+                            produtoVendaRepository.delete(produtoVendaAnterior);
+                        } else {
+                            produtoVendaRepository.save(produtoVendaAnterior);
+                        }
+                        etpDoProdutoVenda.setQuantidade(etpDoProdutoVenda.getQuantidade() + diferenca);
+                        etpRepository.save(etpDoProdutoVenda);
+                    }
+                }
+            } else {
+                // o produto foi retirado por completo da nova venda
+                // necessário retornar ele para o estoque (alterar o etp) +
+                // necessário alterar o status no histórico
+            }
+        }
+
+        // Aqui eu procuro por novos produtos que vieram na requisição
+        List<ProdutoVendaReq> novosProdutosVenda = retornoETPeQuantidades.stream()
+                .filter(produtoVendaReq -> allEtpsByVendaId.stream()
+                        .noneMatch(produtoVenda -> produtoVenda.getId().equals(produtoVendaReq.etpId())))
+                .toList();
+        for (ProdutoVendaReq produtoVendaReq : novosProdutosVenda) {
+            ETP etp = etpRepository.findById(produtoVendaReq.etpId()).orElseThrow(() -> new RegistroNaoEncontradoException("ETP não encontrado!"));
+            if (etp.getQuantidade() >= produtoVendaReq.quantidade()){
+                // todo: criar o produto venda e subtrair no estoque em ETP
+                ProdutoVenda produtoVendaNovoSave = produtoVendaRepository.save(ProdutoVendaMapper.dtoToEntity(
+                        new ProdutoVendaReq(
+                                produtoVendaReq.etpId(),
+                                produtoVendaReq.valorUnitario(),
+                                produtoVendaReq.quantidade(),
+                                produtoVendaReq.desconto(),
+                                produtoVendaReq.itemPromocional()),
+                        etp,
+                        venda));
+
+                etp.setQuantidade(etp.getQuantidade() - produtoVendaReq.quantidade());
+                etpRepository.save(etp);
+                alertasEstoqueService.criarAlertaEstoque(etp);
+            }
+        }
+
+        //alterando a venda para o estatus em andamento e o funcionário que está realizando a troca. 
+        venda.setStatusVenda(statusEmAndamento);
+        venda.setUsuario(usuario);
+        repository.save(venda);
+
+        // todo: isso aqui não pode
+//        double valorTotal = calcularEAdicionarProdutos(venda, retornoETPeQuantidades);
+
+        venda.setValorTotal(valorTotal - venda.getDesconto());
+        venda = repository.save(venda);
+
+        // Dando baixa dos produtos no estoque
+        alterarEtpBaseadoVenda(venda.getId(), false);
+
+        return VendaMapper.entityToRes(venda);
     }
 }

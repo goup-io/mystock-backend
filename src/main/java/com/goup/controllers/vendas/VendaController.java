@@ -5,6 +5,7 @@ import com.goup.dtos.vendas.venda.*;
 import com.goup.entities.usuarios.Usuario;
 import com.goup.entities.vendas.StatusVenda;
 import com.goup.entities.vendas.TipoVenda;
+import com.goup.entities.vendas.Venda;
 import com.goup.services.vendas.VendaService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -67,6 +68,11 @@ public class VendaController {
     @GetMapping("/vendas-pendentes/{idLoja}")
     public ResponseEntity<List<VendaResTable>> listarVendasPendentes(@PathVariable Integer idLoja){
         return ResponseEntity.status(200).body(service.listarVendasPendentesPorLoja(idLoja));
+    }
+
+    @PutMapping("/trocar/{idVenda}")
+    public ResponseEntity<VendaRes> realizarTroca(@PathVariable Integer idVenda, @RequestBody TrocaEProdutosReq vendaEProdutosReq){
+        return ResponseEntity.status(201).body(service.realizarTroca(idVenda, vendaEProdutosReq.trocaReq(), vendaEProdutosReq.produtoVendaReqs()));
     }
 
 
