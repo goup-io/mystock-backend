@@ -16,7 +16,18 @@ import static java.util.stream.Collectors.toList;
 public class ProdutoVendaMapper {
     public static ProdutoVenda dtoToEntity(ProdutoVendaReq produtoVendaReq, ETP etp, Venda venda){
         ProdutoVenda produtoVenda = new ProdutoVenda();
-        produtoVenda.setValorUnitario(produtoVendaReq.valorUnitario());
+        produtoVenda.setValorUnitario(etp.getProduto().getValorRevenda());
+        produtoVenda.setQuantidade(produtoVendaReq.quantidade());
+        produtoVenda.setDesconto(produtoVendaReq.desconto());
+        produtoVenda.setItemPromocional(etp.getItemPromocional());
+        produtoVenda.setEtp(etp);
+        produtoVenda.setVenda(venda);
+        return produtoVenda;
+    }
+
+    public static ProdutoVenda dtoToEntity(ProdutoVendaTrocaReq produtoVendaReq, ETP etp, Venda venda){
+        ProdutoVenda produtoVenda = new ProdutoVenda();
+        produtoVenda.setValorUnitario(etp.getProduto().getValorRevenda());
         produtoVenda.setQuantidade(produtoVendaReq.quantidade());
         produtoVenda.setDesconto(produtoVendaReq.desconto());
         produtoVenda.setItemPromocional(etp.getItemPromocional());

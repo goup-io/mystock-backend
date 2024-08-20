@@ -1,10 +1,7 @@
 package com.goup.services.vendas;
 
 import com.goup.dtos.historico.produto.HistoricoProdutoReq;
-import com.goup.dtos.vendas.produtoVenda.ProdutoVendaDetalhamentoRes;
-import com.goup.dtos.vendas.produtoVenda.ProdutoVendaMapper;
-import com.goup.dtos.vendas.produtoVenda.ProdutoVendaReq;
-import com.goup.dtos.vendas.produtoVenda.RetornoETPeQuantidade;
+import com.goup.dtos.vendas.produtoVenda.*;
 import com.goup.dtos.vendas.venda.*;
 import com.goup.entities.estoque.AlertaInfos;
 import com.goup.entities.estoque.AlertasEstoque;
@@ -188,7 +185,9 @@ public class VendaService {
     }
 
     private double calcularValorTotalProduto(ProdutoVendaReq produtoVendaReq) {
-        return produtoVendaReq.valorUnitario() * produtoVendaReq.quantidade() - produtoVendaReq.desconto();
+        ETP etp = etpRepository.findById(produtoVendaReq.etpId())
+                .orElseThrow(() -> new RegistroNaoEncontradoException("ETP não encontrado"));
+        return etp.getProduto().getValorRevenda() * produtoVendaReq.quantidade() - produtoVendaReq.desconto();
     }
 
     public VendaRes finalizarVenda(Integer idVenda){
@@ -301,7 +300,6 @@ public class VendaService {
     // Trocas segue a seguinte lógica:
     // Pegue a venda que foi realizada e então altere os produtos dela.
     // Dados a ser atualizados: itens da venda + status para pendente novamente + usuario + item_promocional
-    // Pegar os ProdutoVenda e alterar seus status e voltar para o estoque ou subtrair + gerar alerta caso necessário
     public VendaRes realizarTroca(Integer idVenda, TrocaReq req, List<ProdutoVendaReq> retornoETPeQuantidades) {
         Usuario usuario = usuarioRepository.findByCodigoVenda(req.codigoVendedor())
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Usuario não encontrado"));
@@ -311,6 +309,7 @@ public class VendaService {
         
         Venda venda = vendaRepository.findById(idVenda).orElseThrow(() -> new RegistroNaoEncontradoException("Venda não encontrada"));
 
+        double totalVenda = 0.0;
         // Neste caso eu pego os produtosVendas que já estavam na venda e verifico se eles alteraram algo
         List<ProdutoVenda> allEtpsByVendaId = produtoVendaRepository.findAllProdutoVendaIdVenda(idVenda);
         for (ProdutoVenda produtoVendaAnterior : allEtpsByVendaId) {
@@ -338,7 +337,7 @@ public class VendaService {
                             produtoVendaAnterior.setQuantidade(produtoVendaEncontrado.quantidade());
                             produtoVendaRepository.save(produtoVendaAnterior);
                         } else {
-                            throw new OperacaoInvalidaException("ProdutoVenda - Quantidade de itens não pod ser maior o que tem em estoque");
+                            throw new OperacaoInvalidaException("ProdutoVenda - Quantidade de itens não pode ser maior o que tem em estoque");
                         }
                     }
                 } else if(diferenca >= 1){
@@ -346,19 +345,19 @@ public class VendaService {
                     if (etpDoProdutoVendaOptional.isPresent()){
                         etpDoProdutoVenda = etpDoProdutoVendaOptional.get();
                         produtoVendaAnterior.setQuantidade(produtoVendaEncontrado.quantidade());
-                        if (produtoVendaAnterior.getQuantidade() <= 0){
-                            produtoVendaRepository.delete(produtoVendaAnterior);
-                        } else {
-                            produtoVendaRepository.save(produtoVendaAnterior);
-                        }
+                        produtoVendaRepository.save(produtoVendaAnterior);
                         etpDoProdutoVenda.setQuantidade(etpDoProdutoVenda.getQuantidade() + diferenca);
                         etpRepository.save(etpDoProdutoVenda);
                     }
                 }
+                totalVenda += calcularValorTotalProduto(produtoVendaEncontrado);
             } else {
                 // o produto foi retirado por completo da nova venda
                 // necessário retornar ele para o estoque (alterar o etp) +
                 // necessário alterar o status no histórico
+                historicoProdutoService.alterarStatus(produtoVendaAnterior.getId(), StatusHistoricoProduto.StatusHistorico.DEVOLVIDO);
+                // codigo abaixo vai dar erro
+                // produtoVendaRepository.delete(produtoVendaAnterior);
             }
         }
 
@@ -370,36 +369,29 @@ public class VendaService {
         for (ProdutoVendaReq produtoVendaReq : novosProdutosVenda) {
             ETP etp = etpRepository.findById(produtoVendaReq.etpId()).orElseThrow(() -> new RegistroNaoEncontradoException("ETP não encontrado!"));
             if (etp.getQuantidade() >= produtoVendaReq.quantidade()){
-                // todo: criar o produto venda e subtrair no estoque em ETP
+                // todo: criar o produto venda e subtrair no estoque em ETP + registrar histórico
                 ProdutoVenda produtoVendaNovoSave = produtoVendaRepository.save(ProdutoVendaMapper.dtoToEntity(
-                        new ProdutoVendaReq(
+                        new ProdutoVendaTrocaReq(
                                 produtoVendaReq.etpId(),
-                                produtoVendaReq.valorUnitario(),
                                 produtoVendaReq.quantidade(),
                                 produtoVendaReq.desconto(),
-                                produtoVendaReq.itemPromocional()),
+                                etp.getItemPromocional()),
                         etp,
                         venda));
 
                 etp.setQuantidade(etp.getQuantidade() - produtoVendaReq.quantidade());
                 etpRepository.save(etp);
                 alertasEstoqueService.criarAlertaEstoque(etp);
+                historicoProdutoService.alterarStatus(produtoVendaNovoSave.getId(), StatusHistoricoProduto.StatusHistorico.ABATIDO);
+                totalVenda += calcularValorTotalProduto(produtoVendaReq);
             }
         }
 
-        //alterando a venda para o estatus em andamento e o funcionário que está realizando a troca. 
+        //alterando a venda para o estatus em andamento e o funcionário que está realizando a troca.
         venda.setStatusVenda(statusEmAndamento);
         venda.setUsuario(usuario);
-        repository.save(venda);
-
-        // todo: isso aqui não pode
-//        double valorTotal = calcularEAdicionarProdutos(venda, retornoETPeQuantidades);
-
-        venda.setValorTotal(valorTotal - venda.getDesconto());
+        venda.setValorTotal(totalVenda);
         venda = repository.save(venda);
-
-        // Dando baixa dos produtos no estoque
-        alterarEtpBaseadoVenda(venda.getId(), false);
 
         return VendaMapper.entityToRes(venda);
     }
