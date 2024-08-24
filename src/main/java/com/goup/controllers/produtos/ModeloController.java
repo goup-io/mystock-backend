@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/modelos")
+@RequestMapping("${mystock.api.prefix}/modelos")
 public class ModeloController {
     @Autowired
     private ModeloService service;

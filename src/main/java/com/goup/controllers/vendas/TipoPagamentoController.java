@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tiposPagamento")
+@RequestMapping("${mystock.api.prefix}/tiposPagamento")
 public class TipoPagamentoController {
     @Autowired
     private TipoPagamentoService service;

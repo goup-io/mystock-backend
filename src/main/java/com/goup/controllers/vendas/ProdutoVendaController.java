@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/produto-vendas")
+@RequestMapping("${mystock.api.prefix}/produto-vendas")
 public class ProdutoVendaController {
     @Autowired
     private  ProdutoVendaService produtoVendaService;

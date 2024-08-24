@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 @RestController
-@RequestMapping("/categorias")
+@RequestMapping("${mystock.api.prefix}/categorias")
 public class CategoriaController {
     @Autowired
     private CategoriaService service;

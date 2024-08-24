@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/produtos")
+@RequestMapping("${mystock.api.prefix}/produtos")
 public class ProdutoController {
     @Autowired
     ProdutoService service;

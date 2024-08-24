@@ -6,10 +6,8 @@ import com.goup.dtos.estoque.ETPTableRes;
 import com.goup.dtos.estoque.produtos.modelos.ModeloMapper;
 import com.goup.dtos.estoque.produtos.modelos.ModeloRes;
 import com.goup.dtos.historico.transferencia.TransferenciaMapper;
-import com.goup.dtos.historico.transferencia.TransferenciaReq;
 import com.goup.dtos.historico.transferencia.TransferenciaRes;
 import com.goup.dtos.vendas.venda.VendaMapper;
-import com.goup.dtos.vendas.venda.VendaRes;
 import com.goup.dtos.vendas.venda.VendaResTable;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.lojas.Loja;
@@ -30,7 +28,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
@@ -38,12 +35,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-
 @RestController
-@RequestMapping("/csv")
+@RequestMapping("${mystock.api.prefix}/csv")
 public class CsvController {
-
-
 
 /*    @Autowired
     private EstoqueRepository estoqueRepository;*/

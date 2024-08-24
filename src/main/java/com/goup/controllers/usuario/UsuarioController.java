@@ -1,7 +1,6 @@
 package com.goup.controllers.usuario;
 
 import com.goup.dtos.usuario.*;
-import com.goup.entities.usuarios.Usuario;
 import com.goup.repositories.usuarios.UsuarioRepository;
 import com.goup.services.usuario.UsuarioService;
 import jakarta.validation.Valid;
@@ -10,10 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("${mystock.api.prefix}/usuarios")
 public class UsuarioController {
 
     @Autowired

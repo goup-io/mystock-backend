@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/transferencias")
+@RequestMapping("${mystock.api.prefix}/transferencias")
 public class TransferenciaController {
     @Autowired
     TransferenciaService service;

@@ -1,11 +1,6 @@
 package com.goup.controllers.vendas;
 
-import com.goup.dtos.vendas.produtoVenda.ProdutoVendaReq;
 import com.goup.dtos.vendas.venda.*;
-import com.goup.entities.usuarios.Usuario;
-import com.goup.entities.vendas.StatusVenda;
-import com.goup.entities.vendas.TipoVenda;
-import com.goup.entities.vendas.Venda;
 import com.goup.services.vendas.VendaService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -15,15 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping("/vendas")
+@RequestMapping("${mystock.api.prefix}/vendas")
 public class VendaController {
     @Autowired
     private VendaService service;
-    private static final Logger logger = LoggerFactory.getLogger(VendaController.class);
 
     @GetMapping
     public ResponseEntity<List<VendaResTable>> listar(){
@@ -75,9 +67,6 @@ public class VendaController {
 
     @PutMapping("/trocar/{idVenda}")
     public ResponseEntity<VendaRes> realizarTroca(@PathVariable Integer idVenda, @Valid @RequestBody TrocaEProdutosReq vendaEProdutosReq){
-            logger.info("Recebendo requisição de troca para venda ID: {}", idVenda);
-            logger.info("TrocaReq: {}", vendaEProdutosReq.trocaReq());
-            logger.info("ProdutoVendaReqs: {}", vendaEProdutosReq.produtoVendaReqs());
         return ResponseEntity.status(201).body(service.realizarTroca(idVenda, vendaEProdutosReq.trocaReq(), vendaEProdutosReq.produtoVendaReqs()));
     }
 

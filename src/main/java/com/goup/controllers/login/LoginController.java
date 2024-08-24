@@ -48,7 +48,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("${mystock.api.prefix}/auth")
 public class LoginController {
     @Autowired
     private AuthenticationManager authenticationManager;

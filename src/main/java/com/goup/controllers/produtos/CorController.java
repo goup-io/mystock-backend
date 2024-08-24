@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 // CRUD funcionando
 @RestController
-@RequestMapping("/cores")
+@RequestMapping("${mystock.api.prefix}/cores")
 public class CorController {
     @Autowired
     private CorService service;

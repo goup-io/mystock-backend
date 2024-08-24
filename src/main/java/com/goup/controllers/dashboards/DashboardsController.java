@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/dashboards")
+@RequestMapping("${mystock.api.prefix}/dashboards")
 public class DashboardsController {
     @Autowired
     private DashboardGeralService dashboardGeralService;

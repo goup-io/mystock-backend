@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/etps")
+@RequestMapping("${mystock.api.prefix}/etps")
 public class ETPController {
     @Autowired
     ETPService service;
