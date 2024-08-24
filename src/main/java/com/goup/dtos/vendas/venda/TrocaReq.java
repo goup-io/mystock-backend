@@ -6,9 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public record TrocaReq(
-        @DecimalMin("0.0") @NotBlank @Positive
+        @DecimalMin("0.0")
         Double desconto,
-        @NotNull
+        @NotNull @NotBlank
         Integer codigoVendedor
 ) {
 }

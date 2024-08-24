@@ -298,129 +298,120 @@ public class VendaService {
         return vendaDetalhada;
     }
 
-    // Trocas segue a seguinte lógica:
-    // Pegue a venda que foi realizada e então altere os produtos dela.
-    // Dados a ser atualizados: itens da venda + status para pendente novamente + usuario + item_promocional
     public VendaRes realizarTroca(Integer idVenda, TrocaReq req, List<ProdutoVendaReq> retornoETPeQuantidades) {
         Usuario usuario = usuarioRepository.findByCodigoVenda(req.codigoVendedor())
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Usuario não encontrado"));
 
         StatusVenda statusEmAndamento = statusVendaRepository.findByStatus(StatusVenda.Status.PENDENTE)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("StatusVenda não encontrado"));
-        
+
         Venda venda = vendaRepository.findById(idVenda).orElseThrow(() -> new RegistroNaoEncontradoException("Venda não encontrada"));
 
         double totalVenda = 0.0;
-        // Neste caso eu pego os produtosVendas que já estavam na venda e verifico se eles alteraram algo
         List<ProdutoVenda> allEtpsByVendaId = produtoVendaRepository.findAllProdutoVendaIdVenda(idVenda);
+
+        // Process existing products
         for (ProdutoVenda produtoVendaAnterior : allEtpsByVendaId) {
-            // O que eu estou fazendo é verificando se o id de um etp é encontrado nas duas listas
-            // (no de itens que já estava na venda e na lista de novos produtos da venda)
-            Optional<ProdutoVendaReq> produtoVendaOptional = retornoETPeQuantidades.stream().filter(etpNovo -> etpNovo.etpId().equals(produtoVendaAnterior.getEtp().getId())).findAny();
-            // significa: o mesmo produto venda não foi substituido, talvez a sua quantidade sim.
+            Optional<ProdutoVendaReq> produtoVendaOptional = retornoETPeQuantidades.stream()
+                    .filter(etpNovo -> etpNovo.etpId().equals(produtoVendaAnterior.getEtp().getId()))
+                    .findAny();
+
             if (produtoVendaOptional.isPresent()) {
-                // nós encontramos o mesmo produtoVenda que estava na venda, na nova requisição.
-                ProdutoVendaReq produtoVendaEncontrado = produtoVendaOptional.get();
-                Optional<ETP> etpDoProdutoVendaOptional = etpRepository.findById(produtoVendaEncontrado.etpId());
-                ETP etpDoProdutoVenda = null;
-                // verificando se teve alteração na quantidade do produtoVenda
-                int diferenca = produtoVendaAnterior.getQuantidade() - produtoVendaEncontrado.quantidade();
-                if (diferenca < 0){
-                    // Eu recebi mais itens de um mesmo ProdutoVenda do que já tinha na venda
-                    // (recebido mais itens do mesmo item)
-
-                    if (etpDoProdutoVendaOptional.isPresent()){
-                        etpDoProdutoVenda = etpDoProdutoVendaOptional.get();
-                        int total = produtoVendaEncontrado.quantidade() + (diferenca * -1);
-                        boolean isDiferenciaValida =
-                                total >= 0 && total <= etpDoProdutoVenda.getQuantidade();
-                        if (isDiferenciaValida){
-                            produtoVendaAnterior.setQuantidade(produtoVendaEncontrado.quantidade());
-                            produtoVendaRepository.save(produtoVendaAnterior);
-                            etpDoProdutoVenda.setQuantidade(etpDoProdutoVenda.getQuantidade() - (diferenca * -1));
-                            etpRepository.save(etpDoProdutoVenda);
-                            historicoProdutoService.alterarStatus(produtoVendaAnterior.getId(), StatusHistoricoProduto.StatusHistorico.ABATIDO);
-                            alertasEstoqueService.criarAlertaEstoque(etpDoProdutoVenda);
-                        } else {
-                            throw new OperacaoInvalidaException("ProdutoVenda - Quantidade de itens não pode ser maior o que tem em estoque");
-                        }
-                    }
-                } else if(diferenca >= 1){
-                    // nessa nova venda um produto foi retirado deste ProdutoVenda
-                    if (etpDoProdutoVendaOptional.isPresent()){
-                        etpDoProdutoVenda = etpDoProdutoVendaOptional.get();
-                        produtoVendaAnterior.setQuantidade(produtoVendaEncontrado.quantidade());
-                        produtoVendaRepository.save(produtoVendaAnterior);
-                        etpDoProdutoVenda.setQuantidade(etpDoProdutoVenda.getQuantidade() + diferenca);
-                        etpRepository.save(etpDoProdutoVenda);
-                        alertasEstoqueService.criarAlertaEstoque(etpDoProdutoVenda);
-                        historicoProdutoService.alterarStatus(produtoVendaAnterior.getId(), StatusHistoricoProduto.StatusHistorico.ABATIDO);
-                    }
-                }
-                totalVenda += calcularValorTotalProduto(produtoVendaEncontrado);
+                totalVenda += processExistingProduct(produtoVendaAnterior, produtoVendaOptional.get());
             } else {
-                // o produto foi retirado por completo da nova venda
-                // necessário retornar ele para o estoque (alterar o etp) +
-                // necessário alterar o status no histórico
-                // é necessário verificar o seu status antes para saber se já não foi devolvido.
-
-                // nós encontramos o mesmo produtoVenda que estava na venda, na nova requisição.
-                // ProdutoVendaReq produtoVendaEncontrado = produtoVendaOptional.get();
-                ETP etpDoProdutoVenda = etpRepository.findById(produtoVendaAnterior.getEtp().getId())
-                        .orElseThrow(() -> new RegistroNaoEncontradoException("ETP não encontrado"));
-                List<HistoricoProdutoRes> historicoProdutoRes = historicoProdutoService.pesquisarPorProdutoVenda(produtoVendaAnterior.getId());
-                if (!historicoProdutoRes.isEmpty()) {
-                    HistoricoProdutoRes ultimoHistorico = historicoProdutoRes.get(historicoProdutoRes.size() - 1);
-                    if (!ultimoHistorico.getStatusHistoricoProduto().getStatus().equals(StatusHistoricoProduto.StatusHistorico.DEVOLVIDO)) {
-                        etpDoProdutoVenda.setQuantidade(etpDoProdutoVenda.getQuantidade() + produtoVendaAnterior.getQuantidade());
-                        etpRepository.save(etpDoProdutoVenda);
-                        historicoProdutoService.alterarStatus(produtoVendaAnterior.getId(), StatusHistoricoProduto.StatusHistorico.DEVOLVIDO);
-                        alertasEstoqueService.criarAlertaEstoque(etpDoProdutoVenda);
-                    }
-                }
-
-            /*    etpDoProdutoVenda = etpDoProdutoVendaOptional.get();
-                    etpDoProdutoVenda.setQuantidade(etpDoProdutoVenda.getQuantidade() + produtoVendaAnterior.getQuantidade());
-                    etpRepository.save(etpDoProdutoVenda);
-                historicoProdutoService.alterarStatus(produtoVendaAnterior.getId(), StatusHistoricoProduto.StatusHistorico.DEVOLVIDO);
-             */
+                processRemovedProduct(produtoVendaAnterior);
             }
         }
 
-        // Aqui eu procuro por novos produtos que vieram na requisição
+        // Process new products
         List<ProdutoVendaReq> novosProdutosVenda = retornoETPeQuantidades.stream()
                 .filter(produtoVendaReq -> allEtpsByVendaId.stream()
-                        .noneMatch(produtoVenda -> produtoVenda.getId().equals(produtoVendaReq.etpId())))
+                        .noneMatch(produtoVenda -> produtoVenda.getEtp().getId()==produtoVendaReq.etpId()))
                 .toList();
-        for (ProdutoVendaReq produtoVendaReq : novosProdutosVenda) {
-            ETP etp = etpRepository.findById(produtoVendaReq.etpId()).orElseThrow(() -> new RegistroNaoEncontradoException("ETP não encontrado!"));
-            if (etp.getQuantidade() >= produtoVendaReq.quantidade()){
-                // todo: criar o produto venda e subtrair no estoque em ETP + registrar histórico
-                ProdutoVenda produtoVendaNovoSave = produtoVendaRepository.save(ProdutoVendaMapper.dtoToEntity(
-                        new ProdutoVendaTrocaReq(
-                                produtoVendaReq.etpId(),
-                                produtoVendaReq.quantidade(),
-                                produtoVendaReq.desconto(),
-                                etp.getItemPromocional()),
-                        etp,
-                        venda));
 
-                etp.setQuantidade(etp.getQuantidade() - produtoVendaReq.quantidade());
-                etpRepository.save(etp);
-                alertasEstoqueService.criarAlertaEstoque(etp);
-                historicoProdutoService.alterarStatus(produtoVendaNovoSave.getId(), StatusHistoricoProduto.StatusHistorico.ABATIDO);
-                totalVenda += calcularValorTotalProduto(produtoVendaReq);
-            } else {
-                throw new OperacaoInvalidaException("ProdutoVenda - Quantidade de itens não pode ser maior o que tem em estoque");
-            }
+        for (ProdutoVendaReq produtoVendaReq : novosProdutosVenda) {
+            totalVenda += processNewProduct(produtoVendaReq, venda);
         }
 
-        // Alterando a venda para o status em andamento e o funcionário que está realizando a troca.
+        // Update sale status and total value
         venda.setStatusVenda(statusEmAndamento);
         venda.setUsuario(usuario);
         venda.setValorTotal(totalVenda);
         venda = repository.save(venda);
 
         return VendaMapper.entityToRes(venda);
+    }
+
+    private double processExistingProduct(ProdutoVenda produtoVendaAnterior, ProdutoVendaReq produtoVendaEncontrado) {
+        Optional<ETP> etpDoProdutoVendaOptional = etpRepository.findById(produtoVendaEncontrado.etpId());
+        if (etpDoProdutoVendaOptional.isEmpty()) {
+            throw new RegistroNaoEncontradoException("ETP não encontrado");
+        }
+
+        ETP etpDoProdutoVenda = etpDoProdutoVendaOptional.get();
+        int diferenca = produtoVendaAnterior.getQuantidade() - produtoVendaEncontrado.quantidade();
+
+        if (diferenca < 0) {
+            // Received more items of the same product
+            int total = produtoVendaEncontrado.quantidade() - produtoVendaAnterior.getQuantidade();
+            if (total >= 0 && total <= etpDoProdutoVenda.getQuantidade()) {
+                produtoVendaAnterior.setQuantidade(produtoVendaEncontrado.quantidade());
+                produtoVendaRepository.save(produtoVendaAnterior);
+                etpDoProdutoVenda.setQuantidade(etpDoProdutoVenda.getQuantidade() - (diferenca * -1));
+                etpRepository.save(etpDoProdutoVenda);
+                historicoProdutoService.alterarStatus(produtoVendaAnterior.getId(), StatusHistoricoProduto.StatusHistorico.ABATIDO);
+                alertasEstoqueService.criarAlertaEstoque(etpDoProdutoVenda);
+            } else {
+                throw new OperacaoInvalidaException("ProdutoVenda - Quantidade de itens não pode ser maior o que tem em estoque");
+            }
+        } else if (diferenca >= 1) {
+            // A product was removed from this ProdutoVenda
+            produtoVendaAnterior.setQuantidade(produtoVendaEncontrado.quantidade());
+            produtoVendaRepository.save(produtoVendaAnterior);
+            etpDoProdutoVenda.setQuantidade(etpDoProdutoVenda.getQuantidade() + diferenca);
+            etpRepository.save(etpDoProdutoVenda);
+            alertasEstoqueService.criarAlertaEstoque(etpDoProdutoVenda);
+            historicoProdutoService.alterarStatus(produtoVendaAnterior.getId(), StatusHistoricoProduto.StatusHistorico.ABATIDO);
+        }
+
+        return calcularValorTotalProduto(produtoVendaEncontrado);
+    }
+
+    private void processRemovedProduct(ProdutoVenda produtoVendaAnterior) {
+        ETP etpDoProdutoVenda = etpRepository.findById(produtoVendaAnterior.getEtp().getId())
+                .orElseThrow(() -> new RegistroNaoEncontradoException("ETP não encontrado"));
+
+        List<HistoricoProdutoRes> historicoProdutoRes = historicoProdutoService.pesquisarPorProdutoVenda(produtoVendaAnterior.getId());
+        if (!historicoProdutoRes.isEmpty()) {
+            HistoricoProdutoRes ultimoHistorico = historicoProdutoRes.get(historicoProdutoRes.size() - 1);
+            if (!ultimoHistorico.getStatusHistoricoProduto().getStatus().equals(StatusHistoricoProduto.StatusHistorico.DEVOLVIDO)) {
+                etpDoProdutoVenda.setQuantidade(etpDoProdutoVenda.getQuantidade() + produtoVendaAnterior.getQuantidade());
+                etpRepository.save(etpDoProdutoVenda);
+                historicoProdutoService.alterarStatus(produtoVendaAnterior.getId(), StatusHistoricoProduto.StatusHistorico.DEVOLVIDO);
+                alertasEstoqueService.criarAlertaEstoque(etpDoProdutoVenda);
+            }
+        }
+    }
+
+    private double processNewProduct(ProdutoVendaReq produtoVendaReq, Venda venda) {
+        ETP etp = etpRepository.findById(produtoVendaReq.etpId()).orElseThrow(() -> new RegistroNaoEncontradoException("ETP não encontrado!"));
+        if (etp.getQuantidade() >= produtoVendaReq.quantidade()) {
+            ProdutoVenda produtoVendaNovoSave = produtoVendaRepository.save(ProdutoVendaMapper.dtoToEntity(
+                    new ProdutoVendaTrocaReq(
+                            produtoVendaReq.etpId(),
+                            produtoVendaReq.quantidade(),
+                            produtoVendaReq.desconto(),
+                            etp.getItemPromocional()),
+                    etp,
+                    venda));
+
+            etp.setQuantidade(etp.getQuantidade() - produtoVendaReq.quantidade());
+            etpRepository.save(etp);
+            alertasEstoqueService.criarAlertaEstoque(etp);
+            historicoProdutoService.alterarStatus(produtoVendaNovoSave.getId(), StatusHistoricoProduto.StatusHistorico.ABATIDO);
+            return calcularValorTotalProduto(produtoVendaReq);
+        } else {
+            throw new OperacaoInvalidaException("ProdutoVenda - Quantidade de itens não pode ser maior o que tem em estoque");
+        }
     }
 }

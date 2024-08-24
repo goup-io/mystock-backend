@@ -160,11 +160,11 @@ VALUES
 -- Inserção na tabela ETP sem conflitos de duplicados e distribuindo os produtos entre as lojas
 INSERT INTO ETP (produto_id, loja_id, tamanho_id, item_promocional, quantidade)
 VALUES
-    (1, 1, 1,  'NAO',19),
+    (1, 1, 1,  'NAO',20),
     (2, 1, 1,  'NAO',10),
-    (3, 1, 3,  'NAO',6),
-    (4, 1, 4,  'NAO',9),
-    (5, 1, 5,  'NAO',8),
+    (3, 1, 3,  'NAO',10),
+    (4, 1, 4,  'NAO',20),
+    (5, 1, 5,  'NAO',30),
     (6, 1, 1,  'NAO',50),
     (7, 1, 1,  'NAO',54),
     (8, 1, 3,  'NAO',20),
