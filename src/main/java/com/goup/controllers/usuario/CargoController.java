@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/cargos")
+@RequestMapping("${mystock.api.prefix}/cargos")
 public class CargoController {
 
     @Autowired

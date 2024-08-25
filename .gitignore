@@ -33,5 +33,5 @@ build/
 .vscode/
 
 
-### Imagens ###
-*.png
+### Imagens na raiz do projeto ###
+/*.png

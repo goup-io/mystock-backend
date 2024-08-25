@@ -1,11 +1,8 @@
 package com.goup.controllers.vendas;
 
-import com.goup.dtos.vendas.produtoVenda.ProdutoVendaReq;
 import com.goup.dtos.vendas.venda.*;
-import com.goup.entities.usuarios.Usuario;
-import com.goup.entities.vendas.StatusVenda;
-import com.goup.entities.vendas.TipoVenda;
 import com.goup.services.vendas.VendaService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/vendas")
+@RequestMapping("${mystock.api.prefix}/vendas")
 public class VendaController {
     @Autowired
     private VendaService service;
@@ -24,6 +21,7 @@ public class VendaController {
     public ResponseEntity<List<VendaResTable>> listar(){
         return ResponseEntity.status(200).body(service.listar());
     }
+    @Operation(description = descricao)
     @GetMapping("/filtro")
     public ResponseEntity<List<VendaResTable>> listarPorFiltro(
         @RequestParam(required = false) Integer id_tipo_venda,
@@ -66,4 +64,25 @@ public class VendaController {
     public ResponseEntity<List<VendaResTable>> listarVendasPendentes(@PathVariable Integer idLoja){
         return ResponseEntity.status(200).body(service.listarVendasPendentesPorLoja(idLoja));
     }
+
+    @PutMapping("/trocar/{idVenda}")
+    public ResponseEntity<VendaRes> realizarTroca(@PathVariable Integer idVenda, @Valid @RequestBody TrocaEProdutosReq vendaEProdutosReq){
+        return ResponseEntity.status(201).body(service.realizarTroca(idVenda, vendaEProdutosReq.trocaReq(), vendaEProdutosReq.produtoVendaReqs()));
+    }
+
+
+    private static final String descricao = """
+        <p>StatusVenda:</p>
+        <ul>
+            <li>1 - Pendente</li>
+            <li>2 - Finalizada</li>
+            <li>3 - Cancelada</li>      
+        </ul>
+        <p>TipoVenda:</p>
+        <ul>
+            <li>1 - Varejo</li>
+            <li>2 - Atacado</li>
+            <li>3 - Especial</li>
+        </ul>
+        """;
 }

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/lojas")
+@RequestMapping("${mystock.api.prefix}/lojas")
 public class lojasController {
     @Autowired
     private LojaRepository repository;

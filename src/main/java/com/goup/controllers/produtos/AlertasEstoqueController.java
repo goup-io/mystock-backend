@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/alertas")
+@RequestMapping("${mystock.api.prefix}/alertas")
 public class AlertasEstoqueController {
     @Autowired
     AlertasEstoqueService service;
