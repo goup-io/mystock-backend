@@ -50,6 +50,7 @@ public interface ETPRepository extends JpaRepository<ETP, Integer>{
 
     List<ETP> findAllByQuantidadeBeforeOrderByQuantidadeAsc(Integer quantidade);
 
+    boolean existsByProdutoModelo_Id(int id);
 
 
 //    @Query("SELECT " +

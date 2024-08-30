@@ -8,14 +8,12 @@ import com.goup.entities.estoque.produtos.modelos.Modelo;
 import com.goup.entities.estoque.produtos.modelos.Tipo;
 import com.goup.exceptions.RegistroConflitanteException;
 import com.goup.exceptions.RegistroNaoEncontradoException;
-import com.goup.repositories.produtos.CategoriaRepository;
-import com.goup.repositories.produtos.ModeloRepository;
-import com.goup.repositories.produtos.TipoRepository;
+import com.goup.exceptions.produto.modelo.ModeloComETPException;
+import com.goup.exceptions.produto.modelo.ModeloComProdutoException;
+import com.goup.repositories.produtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +26,10 @@ public class ModeloService {
     private CategoriaRepository categoriaRepository;
     @Autowired
     private TipoRepository tipoRepository;
+    @Autowired
+    private ETPRepository etpRepository;
+    @Autowired
+    private ProdutoRepository produtoRepository;
 
     public ModeloRes cadastrar(ModeloReq modelo){
         Optional<Categoria> categoria = this.categoriaRepository.findById(modelo.idCategoria());
@@ -78,9 +80,22 @@ public class ModeloService {
     }
 
     public void deletar(int id) {
-        if(!repository.existsById(id)){
+        if (!repository.existsById(id)) {
             throw new RegistroNaoEncontradoException("Modelo não encontrado");
         }
+        if (isModeloAssociatedWithEtp(id)) {
+            throw new ModeloComETPException("Não é possível excluir o modelo, pois está associado a um produto no estoque");
+        } else if (isModeloAssociatedWithProduct(id)) {
+            throw new ModeloComProdutoException("Não é possível excluir o modelo, pois está associado a um produto");
+        }
         repository.deleteById(id);
+    }
+
+    private boolean isModeloAssociatedWithEtp(int id) {
+        return etpRepository.existsByProdutoModelo_Id(id);
+    }
+
+    private boolean isModeloAssociatedWithProduct(int id) {
+        return produtoRepository.existsByModelo_Id(id);
     }
 }
