@@ -91,8 +91,7 @@ public class ETPService {
             throw new RegistroNaoEncontradoException("Loja não encontrada!");
         }
         List<ETP> etps = repository.findAllByLoja_Id(id_loja);
-        ListaGenerica<ETP> etpsList = criarListaGenericaOrdenada(etps);
-        return ETPMapper.toTableResponse(etpsList);
+        return ETPMapper.toTableResponse(etps);
     }
 
     public List<ETPTableRes> listarPorFiltro(
