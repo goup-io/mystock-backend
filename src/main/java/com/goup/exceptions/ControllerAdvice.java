@@ -1,6 +1,7 @@
 package com.goup.exceptions;
 
 import com.goup.exceptions.produto.modelo.ModeloComETPException;
+import com.goup.exceptions.produto.modelo.ModeloComProdutoException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -98,7 +99,12 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
 
     //produtos
     @ExceptionHandler(ModeloComETPException.class)
-    public ResponseEntity<String> handleModeloComProdutoException(ModeloComETPException ex, WebRequest request) {
+    public ResponseEntity<String> handleModeloComEtpException(ModeloComETPException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ModeloComProdutoException.class)
+    public ResponseEntity<String> handleModeloComProdutoException(ModeloComProdutoException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 }
