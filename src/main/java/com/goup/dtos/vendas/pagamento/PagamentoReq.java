@@ -13,7 +13,7 @@ public class PagamentoReq{
         Integer idTipoPagamento;
         @NotNull @DecimalMin("0.0")
         Integer idVenda;
-        @NotNull @DecimalMin("0.0")
+        @NotNull @DecimalMin("0.01")
         Double valor;
         @NotNull @DecimalMin("1.0")
         Integer qtdParcelas;
