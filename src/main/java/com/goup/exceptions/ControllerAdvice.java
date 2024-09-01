@@ -97,6 +97,21 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(OperacaoInvalidaException.class)
+    public ResponseEntity<ErrorResponse> handleOperacaoInvalidaException(OperacaoInvalidaException ex, WebRequest request) {
+        LocalDateTime timestamp = LocalDateTime.now();
+        int status = HttpStatus.BAD_REQUEST.value();
+        String error = HttpStatus.BAD_REQUEST.toString();
+        String message = "Operação inválida";
+        String path = request.getDescription(false);
+        Map<String, String> errors = new HashMap<>();
+        String nomeCampo = Arrays.stream(ex.getMessage().split(" ")).toList().get(0).toLowerCase();
+        errors.put(nomeCampo, ex.getMessage());
+
+        ErrorResponse response = new ErrorResponse(timestamp, status, error, message, path, errors);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     //produtos
     @ExceptionHandler(ModeloComETPException.class)
     public ResponseEntity<String> handleModeloComEtpException(ModeloComETPException ex, WebRequest request) {
