@@ -87,17 +87,17 @@ public class VendaService {
         @Param("data_inicio") LocalDateTime dataHoraInicio,
         @Param("data_fim") LocalDateTime dataHoraFim,
         @Param("id_loja") Integer id_loja,
-        @Param("status") Integer id_status
+        @Param("status") StatusVenda.Status  status
     ){
         if (id_tipo_venda != null) {
             Optional<TipoVenda> tipoVenda = tipoVendaRepository.findById(id_tipo_venda);
             if (tipoVenda.isEmpty()) throw new RegistroNaoEncontradoException("TipoVenda não encontrada");
-        }else if (id_status != null) {
-            Optional<StatusVenda> statusVenda = statusVendaRepository.findById(id_status);
+        }else if (status != null) {
+            Optional<StatusVenda> statusVenda = statusVendaRepository.findByStatus(status);
             if (statusVenda.isEmpty()) throw new RegistroNaoEncontradoException("StatusVenda não encontrado");
         }
 
-        List<Venda> vendas = repository.findAllByFiltros(id_tipo_venda, id_vendedor, dataHoraInicio, dataHoraFim, id_loja, id_status);
+        List<Venda> vendas = repository.findAllByFiltros(id_tipo_venda, id_vendedor, dataHoraInicio, dataHoraFim, id_loja, status);
 
 
         List<Integer> quantidadePorProdutoVenda = new ArrayList<>();
