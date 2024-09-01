@@ -1,5 +1,6 @@
 package com.goup.controllers.vendas;
 
+import com.azure.core.annotation.Get;
 import com.goup.dtos.vendas.pagamento.PagamentoFluxoRes;
 import com.goup.dtos.vendas.pagamento.PagamentoReq;
 import com.goup.dtos.vendas.pagamento.PagamentoRes;
@@ -16,6 +17,11 @@ import java.util.List;
 public class PagamentoController {
     @Autowired
     private PagamentoService pagamentoService;
+
+    @GetMapping("/qrCodePix")
+    public ResponseEntity<String> criarQrCode(@Valid @RequestParam Double valorPix) {
+        return ResponseEntity.status(201).body(pagamentoService.pagarComPix(valorPix));
+    }
 
     @PostMapping
     public ResponseEntity<PagamentoRes> criarPagamento(@Valid @RequestBody PagamentoReq pagamentoReq) {
