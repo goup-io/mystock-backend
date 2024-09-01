@@ -17,7 +17,7 @@ public interface VendaRepository extends JpaRepository<Venda, Integer> {
             "AND (:id_vendedor IS NULL OR venda.usuario.id = :id_vendedor)" +
             "AND (:data_inicio IS NULL OR :data_fim IS NULL OR venda.dataHora BETWEEN :data_inicio AND :data_fim)" +
             "AND (:id_loja IS NULL OR venda.usuario.loja.id = :id_loja)" +
-            "AND (:id_status IS NULL OR venda.statusVenda.id = :id_status)"
+            "AND (:status IS NULL OR venda.statusVenda.status = :status)"
     )
     List<Venda> findAllByFiltros(
             @Param("id_tipo_venda") Integer id_tipo_venda,
@@ -25,7 +25,7 @@ public interface VendaRepository extends JpaRepository<Venda, Integer> {
             @Param("data_inicio") LocalDateTime dataHoraInicio,
             @Param("data_fim") LocalDateTime dataHoraInicio1,
             @Param("id_loja") Integer id_loja,
-            @Param("id_status") Integer id_status
+            @Param("status") StatusVenda.Status status
     );
 
     @Query("SELECT venda FROM Venda venda INNER JOIN venda.usuario usuario WHERE usuario.loja.id = 3")
