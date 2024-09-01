@@ -19,14 +19,13 @@ public class PagamentoMapper {
 
 
 
-    public static PagamentoRes entityToDto(Pagamento pagamento, Double valorPago, String base64QRCode){
+    public static PagamentoRes entityToDto(Pagamento pagamento, Double valorPago){
         return new PagamentoRes(
                 pagamento.getTipoPagamento().getMetodo().getMetodo(),
                 VendaMapper.entityToRes(pagamento.getVenda()),
                 pagamento.getValor(),
                 pagamento.getQtdParcelas(),
-                valorPago,
-                base64QRCode != null ? base64QRCode : ""
+                valorPago
         );
     }
 
@@ -36,8 +35,7 @@ public class PagamentoMapper {
                 VendaMapper.entityToRes(pagamento.getVenda()),
                 pagamento.getValor(),
                 pagamento.getQtdParcelas(),
-                pagamento.getValor(),
-                null
+                pagamento.getValor()
         );
     }
 

@@ -15,6 +15,7 @@ import com.goup.repositories.vendas.PagamentoRepository;
 import com.goup.repositories.vendas.TipoPagamentoRepository;
 import com.goup.repositories.vendas.VendaRepository;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pix.DadosEnvioPix;
@@ -50,33 +51,31 @@ public class PagamentoService {
             throw new RegistroConflitanteException("Pagamento Impossivel de ser realizado - A venda foi cancelada");
         }
 
-        String base64Image = null;
-
         if (valorPagoAteMomento + dtoPagamento.getValor() <= venda.getValorTotal()) {
             if (tipoPagamento.getMetodo().getMetodo().equals("PIX")) {
                 pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
-                base64Image = pagarComPix(dtoPagamento);
             } else {
                 pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, dtoPagamento.getValor(), tipoPagamento, venda));
             }
             Double valorQueResta = venda.getValorTotal() - (valorPagoAteMomento + dtoPagamento.getValor());
-            return PagamentoMapper.entityToDto(pagamento, valorQueResta, base64Image);
+            return PagamentoMapper.entityToDto(pagamento, valorQueResta);
         } else if (valorPagoAteMomento + dtoPagamento.getValor() > venda.getValorTotal() && tipoPagamento.getMetodo().getMetodo().equals("Dinheiro")) {
             Double valorQueResta = venda.getValorTotal() - (valorPagoAteMomento + dtoPagamento.getValor());
             pagamento = repository.save(PagamentoMapper.dtoToEntity(dtoPagamento, valorRestante, tipoPagamento, venda));
-            return PagamentoMapper.entityToDto(pagamento, valorQueResta, base64Image);
+            return PagamentoMapper.entityToDto(pagamento, valorQueResta);
         } else {
             throw new RegistroConflitanteException("Valor do pagamento excede o valor da venda");
         }
     }
 
-    public String pagarComPix(PagamentoReq dtoPagamento){
+    public String pagarComPix(@Valid @DecimalMin("0.01") Double valorPix){
+
             final var imagePath = "qrcode.png";
 
             final var dadosPix =
                     new DadosEnvioPix(
                             "Perolas Calcados", "38637406882",
-                            new BigDecimal(dtoPagamento.getValor()), "São Paulo", "Pérolas Calçados");
+                            new BigDecimal(valorPix), "São Paulo", "Pérolas Calçados");
 
             final var qrCodePix = new QRCodePix(dadosPix);
                 qrCodePix.save(Path.of(imagePath));
