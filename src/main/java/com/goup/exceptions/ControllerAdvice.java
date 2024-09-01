@@ -102,7 +102,7 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
         LocalDateTime timestamp = LocalDateTime.now();
         int status = HttpStatus.BAD_REQUEST.value();
         String error = HttpStatus.BAD_REQUEST.toString();
-        String message = "Operação inválida";
+        String message = ex.getMessage();
         String path = request.getDescription(false);
         Map<String, String> errors = new HashMap<>();
         String nomeCampo = Arrays.stream(ex.getMessage().split(" ")).toList().get(0).toLowerCase();
