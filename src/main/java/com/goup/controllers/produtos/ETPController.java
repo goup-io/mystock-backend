@@ -69,6 +69,15 @@ public class ETPController {
         return ResponseEntity.status(200).body(etps);
     }
 
+    @GetMapping("/filtro/loja/{id_loja}")
+    public ResponseEntity<List<ETPTableRes>> buscarProdutosLojaDiferente(@PathVariable Integer id_loja){
+        List<ETPTableRes> etps = service.buscarProdutosLojaDiferente(id_loja);
+        if(etps.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(etps);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ETPTableRes> atualizar(@PathVariable Integer id, @RequestBody @Valid ETPReqEdit atualizado){
         return ResponseEntity.status(200).body(service.atualizar(id, atualizado));

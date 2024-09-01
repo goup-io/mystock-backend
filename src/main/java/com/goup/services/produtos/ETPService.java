@@ -201,4 +201,8 @@ public class ETPService {
     }
 
 
+    public List<ETPTableRes> buscarProdutosLojaDiferente(Integer idLoja) {
+        List<ETP> etps = repository.findAllByLoja_IdNot(idLoja);
+        return ETPMapper.toTableResponse(etps);
+    }
 }

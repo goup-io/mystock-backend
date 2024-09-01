@@ -52,6 +52,8 @@ public interface ETPRepository extends JpaRepository<ETP, Integer>{
 
     boolean existsByProdutoModelo_Id(int id);
 
+    @Query("SELECT etp FROM ETP etp WHERE etp.loja.id != :idLoja")
+    List<ETP> findAllByLoja_IdNot(Integer idLoja);
 
 //    @Query("SELECT " +
 //            "new com.goup.dtos.dashboards.dashboardGeral.FluxoEstoqueRes(" +
