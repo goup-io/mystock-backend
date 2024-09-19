@@ -27,7 +27,7 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia, In
             "AND (:status IS NULL OR hist.status.status = :status ) "+
             "AND (:dataInicio IS NULL OR hist.dataHora >= :dataInicio) " +
             "AND (:dataFim IS NULL OR hist.dataHora <= :dataFim) " +
-            "AND (:pesquisa IS NULL OR lower(produto.nome) LIKE lower(concat('%', :pesquisa ,'%')) OR lower(produto.modelo.codigo) LIKE lower(concat('%', :pesquisa, '%')))"
+            "AND (:pesquisa IS NULL OR lower(produto.nome) LIKE lower(concat('%', :pesquisa ,'%')) OR lower(etp.codigo) LIKE lower(concat('%', :pesquisa, '%')))"
     )
     List<Transferencia> findAllByFiltro(
         @Param("dataInicio") LocalDateTime dataInicio,
@@ -50,7 +50,7 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia, In
             "AND (:status IS NULL OR hist.status.status = :status ) "+
             "AND (:dataInicio IS NULL OR hist.dataHora >= :dataInicio) " +
             "AND (:dataFim IS NULL OR hist.dataHora <= :dataFim) " +
-            "AND (:pesquisa IS NULL OR lower(produto.nome) LIKE lower(concat('%', :pesquisa ,'%')) OR lower(produto.modelo.codigo) LIKE lower(concat('%', :pesquisa, '%')))"
+            "AND (:pesquisa IS NULL OR lower(produto.nome) LIKE lower(concat('%', :pesquisa ,'%')) OR lower(etp.codigo) LIKE lower(concat('%', :pesquisa, '%')))"
     )
     List<Transferencia> findAllByFiltroColetor(
             @Param("dataInicio") LocalDateTime dataInicio,

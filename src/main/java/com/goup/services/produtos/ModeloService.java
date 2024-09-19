@@ -34,12 +34,9 @@ public class ModeloService {
     public ModeloRes cadastrar(ModeloReq modelo){
         Optional<Categoria> categoria = this.categoriaRepository.findById(modelo.idCategoria());
         Optional<Tipo> tipo = this.tipoRepository.findById(modelo.idTipo());
-        boolean codigoExiste = this.repository.findByCodigo(modelo.codigo()).isPresent();
 
         if(categoria.isEmpty() || tipo.isEmpty()){
             throw new RegistroNaoEncontradoException("Categoria ou Tipo não encontrados");
-        }else if(codigoExiste){
-            throw new RegistroConflitanteException("Codigo já existente em outro modelo");
         }
         Modelo entidade = ModeloMapper.reqToEntity(modelo, categoria.get(), tipo.get());
         this.repository.save(ModeloMapper.reqToEntity(modelo, categoria.get(), tipo.get()));
@@ -49,10 +46,9 @@ public class ModeloService {
     public List<ModeloRes> listarPorFiltro(
         @Param("categoria") String categoria,
         @Param("tipo") String tipo,
-        @Param("modelo") String modelo,
-        @Param("codigo") String codigo)
+        @Param("modelo") String modelo)
     {
-        List<Modelo> modelos = repository.findAllByFiltro(categoria, tipo, modelo, codigo);
+        List<Modelo> modelos = repository.findAllByFiltro(categoria, tipo, modelo);
         return ModeloMapper.listToListRes(modelos);
     }
 

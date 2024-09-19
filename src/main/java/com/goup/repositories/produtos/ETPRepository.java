@@ -24,7 +24,7 @@ public interface ETPRepository extends JpaRepository<ETP, Integer>{
             "AND (:precoMinimo IS NULL OR produto.valorRevenda >= :precoMinimo) " +
             "AND (:precoMaximo IS NULL OR produto.valorRevenda <= :precoMaximo) " +
             "AND (:id_loja IS NULL OR etp.loja.id = :id_loja) " +
-            "AND (:pesquisa IS NULL OR lower(produto.nome) LIKE lower(concat('%',:pesquisa, '%')) OR lower(produto.modelo.codigo) LIKE lower(concat('%', :pesquisa, '%')))")
+            "AND (:pesquisa IS NULL OR lower(produto.nome) LIKE lower(concat('%',:pesquisa, '%')) OR lower(etp.codigo) LIKE lower(concat('%', :pesquisa, '%')))")
     List<ETP> findAllByFiltros(
         @Param("modelo") String modelo,
         @Param("cor") String cor,

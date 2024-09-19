@@ -107,28 +107,28 @@ VALUES
     ('Pêssego'),
     ('Magenta');
 
-INSERT INTO modelo (codigo, nome, categoria_id, tipo_id)
+INSERT INTO modelo (nome, categoria_id, tipo_id)
 VALUES
-    ('AB123', 'Sapatênis Casual', 1, 1),
-    ('CD456', 'Sandalia Conforto', 2, 2),
-    ('EF789', 'Bota Adventure', 3, 3),
-    ('GH012', 'Sapato Social', 4, 4),
-    ('IJ345', 'Tênis Esportivo', 5, 5),
-    ('KL678', 'Rasteirinha Feminina', 1, 2),
-    ('MN901', 'Bota Montaria', 2, 3),
-    ('OP234', 'Chinelo Slide', 3, 4),
-    ('QR567', 'Scarpin Clássico', 4, 5),
-    ('ST890', 'Tênis Skate', 5, 1),
-    ('UV123', 'Bota Cano Curto', 1, 1),
-    ('WX456', 'Tênis Casual', 2, 2),
-    ('YZ789', 'Sandália Anabela', 3, 3),
-    ('AB012', 'Sapato Oxford', 4, 4),
-    ('CD345', 'Rasteira Gladiadora', 5, 5),
-    ('EF678', 'Bota Coturno', 1, 2),
-    ('GH901', 'Chinelo Havaianas', 2, 3),
-    ('IJ234', 'Scarpin Salto Alto', 3, 4),
-    ('KL567', 'Tênis Corrida', 4, 5),
-    ('MN890', 'Sandália Plataforma', 5, 1);
+    ('Sapatênis Casual', 1, 1),
+    ('Sandalia Conforto', 2, 2),
+    ('Bota Adventure', 3, 3),
+    ('Sapato Social', 4, 4),
+    ('Tênis Esportivo', 5, 5),
+    ('Rasteirinha Feminina', 1, 2),
+    ('Bota Montaria', 2, 3),
+    ('Chinelo Slide', 3, 4),
+    ('Scarpin Clássico', 4, 5),
+    ('Tênis Skate', 5, 1),
+    ('Bota Cano Curto', 1, 1),
+    ('Tênis Casual', 2, 2),
+    ('Sandália Anabela', 3, 3),
+    ('Sapato Oxford', 4, 4),
+    ('Rasteira Gladiadora', 5, 5),
+    ('Bota Coturno', 1, 2),
+    ('Chinelo Havaianas', 2, 3),
+    ('Scarpin Salto Alto', 3, 4),
+    ('Tênis Corrida', 4, 5),
+    ('Sandália Plataforma', 5, 1);
 
 INSERT INTO produto (cor_id, modelo_id, nome, valor_custo, valor_revenda)
 VALUES
@@ -158,28 +158,28 @@ VALUES
     (33), (34), (35), (36), (37), (38), (39), (40), (41), (42), (43), (44), (45);
 
 -- Inserção na tabela ETP sem conflitos de duplicados e distribuindo os produtos entre as lojas
-INSERT INTO ETP (produto_id, loja_id, tamanho_id, item_promocional, quantidade)
+INSERT INTO ETP (produto_id, loja_id, tamanho_id, item_promocional, codigo, quantidade)
 VALUES
-    (1, 1, 1,  'NAO',20),
-    (2, 1, 1,  'NAO',10),
-    (3, 1, 3,  'NAO',10),
-    (4, 1, 4,  'NAO',20),
-    (5, 1, 5,  'NAO',30),
-    (6, 1, 1,  'NAO',50),
-    (7, 1, 1,  'NAO',54),
-    (8, 1, 3,  'NAO',20),
-    (9, 1, 4,  'NAO',16),
-    (10, 1, 5, 'NAO', 15),
-    (11, 1, 1, 'NAO', 10),
-    (12, 1, 2, 'NAO', 10),
-    (13, 1, 3, 'NAO', 5),
-    (14, 1, 4, 'NAO', 5),
-    (15, 2, 5, 'NAO', 5),
-    (16, 2, 1, 'NAO', 5),
-    (17, 2, 2, 'NAO', 5),
-    (18, 2, 3, 'NAO', 5),
-    (19, 2, 4, 'NAO', 5),
-    (20, 2, 5, 'NAO', 5);
+    (1, 1, 1,  'NAO', 'AB123', 20),
+    (2, 1, 1,  'NAO', 'CD456', 10),
+    (3, 1, 3,  'NAO', 'EF789', 10),
+    (4, 1, 4,  'NAO', 'GH012', 20),
+    (5, 1, 5,  'NAO', 'IJ345', 30),
+    (6, 1, 1,  'NAO', 'KL678', 50),
+    (7, 1, 1,  'NAO', 'MN901', 54),
+    (8, 1, 3,  'NAO', 'OP234', 20),
+    (9, 1, 4,  'NAO', 'QR567', 16),
+    (10, 1, 5, 'NAO', 'ST890',  15),
+    (11, 1, 1, 'NAO', 'UV123',  10),
+    (12, 1, 2, 'NAO', 'WX456',  10),
+    (13, 1, 3, 'NAO', 'YZ789',  5),
+    (14, 1, 4, 'NAO', 'AB012',  5),
+    (15, 2, 5, 'NAO', 'CD345',  5),
+    (16, 2, 1, 'NAO', 'EF678',  5),
+    (17, 2, 2, 'NAO', 'GH901',  5),
+    (18, 2, 3, 'NAO', 'IJ234',  5),
+    (19, 2, 4, 'NAO', 'KL567',  5),
+    (20, 2, 5, 'NAO', 'MN890',  5);
 
 
 INSERT INTO Tipo_venda (id, tipo, desconto)

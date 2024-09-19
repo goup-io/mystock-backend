@@ -17,6 +17,9 @@ public class ETP {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotNull @Column(unique = true)
+    private String codigo;
+
     @NotNull @ManyToOne @JoinColumn(name = "tamanho_id", referencedColumnName = "id")
     private Tamanho tamanho;
 
