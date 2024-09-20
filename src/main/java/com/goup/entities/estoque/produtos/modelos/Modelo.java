@@ -19,9 +19,6 @@ public class Modelo {
     @NotNull @ManyToOne @JoinColumn(name="tipo_id", referencedColumnName="id")
     private Tipo tipo;
 
-    @NotNull @Column(unique = true)
-    private String codigo;
-
     @NotBlank @NotNull // NotBlank não define a coluna como NOT NULL
     private String nome;
 }

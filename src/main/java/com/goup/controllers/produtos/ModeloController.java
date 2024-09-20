@@ -35,10 +35,9 @@ public class ModeloController {
     public ResponseEntity<List<ModeloRes>> listarPorFiltro(
         @RequestParam(required = false) String categoria,
         @RequestParam(required = false) String tipo,
-        @RequestParam(required = false) String modelo,
-        @RequestParam(required = false) String codigo
+        @RequestParam(required = false) String modelo
     ){
-        List<ModeloRes> modelos = service.listarPorFiltro(categoria, tipo, modelo, codigo);
+        List<ModeloRes> modelos = service.listarPorFiltro(categoria, tipo, modelo);
         return modelos.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(modelos);
     }
 
