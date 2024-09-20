@@ -12,12 +12,15 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity @Getter @Setter
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"tamanho", "produto", "loja"})})
+@Table(uniqueConstraints = {
+        @UniqueConstraint( columnNames = {"tamanho", "produto", "loja"}),
+        @UniqueConstraint( columnNames = {"codigo", "loja"} )
+})
 public class ETP {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull @Column(unique = true)
+    @NotNull
     private String codigo;
 
     @NotNull @ManyToOne @JoinColumn(name = "tamanho_id", referencedColumnName = "id")

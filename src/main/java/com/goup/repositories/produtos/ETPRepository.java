@@ -17,6 +17,8 @@ public interface ETPRepository extends JpaRepository<ETP, Integer>{
     List<ETP> findAllByLoja_Id(Integer loja_id);
     Optional<ETP> findByTamanhoAndLojaAndProduto(Tamanho tamanho, Loja loja, Produto produto);
 
+    boolean existsByCodigoAndLoja_Id(String codigo, Integer id_loja);
+
     @Query("SELECT etp FROM ETP etp JOIN etp.produto produto " +
             "WHERE (:modelo IS NULL OR lower(produto.modelo.nome) LIKE lower(concat('%',:modelo, '%'))) " +
             "AND (:cor IS NULL OR lower(produto.cor.nome) LIKE lower(concat('%',:cor,'%'))) " +
