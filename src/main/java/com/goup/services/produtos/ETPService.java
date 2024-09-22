@@ -179,6 +179,11 @@ public class ETPService {
         produto.get().setValorRevenda(atualizado.valorRevenda());
         produto.get().setValorCusto(atualizado.valorCusto());
         produto.get().setNome(atualizado.nome());
+
+        if (atualizado.quantidade() != null) {
+            etp.get().setQuantidade(atualizado.quantidade());
+        }
+
         produtoRepository.save(produto.get()); // Atualiza e salva produto;
 
 
