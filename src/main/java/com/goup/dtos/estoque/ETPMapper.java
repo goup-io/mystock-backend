@@ -14,7 +14,7 @@ public class ETPMapper {
     public static ETPTableRes toTableResponseEntity(ETP req) {
     return new ETPTableRes(
             req.getId(),
-            req.getProduto().getModelo().getCodigo(),
+            req.getCodigo(),
             req.getProduto().getNome(),
             req.getProduto().getModelo().getNome(),
             req.getTamanho().getNumero(),
@@ -29,7 +29,7 @@ public class ETPMapper {
     public static ETPEditModal toEditModalEntity(ETP req) {
         return new ETPEditModal(
                 req.getId(),
-                req.getProduto().getModelo().getCodigo(),
+                req.getCodigo(),
                 req.getProduto().getNome(),
                 req.getProduto().getModelo().getNome(),
                 req.getTamanho().getNumero(),
@@ -54,8 +54,9 @@ public class ETPMapper {
         return res;
     }
 
-    public static ETP reqToEntity(Tamanho tamanho, Produto produto, Loja loja, ItemPromocional itemPromocional){
+    public static ETP reqToEntity(String codigo, Tamanho tamanho, Produto produto, Loja loja, ItemPromocional itemPromocional){
         ETP entidade = new ETP();
+        entidade.setCodigo(codigo);
         entidade.setProduto(produto);
         entidade.setTamanho(tamanho);
         entidade.setLoja(loja);
@@ -66,7 +67,7 @@ public class ETPMapper {
 
     public static ETPTableRes entityToRes(ETP etp) {
         Integer id = etp.getId();
-        String codigo = etp.getProduto().getModelo().getCodigo();
+        String codigo = etp.getCodigo();
         String nome = etp.getProduto().getNome();
         String modelo = etp.getProduto().getModelo().getNome();
         Integer tamanho = etp.getTamanho().getNumero();

@@ -46,6 +46,7 @@ public class ETPService {
         Optional<Loja> loja = lojaRepository.findById(etp.idLoja());
         Optional<Tamanho> tamanho = tamanhoRepository.findById(etp.idTamanho());
 
+
         if (produto.isEmpty()) {
             throw new RegistroNaoEncontradoException("Produto não encontrado!");
         }else if(loja.isEmpty()){
@@ -55,13 +56,16 @@ public class ETPService {
         }
 
         boolean etpExists = repository.findByTamanhoAndLojaAndProduto(tamanho.get(), loja.get(), produto.get()).isPresent();
+        boolean codigoExiste = repository.existsByCodigoAndLoja_Id(etp.codigo(), etp.idLoja());
 
         if (etpExists) {
             throw new RegistroConflitanteException("ETP de mesmo produto, tamanho e loja já existente!");
+        }else if(codigoExiste){
+            throw new RegistroConflitanteException("Código já utilizado na loja!");
         }
 
 
-        final ETP savedEtp = repository.save(ETPMapper.reqToEntity(tamanho.get(), produto.get(), loja.get(), etp.itemPromocional()));
+        final ETP savedEtp = repository.save(ETPMapper.reqToEntity(etp.codigo(), tamanho.get(), produto.get(), loja.get(), etp.itemPromocional()));
         return ETPMapper.entityToRes(savedEtp);
     }
 
@@ -175,6 +179,11 @@ public class ETPService {
         produto.get().setValorRevenda(atualizado.valorRevenda());
         produto.get().setValorCusto(atualizado.valorCusto());
         produto.get().setNome(atualizado.nome());
+
+        if (atualizado.quantidade() != null) {
+            etp.get().setQuantidade(atualizado.quantidade());
+        }
+
         produtoRepository.save(produto.get()); // Atualiza e salva produto;
 
 

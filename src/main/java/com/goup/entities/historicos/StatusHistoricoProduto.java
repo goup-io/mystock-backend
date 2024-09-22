@@ -31,8 +31,8 @@ public class StatusHistoricoProduto {
             return descricao;
         }
 
-        public static StatusVenda.Status fromDescricao(String descricao) {
-            for (StatusVenda.Status status : StatusVenda.Status.values()) {
+        public static StatusHistorico fromDescricao(String descricao) {
+            for (StatusHistorico status : StatusHistorico.values()) {
                 if (status.getDescricao().equalsIgnoreCase(descricao)) {
                     return status;
                 }
