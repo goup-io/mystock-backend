@@ -75,7 +75,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             throw new RuntimeException(e);
         } catch (Exception e){
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            response.getWriter().write("Token inválido");
+            response.getWriter().write("Token invalido");
             return;
         }
 

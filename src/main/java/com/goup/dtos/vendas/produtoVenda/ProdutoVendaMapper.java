@@ -73,7 +73,7 @@ public class ProdutoVendaMapper {
     public static ProdutoVendaDetalhamentoRes entityToResDetalhamento(ProdutoVenda p){
         // Todos atributos são referentes apenas a uma unidade, exceto Subtotal
         Integer id = p.getId();
-        String codigo = p.getEtp().getProduto().getModelo().getCodigo();
+        String codigo = p.getEtp().getCodigo();
         String descricao = p.getEtp().getProduto().getNome();
         Double precoUnitario = p.getValorUnitario();
         Integer qtd = p.getQuantidade();

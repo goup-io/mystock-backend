@@ -173,7 +173,6 @@ public class CsvController {
         // Write the data of the entities
         for (ModeloRes modelo : modelos) {
             String[] data = {
-                    modelo.codigo(),
                     modelo.nome(),
                     modelo.categoria(),
                     modelo.tipo()
