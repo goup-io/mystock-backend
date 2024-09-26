@@ -1,7 +1,11 @@
 package com.goup.services.produtos;
 
 import com.goup.entities.estoque.ETP;
+import com.goup.entities.estoque.Tamanho;
+import com.goup.entities.estoque.produtos.Cor;
 import com.goup.entities.estoque.produtos.Produto;
+import com.goup.entities.estoque.produtos.modelos.Modelo;
+import com.goup.entities.lojas.Loja;
 import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.produtos.ETPRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -31,18 +35,25 @@ class ETPServiceTest {
 
         Produto produtoSimulado = new Produto();
         ETP etpSimulado = new ETP();
-        etpSimulado.setId(100);  // Configura o ID
-        etpSimulado.setProduto(produtoSimulado);  // Definir o Produto dentro de ETP
+        Modelo modeloSimulado = new Modelo();
+        Tamanho tamanhoSimulado = new Tamanho();
+        Cor corSimulado = new Cor();
+        Loja lojaSimulada = new Loja();
+        etpSimulado.setId(100);
+        etpSimulado.setProduto(produtoSimulado);
+        etpSimulado.setTamanho(tamanhoSimulado);
+        etpSimulado.setLoja(lojaSimulada);
+        produtoSimulado.setCor(corSimulado);
+        produtoSimulado.setModelo(modeloSimulado);
         int id = 100;
         when(etpRepository.findById(id)).thenReturn(Optional.of(etpSimulado));
 
         assertNotNull(etpService.buscarPorId(id));
 
-       /* RegistroNaoEncontradoException registroNaoEncontradoException = assertThrows(RegistroNaoEncontradoException.class, () -> {
+      /* RegistroNaoEncontradoException registroNaoEncontradoException = assertThrows(RegistroNaoEncontradoException.class, () -> {
             etpService.buscarPorId(id);
         });*/
 
-        // Verificar se a mensagem da exceção está correta (opcional)
         // assertEquals("ETP não encontrado", registroNaoEncontradoException.getMessage());
     }
 
