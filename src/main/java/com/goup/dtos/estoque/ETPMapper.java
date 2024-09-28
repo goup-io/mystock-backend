@@ -54,7 +54,7 @@ public class ETPMapper {
         return res;
     }
 
-    public static ETP reqToEntity(String codigo, Tamanho tamanho, Produto produto, Loja loja, ItemPromocional itemPromocional){
+    public static ETP reqToEntity(String codigo, Tamanho tamanho, Produto produto, Loja loja, ItemPromocional itemPromocional, Integer quantidade){
         ETP entidade = new ETP();
         entidade.setCodigo(codigo);
         entidade.setProduto(produto);
@@ -62,6 +62,7 @@ public class ETPMapper {
         entidade.setLoja(loja);
         entidade.setQuantidade(0);
         entidade.setItemPromocional(itemPromocional);
+        entidade.setQuantidade(quantidade == null || quantidade == 0 ? 0 : quantidade);
         return entidade;
     }
 

@@ -65,7 +65,7 @@ public class ETPService {
         }
 
 
-        final ETP savedEtp = repository.save(ETPMapper.reqToEntity(etp.codigo(), tamanho.get(), produto.get(), loja.get(), etp.itemPromocional()));
+        final ETP savedEtp = repository.save(ETPMapper.reqToEntity(etp.codigo(), tamanho.get(), produto.get(), loja.get(), etp.itemPromocional(), 0));
         return ETPMapper.entityToRes(savedEtp);
     }
 

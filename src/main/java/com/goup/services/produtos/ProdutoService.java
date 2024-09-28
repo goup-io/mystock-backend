@@ -64,10 +64,10 @@ public class ProdutoService {
                 throw new RegistroConflitanteException("Produto de mesmo modelo e cor já existente!");
             }
 
-            etpRepository.save(ETPMapper.reqToEntity(produto.codigo(), tamanho.get(), produtoEncontrado, loja.get(), produto.itemPromocional()));
+            etpRepository.save(ETPMapper.reqToEntity(produto.codigo(), tamanho.get(), produtoEncontrado, loja.get(), produto.itemPromocional(), produto.quantidade()));
         }
         final Produto produtoSalvo = this.repository.save(ProdutoMapper.reqToEntity(produto, cor.get(), modelo.get()));
-        etpRepository.save(ETPMapper.reqToEntity(produto.codigo(), tamanho.get(), produtoSalvo, loja.get(), produto.itemPromocional()));
+        etpRepository.save(ETPMapper.reqToEntity(produto.codigo(), tamanho.get(), produtoSalvo, loja.get(), produto.itemPromocional(), produto.quantidade()));
         return ProdutoMapper.entityToRes(produtoSalvo);
     }
 
