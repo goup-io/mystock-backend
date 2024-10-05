@@ -53,6 +53,11 @@ public class ProdutoService {
             throw new RegistroNaoEncontradoException("Tamanho não encontrado!");
         }
 
+        boolean isCodigoDuplicado = etpRepository.existsByCodigoAndLoja_Id(produto.codigo(), produto.idLoja());
+        if(isCodigoDuplicado){
+            throw new RegistroConflitanteException("Código de produto já existente!");
+        }
+
         // Conjunto é a junção de MODELO + COR
         boolean conjuntoExiste = this.repository.existsByCorAndModelo(cor.get(), modelo.get());
         if(conjuntoExiste){
@@ -61,7 +66,7 @@ public class ProdutoService {
             Optional<ETP> etpSearch = etpRepository.findByTamanhoAndLojaAndProduto(tamanho.get(), loja.get(), produtoEncontrado);
 
             if (etpSearch.isPresent()){
-                throw new RegistroConflitanteException("Produto de mesmo modelo e cor já existente!");
+                throw new RegistroConflitanteException("Produto de mesmo modelo, cor e tamanho já existente!");
             }
 
             etpRepository.save(ETPMapper.reqToEntity(produto.codigo(), tamanho.get(), produtoEncontrado, loja.get(), produto.itemPromocional(), produto.quantidade()));
