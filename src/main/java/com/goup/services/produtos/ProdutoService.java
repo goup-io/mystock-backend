@@ -55,6 +55,10 @@ public class ProdutoService {
 
         // Conjunto é a junção de MODELO + COR
         boolean conjuntoExiste = this.repository.existsByCorAndModelo(cor.get(), modelo.get());
+        boolean codigoExiste = etpRepository.existsByCodigoAndLoja_Id(produto.codigo(), produto.idLoja());
+
+        if(codigoExiste) throw new RegistroConflitanteException("Código já usado em outro produto");
+
         if(conjuntoExiste){
             List<Produto> produtos = repository.findAllByCorAndModelo(cor.get(), modelo.get());
             Produto produtoEncontrado = produtos.get(0);
@@ -66,6 +70,8 @@ public class ProdutoService {
 
             etpRepository.save(ETPMapper.reqToEntity(produto.codigo(), tamanho.get(), produtoEncontrado, loja.get(), produto.itemPromocional()));
         }
+
+
         final Produto produtoSalvo = this.repository.save(ProdutoMapper.reqToEntity(produto, cor.get(), modelo.get()));
         etpRepository.save(ETPMapper.reqToEntity(produto.codigo(), tamanho.get(), produtoSalvo, loja.get(), produto.itemPromocional()));
         return ProdutoMapper.entityToRes(produtoSalvo);
