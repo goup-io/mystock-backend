@@ -184,8 +184,11 @@ public class ETPService {
             etp.get().setQuantidade(atualizado.quantidade());
         }
 
-        produtoRepository.save(produto.get()); // Atualiza e salva produto;
+        if (atualizado.codigo() != null) {
+            etp.get().setCodigo(atualizado.codigo());
+        }
 
+        produtoRepository.save(produto.get()); // Atualiza e salva produto;
 
         etp.get().setItemPromocional(atualizado.itemPromocional());
         repository.save(etp.get()); // Atualiza e salva ETP

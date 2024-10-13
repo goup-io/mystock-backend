@@ -10,5 +10,6 @@ public record ETPReqEdit(
         @NotNull @DecimalMin("0.1") Double valorCusto,
         @NotNull @DecimalMin("0.1") Double valorRevenda,
         @NotNull ItemPromocional itemPromocional,
-        Integer quantidade) {
+        Integer quantidade,
+        @NotNull String codigo) {
 }
