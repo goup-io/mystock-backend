@@ -81,4 +81,20 @@ public class ETPMapper {
         ETPTableRes respostaDto = new ETPTableRes(id, codigo, nome, modelo, tamanho, cor, preco, loja, itemPromocional, quantidade, idProduto);
         return respostaDto;
     }
+
+    public static ETPBuscaRes entityToBuscaFiltroRes(ETP etp){
+        Integer id = etp.getId();
+        String codigo = etp.getCodigo();
+        String produto = etp.getProduto().getNome();
+        String modelo = etp.getProduto().getModelo().getNome();
+        Integer tamanho = etp.getTamanho().getNumero();
+        String cor = etp.getProduto().getCor().getNome();
+        Double valorCusto = etp.getProduto().getValorCusto();
+        Double valorRevenda = etp.getProduto().getValorRevenda();
+        String loja = etp.getLoja().getNome();
+        ItemPromocional itemPromocional = etp.getItemPromocional();
+        Integer quantidade = etp.getQuantidade();
+        Integer idProduto = etp.getProduto().getId();
+        return new ETPBuscaRes(id, codigo, produto, modelo, tamanho, cor, valorCusto, valorRevenda, loja, itemPromocional, quantidade, idProduto);
+    }
 }
