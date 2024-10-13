@@ -14,7 +14,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity @Getter @Setter
 @Table(uniqueConstraints = {
         @UniqueConstraint( columnNames = {"tamanho", "produto", "loja"}),
-        @UniqueConstraint( columnNames = {"codigo", "loja_id"} )
+        @UniqueConstraint( columnNames = {"codigo", "loja"} )
 })
 public class ETP {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,7 @@
 package com.goup.repositories.produtos;
 
 import com.goup.dtos.dashboards.dashboardGeral.FluxoEstoqueRes;
+import com.goup.dtos.estoque.ETPBuscaRes;
 import com.goup.entities.estoque.ETP;
 import com.goup.entities.estoque.Tamanho;
 import com.goup.entities.estoque.produtos.Produto;
@@ -35,6 +36,19 @@ public interface ETPRepository extends JpaRepository<ETP, Integer>{
         @Param("precoMaximo") Double precoMaximo,
         @Param("id_loja") Integer id_loja,
         @Param("pesquisa") String pesquisa
+    );
+
+    @Query(
+            "SELECT etp " +
+                    "FROM ETP etp " +
+                    "JOIN etp.produto produto " +
+                    "WHERE (:pesquisa IS NULL OR lower(produto.nome) LIKE lower(concat('%',:pesquisa, '%')) OR lower(etp.codigo) LIKE lower(concat('%', :pesquisa, '%')))" +
+                    "AND (:id_loja IS NULL OR etp.loja.id = :id_loja) " +
+                    "ORDER BY etp.codigo ASC "
+    )
+    List<ETP> findAllByBusca(
+            @Param("id_loja") Integer id_loja,
+            @Param("pesquisa") String pesquisa
     );
 
     List<ETP> findAllByLoja(Loja loja);

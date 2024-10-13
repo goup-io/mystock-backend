@@ -69,6 +69,16 @@ public class ETPController {
         return ResponseEntity.status(200).body(etps);
     }
 
+    @GetMapping("/buscar/filtro")
+    public ResponseEntity<ETPBuscaRes> buscarPorFiltro(
+            @RequestParam(required = false) Integer id_loja,
+            @RequestParam(required = false) String pesquisa
+    ){
+        ETPBuscaRes etps = service.buscarPorFiltro(id_loja, pesquisa);
+        return etps != null ? ResponseEntity.status(200).body(etps) : ResponseEntity.status(204).build();
+    }
+
+
     @GetMapping("/filtro/loja/{id_loja}")
     public ResponseEntity<List<ETPTableRes>> buscarProdutosLojaDiferente(@PathVariable Integer id_loja){
         List<ETPTableRes> etps = service.buscarProdutosLojaDiferente(id_loja);

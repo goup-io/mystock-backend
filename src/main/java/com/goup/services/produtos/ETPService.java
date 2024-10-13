@@ -214,4 +214,12 @@ public class ETPService {
         List<ETP> etps = repository.findAllByLoja_IdNot(idLoja);
         return ETPMapper.toTableResponse(etps);
     }
+
+    public ETPBuscaRes buscarPorFiltro(@Param("id_loja") Integer id_loja, @Param("pesquisa") String pesquisa) {
+        List<ETP> etps = repository.findAllByBusca(id_loja, pesquisa);
+        if(etps.isEmpty()){
+            return null;
+        }
+        return ETPMapper.entityToBuscaFiltroRes(etps.get(0));
+    }
 }

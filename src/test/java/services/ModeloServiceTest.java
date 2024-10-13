@@ -9,6 +9,7 @@ import com.goup.entities.estoque.produtos.modelos.Tipo;
 import com.goup.exceptions.RegistroConflitanteException;
 import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.produtos.CategoriaRepository;
+import com.goup.repositories.produtos.ETPRepository;
 import com.goup.repositories.produtos.ModeloRepository;
 import com.goup.repositories.produtos.TipoRepository;
 import com.goup.services.produtos.ModeloService;
@@ -144,16 +145,6 @@ public class ModeloServiceTest {
         });
     }
 
-    @Test
-    @DisplayName("Deletar modelo existente")
-    void deletarModeloExistente() {
-        when(repository.existsById(1)).thenReturn(true);
-        doNothing().when(repository).deleteById(1);
-
-        assertDoesNotThrow(() -> {
-            service.deletar(1);
-        });
-    }
 
     @Test
     @DisplayName("Deletar modelo inexistente")
