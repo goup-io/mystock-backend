@@ -7,4 +7,4 @@ FROM openjdk:17.0.1-jdk
 WORKDIR /app
 COPY --from=build /builder/target/*.jar /app/app.jar
 EXPOSE 8080
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.datasource.url=jdbc:mysql://${ENDPOINT_MYSQL}:3306/myStock", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]
