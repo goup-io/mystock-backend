@@ -65,7 +65,7 @@ public class ETPService {
         }
 
 
-        final ETP savedEtp = repository.save(ETPMapper.reqToEntity(etp.codigo(), tamanho.get(), produto.get(), loja.get(), etp.itemPromocional()));
+        final ETP savedEtp = repository.save(ETPMapper.reqToEntity(etp.codigo(), tamanho.get(), produto.get(), loja.get(), etp.itemPromocional(), 0));
         return ETPMapper.entityToRes(savedEtp);
     }
 
@@ -179,8 +179,16 @@ public class ETPService {
         produto.get().setValorRevenda(atualizado.valorRevenda());
         produto.get().setValorCusto(atualizado.valorCusto());
         produto.get().setNome(atualizado.nome());
-        produtoRepository.save(produto.get()); // Atualiza e salva produto;
 
+        if (atualizado.quantidade() != null) {
+            etp.get().setQuantidade(atualizado.quantidade());
+        }
+
+        if (atualizado.codigo() != null) {
+            etp.get().setCodigo(atualizado.codigo());
+        }
+
+        produtoRepository.save(produto.get()); // Atualiza e salva produto;
 
         etp.get().setItemPromocional(atualizado.itemPromocional());
         repository.save(etp.get()); // Atualiza e salva ETP
@@ -208,5 +216,13 @@ public class ETPService {
     public List<ETPTableRes> buscarProdutosLojaDiferente(Integer idLoja) {
         List<ETP> etps = repository.findAllByLoja_IdNot(idLoja);
         return ETPMapper.toTableResponse(etps);
+    }
+
+    public ETPBuscaRes buscarPorFiltro(@Param("id_loja") Integer id_loja, @Param("pesquisa") String pesquisa) {
+        List<ETP> etps = repository.findAllByBusca(id_loja, pesquisa);
+        if(etps.isEmpty()){
+            return null;
+        }
+        return ETPMapper.entityToBuscaFiltroRes(etps.get(0));
     }
 }

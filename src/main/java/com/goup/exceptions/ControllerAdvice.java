@@ -4,6 +4,7 @@ import com.goup.exceptions.produto.modelo.ModeloComETPException;
 import com.goup.exceptions.produto.modelo.ModeloComProdutoException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -110,6 +111,11 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
 
         ErrorResponse response = new ErrorResponse(timestamp, status, error, message, path, errors);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
+        return new ResponseEntity<>("Conflito de dados: " + ex.getMostSpecificCause().getMessage(), HttpStatus.CONFLICT);
     }
 
     //produtos
