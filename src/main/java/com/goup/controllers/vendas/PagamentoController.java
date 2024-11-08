@@ -1,6 +1,5 @@
 package com.goup.controllers.vendas;
 
-import com.azure.core.annotation.Get;
 import com.goup.dtos.vendas.pagamento.PagamentoFluxoRes;
 import com.goup.dtos.vendas.pagamento.PagamentoReq;
 import com.goup.dtos.vendas.pagamento.PagamentoRes;
