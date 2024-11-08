@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Venda {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotNull @PastOrPresent @DateTimeFormat(pattern = "dd.MM.yyyy hh:mm:ss")
+    @NotNull @PastOrPresent
     private LocalDateTime dataHora;
     private Double desconto;
     private Double valorTotal;

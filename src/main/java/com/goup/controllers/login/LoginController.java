@@ -107,7 +107,7 @@ public class LoginController {
             Authentication userAuthToken = new UsernamePasswordAuthenticationToken(loginDTO.user(), loginDTO.senha(), usuario.getAuthorities());
             Authentication authenticate = this.authenticationManager.authenticate(userAuthToken);
             SecurityContextHolder.getContext().setAuthentication(authenticate);
-            return ResponseEntity.status(200).body(new LoginResponseDTO(token, userLogged.getId(), "usuario", UserRole.valueOf(userLogged.getCargo().getNome().toUpperCase()).toString(), userLogged.getLoja().getId()));
+            return ResponseEntity.status(200).body(new LoginResponseDTO(token, userLogged.getId(), "usuario", UserRole.valueOf(userLogged.getCargo().getNome().toUpperCase()).toString(), userLogged.getLoja().getId(), userLogged.getLoja().getNome()));
         } else {
             usuario = loginService.buscarLogin(loginDTO.user());
             if (!loginService.validarLogin(usuario, loginDTO.senha())){
@@ -118,7 +118,7 @@ public class LoginController {
             Authentication userAuthToken = new UsernamePasswordAuthenticationToken(loginDTO.user(), loginDTO.senha(), usuario.getAuthorities());
             Authentication authenticate = this.authenticationManager.authenticate(userAuthToken);
             SecurityContextHolder.getContext().setAuthentication(authenticate);
-            return ResponseEntity.status(200).body(new LojaLoginResponseDTO(token, lojaLogged.getId(), ((LojaLogin) usuario).getRole(), "loja"));
+            return ResponseEntity.status(200).body(new LojaLoginResponseDTO(token, lojaLogged.getId(), lojaLogged.getNome(), ((LojaLogin) usuario).getRole(), "loja"));
         }
     }
 

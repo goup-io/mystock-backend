@@ -1,5 +1,6 @@
 package com.goup.dtos.vendas.venda;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.goup.dtos.vendas.produtoVenda.ProdutoVendaDetalhamentoRes;
 import com.goup.dtos.vendas.produtoVenda.ProdutoVendaRes;
 import com.goup.entities.vendas.TipoVenda;
@@ -14,7 +15,7 @@ import java.util.List;
 public record VendaDetalhamentoRes(
     Integer id,
     LocalDate data,
-    LocalTime hora,
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss") LocalTime hora,
     String nomeVendedor,
     String tipoVenda,
     Double descontoTipoVenda,
