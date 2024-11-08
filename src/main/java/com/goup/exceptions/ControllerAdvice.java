@@ -27,13 +27,12 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
         public String path;
         public Map<String, String> errors;
 
-        public ErrorResponse(LocalDateTime timestamp, int status, String error, String message, String path, Map<String, String> errors) {
+        public ErrorResponse(LocalDateTime timestamp, int status, String error, String message, String path) {
             this.timestamp = timestamp;
             this.status = status;
             this.error = error;
             this.message = message;
             this.path = path;
-            this.errors = errors;
         }
     }
 
@@ -42,13 +41,10 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
         LocalDateTime timestamp = LocalDateTime.now();
         int status = HttpStatus.NOT_FOUND.value();
         String error = HttpStatus.NOT_FOUND.toString();
-        String message = "Registro não encontrado";
+        String message = ex.getMessage();
         String path = request.getDescription(false);
-        Map<String, String> errors = new HashMap<>();
-        String nomeCampo = Arrays.stream(ex.getMessage().split(" ")).toList().get(0).toLowerCase();
-        errors.put(nomeCampo, ex.getMessage());
 
-        ErrorResponse response = new ErrorResponse(timestamp, status, error, message, path, errors);
+        ErrorResponse response = new ErrorResponse(timestamp, status, error, message, path);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -57,13 +53,10 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
         LocalDateTime timestamp = LocalDateTime.now();
         int status = HttpStatus.CONFLICT.value();
         String error = HttpStatus.CONFLICT.toString();
-        String message = "Registro conflitante";
+        String message = ex.getMessage();
         String path = request.getDescription(false);
-        Map<String, String> errors = new HashMap<>();
-        String nomeCampo = Arrays.stream(ex.getMessage().split(" ")).toList().get(0).toLowerCase();
-        errors.put(nomeCampo, ex.getMessage());
 
-        ErrorResponse response = new ErrorResponse(timestamp, status, error, message, path, errors);
+        ErrorResponse response = new ErrorResponse(timestamp, status, error, message, path);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
@@ -72,14 +65,10 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
         LocalDateTime timestamp = LocalDateTime.now();
         int status = HttpStatus.BAD_REQUEST.value();
         String error = HttpStatus.BAD_REQUEST.name();
-        String message = "Violação de constraint";
+        String message = ex.getMessage();
         String path = request.getDescription(false);
-        Map<String, String> errors = new HashMap<>();
-        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
-            errors.put(violation.getPropertyPath().toString(), violation.getMessage());
-        }
 
-        ErrorResponse response = new ErrorResponse(timestamp, status, error, message, path, errors);
+        ErrorResponse response = new ErrorResponse(timestamp, status, error, message, path);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -90,11 +79,8 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
         String error = HttpStatus.UNAUTHORIZED.toString();
         String message = "Credenciais inválidas!";
         String path = request.getDescription(false);
-        Map<String, String> errors = new HashMap<>();
-        String nomeCampo = Arrays.stream(ex.getMessage().split(" ")).toList().get(0).toLowerCase();
-        errors.put(nomeCampo, ex.getMessage());
 
-        ErrorResponse response = new ErrorResponse(timestamp, status, error, message, path, errors);
+        ErrorResponse response = new ErrorResponse(timestamp, status, error, message, path);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
@@ -105,11 +91,9 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
         String error = HttpStatus.BAD_REQUEST.toString();
         String message = ex.getMessage();
         String path = request.getDescription(false);
-        Map<String, String> errors = new HashMap<>();
-        String nomeCampo = Arrays.stream(ex.getMessage().split(" ")).toList().get(0).toLowerCase();
-        errors.put(nomeCampo, ex.getMessage());
 
-        ErrorResponse response = new ErrorResponse(timestamp, status, error, message, path, errors);
+
+        ErrorResponse response = new ErrorResponse(timestamp, status, error, message, path);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 

@@ -2,7 +2,9 @@ package com.goup.repositories.vendas;
 import com.goup.entities.vendas.StatusVenda;
 import com.goup.entities.vendas.TipoVenda;
 import com.goup.entities.vendas.Venda;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -85,7 +87,5 @@ public interface VendaRepository extends JpaRepository<Venda, Integer> {
             "WHERE v.dataHora >= :startDate " +
             "AND v.statusVenda.status = 'FINALIZADA'")
     Double sumValorVendasPrecoRevenda(@Param("startDate") LocalDateTime startDate);
-
-
-
+    
 }
