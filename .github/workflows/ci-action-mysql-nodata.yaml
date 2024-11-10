@@ -1,4 +1,4 @@
-name: CI Mysql Without Data.sql
+name: CI Mysql with Data.sql
 
 on:
   push:
