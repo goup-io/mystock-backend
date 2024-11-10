@@ -3,7 +3,7 @@ name: Docker Image CI
 on:
   push:
     branches:
-      - main  # Nome da branch que irá disparar o build (alterar se necessário)
+      - main
 
 jobs:
   build-and-push:
