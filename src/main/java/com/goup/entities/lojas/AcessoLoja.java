@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 public class AcessoLoja {
     @GeneratedValue(strategy = GenerationType.IDENTITY) @Id
     private Integer id;
-    @Column @NotNull
+    @Column(unique = true) @NotNull
     private TipoLogin tipo;
     @Column @NotNull
     private String descricao;

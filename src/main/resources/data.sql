@@ -791,57 +791,227 @@ INSERT IGNORE INTO tipo_pagamento (metodo) VALUES
                                         ('PIX'),
                                         ('DINHEIRO');
 
-INSERT IGNORE INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora) VALUES
-                                                                                                     (0.0, 2, 1, 1, 150.00, '2024-10-01 09:00:00'),  -- FINALIZADA
-                                                                                                     (0.05, 1, 1, 2, 200.00, '2024-10-01 10:15:00'),  -- PENDENTE
-                                                                                                     (0.0, 2, 2, 3, 300.00, '2024-10-01 11:30:00'),  -- FINALIZADA
-                                                                                                     (0.10, 3, 1, 4, 120.00, '2024-10-01 12:45:00'),  -- CANCELADA
-                                                                                                     (0.0, 2, 2, 5, 80.00, '2024-10-01 13:00:00'),   -- FINALIZADA
-                                                                                                     (0.05, 1, 3, 6, 220.00, '2024-10-01 14:15:00'),  -- PENDENTE
-                                                                                                     (0.15, 3, 2, 7, 180.00, '2024-10-01 15:30:00'),  -- FINALIZADA
-                                                                                                     (0.0, 2, 1, 8, 350.00, '2024-10-01 16:00:00'),   -- FINALIZADA
-                                                                                                     (0.20, 3, 3, 9, 400.00, '2024-10-01 17:00:00'),  -- CANCELADA
-                                                                                                     (0.0, 2, 1, 10, 500.00, '2024-10-01 18:00:00'),  -- FINALIZADA
-                                                                                                     (0.10, 1, 1, 11, 85.00, '2024-10-02 09:15:00'),   -- FINALIZADA
-                                                                                                     (0.0, 2, 1, 12, 130.00, '2024-10-02 10:30:00'),  -- PENDENTE
-                                                                                                     (0.05, 2, 3, 13, 90.00, '2024-10-02 11:45:00'),   -- FINALIZADA
-                                                                                                     (0.0, 1, 2, 14, 186.50, '2024-10-02 13:00:00'),  -- FINALIZADA
-                                                                                                     (0.15, 3, 3, 15, 250.00, '2024-10-02 14:15:00'),  -- CANCELADA
-                                                                                                     (0.0, 2, 2, 1, 300.00, '2024-10-02 15:30:00'),   -- FINALIZADA
-                                                                                                     (0.05, 1, 1, 2, 400.00, '2024-10-02 16:45:00'),  -- PENDENTE
-                                                                                                     (0.10, 3, 1, 3, 200.00, '2024-10-02 18:00:00'),  -- FINALIZADA
-                                                                                                     (0.0, 2, 2, 4, 220.00, '2024-10-03 09:00:00'),   -- FINALIZADA
-                                                                                                     (0.20, 3, 3, 5, 160.00, '2024-10-03 10:15:00'),  -- CANCELADA
-                                                                                                     (0.0, 1, 1, 6, 90.00, '2024-10-03 11:30:00'),    -- FINALIZADA
-                                                                                                     (0.05, 2, 2, 7, 130.00, '2024-10-03 12:45:00'),  -- FINALIZADA
-                                                                                                     (0.0, 1, 3, 8, 110.00, '2024-10-03 13:00:00'),   -- PENDENTE
-                                                                                                     (0.15, 3, 1, 9, 75.00, '2024-10-03 14:15:00'),   -- FINALIZADA
-                                                                                                     (0.0, 2, 1, 10, 140.00, '2024-10-03 15:30:00'),   -- FINALIZADA
-                                                                                                     (0.10, 1, 2, 11, 200.00, '2024-10-03 16:00:00'),  -- FINALIZADA
-                                                                                                     (0.0, 2, 3, 12, 190.00, '2024-10-03 17:00:00'),   -- CANCELADA
-                                                                                                     (0.05, 1, 1, 13, 300.00, '2024-10-03 18:00:00'),  -- FINALIZADA
-                                                                                                     (0.0, 3, 2, 14, 320.00, '2024-10-04 09:00:00'),   -- FINALIZADA
-                                                                                                     (0.20, 1, 3, 15, 150.00, '2024-10-04 10:15:00'),  -- PENDENTE
-                                                                                                     (0.0, 1, 1, 1, 270.00, '2024-10-04 11:30:00'),   -- FINALIZADA
-                                                                                                     (0.05, 3, 2, 1, 200.00, '2024-10-04 12:45:00'),   -- FINALIZADA
-                                                                                                     (0.0, 1, 3, 1, 220.00, '2024-10-04 13:00:00'),   -- FINALIZADA
-                                                                                                     (0.15, 2, 1, 1, 190.00, '2024-10-04 14:15:00'),  -- CANCELADA
-                                                                                                     (0.0, 2, 2, 1, 80.00, '2024-10-04 15:30:00'),    -- FINALIZADA
-                                                                                                     (0.10, 1, 3, 1, 150.00, '2024-10-04 16:45:00'),  -- FINALIZADA
-                                                                                                     (0.0, 2, 1, 1, 300.00, '2024-10-04 17:00:00'),   -- FINALIZADA
-                                                                                                     (0.20, 3, 2, 10, 130.00, '2024-10-04 18:00:00'),  -- PENDENTE
-                                                                                                     (0.0, 1, 1, 2, 170.00, '2024-10-05 09:00:00'),   -- FINALIZADA
-                                                                                                     (0.05, 2, 3, 3, 140.00, '2024-10-05 10:15:00'),  -- FINALIZADA
-                                                                                                     (0.0, 1, 1, 4, 90.00, '2024-10-05 11:30:00'),    -- CANCELADA
-                                                                                                     (0.10, 2, 2, 10, 150.00, '2024-10-05 12:45:00'),  -- FINALIZADA
-                                                                                                     (0.0, 1, 3, 1, 130.00, '2024-10-05 13:00:00'),   -- FINALIZADA
-                                                                                                     (0.15, 2, 1, 2, 80.00, '2024-10-05 14:15:00'),   -- FINALIZADA
-                                                                                                     (0.0, 2, 3, 8, 220.00, '2024-10-05 15:30:00'),   -- CANCELADA
-                                                                                                     (0.20, 1, 2, 1, 100.00, '2024-10-05 16:00:00'),  -- FINALIZADA
-                                                                                                     (0.0, 3, 1, 2, 260.00, '2024-10-05 17:00:00'),   -- FINALIZADA
-                                                                                                     (0.10, 2, 1, 3, 110.00, '2024-10-05 18:00:00'),  -- FINALIZADA
-                                                                                                     (0.0, 1, 2, 6, 220.00, '2024-10-06 09:00:00'),   -- FINALIZADA
-                                                                                                     (0.15, 3, 3, 1, 190.00, '2024-10-06 10:15:00');   -- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 1, 1, 150.00, '2024-10-01 09:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 09:00:00' AND usuario_id = 1 AND tipo_venda_id = 1);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 1, 1, 2, 200.00, '2024-10-01 10:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 10:15:00' AND usuario_id = 2 AND tipo_venda_id = 1);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 2, 3, 300.00, '2024-10-01 11:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 11:30:00' AND usuario_id = 3 AND tipo_venda_id = 2);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.10, 3, 1, 4, 120.00, '2024-10-01 12:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 12:45:00' AND usuario_id = 4 AND tipo_venda_id = 1);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 2, 5, 80.00, '2024-10-01 13:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 13:00:00' AND usuario_id = 5 AND tipo_venda_id = 2);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 1, 3, 6, 220.00, '2024-10-01 14:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 14:15:00' AND usuario_id = 6 AND tipo_venda_id = 3);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.15, 3, 2, 7, 180.00, '2024-10-01 15:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 15:30:00' AND usuario_id = 7 AND tipo_venda_id = 2);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 1, 8, 350.00, '2024-10-01 16:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 16:00:00' AND usuario_id = 8 AND tipo_venda_id = 1);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.20, 3, 3, 9, 400.00, '2024-10-01 17:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 17:00:00' AND usuario_id = 9 AND tipo_venda_id = 3);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 1, 10, 500.00, '2024-10-01 18:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 18:00:00' AND usuario_id = 10 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.10, 1, 1, 11, 85.00, '2024-10-02 09:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 09:15:00' AND usuario_id = 11 AND tipo_venda_id = 1);
+
+-- PENDENTE
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 1, 12, 130.00, '2024-10-02 10:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 10:30:00' AND usuario_id = 12 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 2, 3, 13, 90.00, '2024-10-02 11:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 11:45:00' AND usuario_id = 13 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 1, 2, 14, 186.50, '2024-10-02 13:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 13:00:00' AND usuario_id = 14 AND tipo_venda_id = 2);
+
+-- CANCELADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.15, 3, 3, 15, 250.00, '2024-10-02 14:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 14:15:00' AND usuario_id = 15 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 2, 1, 300.00, '2024-10-02 15:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 15:30:00' AND usuario_id = 1 AND tipo_venda_id = 2);
+
+-- PENDENTE
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 1, 1, 2, 400.00, '2024-10-02 16:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 16:45:00' AND usuario_id = 2 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.10, 3, 1, 3, 200.00, '2024-10-02 18:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 18:00:00' AND usuario_id = 3 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 2, 4, 220.00, '2024-10-03 09:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 09:00:00' AND usuario_id = 4 AND tipo_venda_id = 2);
+
+-- CANCELADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.20, 3, 3, 5, 160.00, '2024-10-03 10:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 10:15:00' AND usuario_id = 5 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 1, 1, 6, 90.00, '2024-10-03 11:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 11:30:00' AND usuario_id = 6 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 2, 2, 7, 130.00, '2024-10-03 12:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 12:45:00' AND usuario_id = 7 AND tipo_venda_id = 2);
+
+-- PENDENTE
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 1, 3, 8, 110.00, '2024-10-03 13:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 13:00:00' AND usuario_id = 8 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.15, 3, 1, 9, 75.00, '2024-10-03 14:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 14:15:00' AND usuario_id = 9 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 1, 10, 140.00, '2024-10-03 15:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 15:30:00' AND usuario_id = 10 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.10, 1, 2, 11, 200.00, '2024-10-03 16:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 16:00:00' AND usuario_id = 11 AND tipo_venda_id = 2);
+
+-- CANCELADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 3, 12, 190.00, '2024-10-03 17:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 17:00:00' AND usuario_id = 12 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 1, 1, 13, 300.00, '2024-10-03 18:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 18:00:00' AND usuario_id = 13 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 3, 2, 14, 320.00, '2024-10-04 09:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 09:00:00' AND usuario_id = 14 AND tipo_venda_id = 2);
+
+-- PENDENTE
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.20, 1, 3, 15, 150.00, '2024-10-04 10:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 10:15:00' AND usuario_id = 15 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 1, 1, 1, 270.00, '2024-10-04 11:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 11:30:00' AND usuario_id = 1 AND tipo_venda_id = 1);
+
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 3, 2, 1, 200.00, '2024-10-04 12:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 12:45:00' AND usuario_id = 1 AND tipo_venda_id = 2);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 1, 3, 1, 220.00, '2024-10-04 13:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 13:00:00' AND usuario_id = 1 AND tipo_venda_id = 3);
+
+-- CANCELADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.15, 2, 1, 1, 190.00, '2024-10-04 14:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 14:15:00' AND usuario_id = 1 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 2, 1, 80.00, '2024-10-04 15:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 15:30:00' AND usuario_id = 1 AND tipo_venda_id = 2);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.10, 1, 3, 1, 150.00, '2024-10-04 16:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 16:45:00' AND usuario_id = 1 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 1, 1, 300.00, '2024-10-04 17:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 17:00:00' AND usuario_id = 1 AND tipo_venda_id = 1);
+
+-- PENDENTE
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.20, 3, 2, 10, 130.00, '2024-10-04 18:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 18:00:00' AND usuario_id = 10 AND tipo_venda_id = 2);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 1, 1, 2, 170.00, '2024-10-05 09:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 09:00:00' AND usuario_id = 2 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 2, 3, 3, 140.00, '2024-10-05 10:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 10:15:00' AND usuario_id = 3 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.10, 2, 2, 10, 150.00, '2024-10-05 12:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 12:45:00' AND usuario_id = 10 AND tipo_venda_id = 2);
+
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.15, 2, 1, 2, 80.00, '2024-10-05 14:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 14:15:00' AND usuario_id = 2 AND tipo_venda_id = 1);
+
+-- CANCELADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 3, 8, 220.00, '2024-10-05 15:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 15:30:00' AND usuario_id = 8 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 3, 1, 2, 260.00, '2024-10-05 17:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 17:00:00' AND usuario_id = 2 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.10, 2, 1, 3, 110.00, '2024-10-05 18:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 18:00:00' AND usuario_id = 3 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 1, 2, 6, 220.00, '2024-10-06 09:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-06 09:00:00' AND usuario_id = 6 AND tipo_venda_id = 2);
 
 -- Tabela produto_venda associada às vendas
 INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id) VALUES

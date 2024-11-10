@@ -9,7 +9,7 @@ import lombok.Setter;
 public class Cargo {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column @NotBlank
+    @Column(unique = true) @NotBlank
     private String nome;
     @Column
     private String descricao;

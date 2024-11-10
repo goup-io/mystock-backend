@@ -12,7 +12,7 @@ import lombok.Setter;
 public class StatusHistoricoProduto {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Enumerated(value = EnumType.STRING)
+    @Column(unique = true) @Enumerated(value = EnumType.STRING)
     private StatusHistorico status;
 
     @Getter
