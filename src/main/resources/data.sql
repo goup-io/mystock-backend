@@ -836,9 +836,6 @@ INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_t
                                                                                                      (0.10, 2, 2, 10, 150.00, '2024-10-05 12:45:00'),  -- FINALIZADA
                                                                                                      (0.0, 1, 3, 1, 130.00, '2024-10-05 13:00:00'),   -- FINALIZADA
                                                                                                      (0.15, 2, 1, 2, 80.00, '2024-10-05 14:15:00'),   -- FINALIZADA
-                                                                                                     (0.0, 2, 3, 8, 220.00, '2024-10-05 15:30:00'),   -- CANCELADA
-                                                                                                     (0.20, 1, 2, 1, 100.00, '2024-10-05 16:00:00'),  -- FINALIZADA
-                                                                                                     (0.0, 3, 1, 2, 260.00, '2024-10-05 17:00:00'),   -- FINALIZADA
                                                                                                      (0.10, 2, 1, 3, 110.00, '2024-10-05 18:00:00'),  -- FINALIZADA
                                                                                                      (0.0, 1, 2, 6, 220.00, '2024-10-06 09:00:00'),   -- FINALIZADA
                                                                                                      (0.15, 3, 3, 1, 190.00, '2024-10-06 10:15:00');   -- FINALIZADA
@@ -964,7 +961,12 @@ INSERT INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor
                                                                                                          (0.0, 1, 0, 4, 100.00, 39),   -- Produto 1 da Venda 39
 
                                                                                                          -- Produtos da Venda 40
-                                                                                                         (0.10, 2, 1, 5, 90.00, 40);   -- Produto 1 da Venda 40
+                                                                                                         (0.10, 2, 1, 5, 90.00, 40),   -- Produto 1 da Venda 40
+
+                                                                                                        -- Produtos da Venda 40
+                                                                                                        (0.10, 2, 1, 5, 90.00, 41),
+                                                                                                        -- Produtos da Venda 40
+                                                                                                        (0.10, 2, 1, 5, 150.00, 42);
 
 INSERT INTO historico_produto (produto_venda_id, status_historico_produto_id, data_hora) VALUES
                                                                                              (1, 1, '2024-10-01 10:00:00'),  -- VENDIDO
