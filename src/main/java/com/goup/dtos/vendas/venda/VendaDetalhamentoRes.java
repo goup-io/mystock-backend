@@ -14,8 +14,8 @@ import java.util.List;
 
 public record VendaDetalhamentoRes(
     Integer id,
-    LocalDate data,
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss") LocalTime hora,
+    @JsonFormat(pattern = "dd/MM/yyyy") LocalDate data,
+    @JsonFormat(pattern = "HH:mm:ss") LocalTime hora,
     String nomeVendedor,
     String tipoVenda,
     Double descontoTipoVenda,
