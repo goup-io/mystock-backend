@@ -1,5 +1,6 @@
 package com.goup.dtos.vendas.produtoVenda;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.goup.dtos.estoque.ETPTableRes;
 import com.goup.dtos.vendas.venda.VendaRes;
 import com.goup.entities.historicos.StatusHistoricoProduto;
@@ -28,7 +29,7 @@ public class ProdutoVendaRes{
         @Getter @Setter
         public static class HistoricoProdutoListagem{
             private Integer id;
-            private LocalDateTime dataHora;
+            private @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss") LocalDateTime dataHora;
             private StatusHistoricoProduto statusHistoricoProduto;
         }
 
