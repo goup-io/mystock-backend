@@ -1,23 +1,23 @@
-INSERT INTO loja (numero, cep, cnpj, complemento, nome) VALUES
+INSERT IGNORE INTO loja (numero, cep, cnpj, complemento, nome) VALUES
                                                             (101, '01000-000', '12345678000190', 'Loja A', 'Pérola Calçados'),
                                                             (102, '02000-000', '23456789000101', 'Sala 202', 'Calçados Bonitos'),
                                                             (103, '03000-000', '34567890000112', '', 'Shopping Calçados'),
                                                             (104, '04000-000', '45678901000123', 'Shopping Center', 'Loja dos Tênis');
 
-INSERT INTO configuracao_loja (limite_estoque_alerta, loja_id)
+INSERT IGNORE INTO configuracao_loja (limite_estoque_alerta, loja_id)
 VALUES
     (20, 1),  -- Configuração para a loja 1
     (25, 2),  -- Configuração para a loja 2
     (50, 3),  -- Configuração para a loja 3
     (10, 4);  -- Configuração para a loja 4
 
-INSERT INTO cargo (descricao, nome)
+INSERT IGNORE INTO cargo (descricao, nome)
 VALUES
     ('Vendedor', 'Vendedor'),
     ('Gerente', 'Gerente'),
     ('Admin', 'Admin');
 
-INSERT INTO usuario ( nome, cargo_id, email, telefone, loja_id, codigo_venda)
+INSERT IGNORE INTO usuario ( nome, cargo_id, email, telefone, loja_id, codigo_venda)
 VALUES
     ('Joao', 3, 'inaciofigueiredo13@gmail.com', '123456789', 1, 1000),
     ('Pedro', 2, 'pedro@gmail.com', '(11) 94091-234', 2, 1001),
@@ -35,22 +35,22 @@ VALUES
     ('Rodrigo', 1, 'rodrigo@outlook.com', '(33) 1234-5678', 1, 1013),
     ('Amanda', 2, 'amanda@hotmail.com', '(44) 98765-4321', 2, 1014);
 
-INSERT INTO acesso_loja (descricao, tipo)
+INSERT IGNORE INTO acesso_loja (descricao, tipo)
 VALUES
     ('Caixa', 0),
     ('Área de Vendas', 1);
 
-INSERT INTO loja_login (senha, username, acesso_loja_id, loja_id)
+INSERT IGNORE INTO loja_login (senha, username, acesso_loja_id, loja_id)
 VALUES
     ('$2a$10$HV6jRjCZGmm.lKw3zYcEo.PkQihGcEmo3v4WJWJUpnBs4h/T5bmZK', 'vendasLoja', 2, 1),
     ('$2a$10$HV6jRjCZGmm.lKw3zYcEo.PkQihGcEmo3v4WJWJUpnBs4h/T5bmZK', 'caixaLoja', 1, 1);
 
-INSERT INTO login (senha, username, usuario_id)
+INSERT IGNORE INTO login (senha, username, usuario_id)
 VALUES
     ('$2a$10$HV6jRjCZGmm.lKw3zYcEo.PkQihGcEmo3v4WJWJUpnBs4h/T5bmZK', 'teste', 1),
     ('$2a$10$HV6jRjCZGmm.lKw3zYcEo.PkQihGcEmo3v4WJWJUpnBs4h/T5bmZK', 'gerente', 3);
 
-INSERT INTO tamanho (numero) VALUES
+INSERT IGNORE INTO tamanho (numero) VALUES
                                  (33),
                                  (34),
                                  (35),
@@ -63,7 +63,7 @@ INSERT INTO tamanho (numero) VALUES
                                  (42),
                                  (43);
 
-INSERT INTO categoria (nome) VALUES
+INSERT IGNORE INTO categoria (nome) VALUES
                                  ('Esportivo'),
                                  ('Casual'),
                                  ('Social'),
@@ -94,7 +94,7 @@ INSERT INTO categoria (nome) VALUES
                                  ('Coturno'),
                                  ('Mule');
 
-INSERT INTO tipo (nome) VALUES
+INSERT IGNORE INTO tipo (nome) VALUES
                             ('Sandália'),
                             ('Tênis'),
                             ('Bota'),
@@ -190,7 +190,7 @@ INSERT INTO tipo (nome) VALUES
                             ('Bota de Roupas Táticas'),
                             ('Bota de Trabalho em Altura');
 
-INSERT INTO modelo (categoria_id, tipo_id, nome) VALUES
+INSERT IGNORE INTO modelo (categoria_id, tipo_id, nome) VALUES
                                                      (1, 2, 'Tênis Nike Air Max 270'),               -- Esportivo
                                                      (1, 2, 'Tênis Nike Air Zoom Pegasus'),
                                                      (1, 1, 'Tênis de Corrida Asics Gel Nimbus'),
@@ -272,7 +272,7 @@ INSERT INTO modelo (categoria_id, tipo_id, nome) VALUES
                                                      (20, 6, 'Sandália de Festa'),
                                                      (20, 6, 'Sandália de Lona');
 
-INSERT INTO cor (nome) VALUES
+INSERT IGNORE INTO cor (nome) VALUES
                            ('Preto'),
                            ('Branco'),
                            ('Cinza'),
@@ -387,7 +387,7 @@ INSERT INTO cor (nome) VALUES
                            ('Light Salmon'),
                            ('Light Yellow');
 
-INSERT INTO produto (cor_id, modelo_id, valor_custo, valor_revenda, nome) VALUES
+INSERT IGNORE INTO produto (cor_id, modelo_id, valor_custo, valor_revenda, nome) VALUES
                                                                               (1, 1, 150.00, 300.00, 'Tênis Nike Air Max 270 Preto'),
                                                                               (2, 2, 120.00, 240.00, 'Tênis Casual Converse Chuck Taylor Branco'),
                                                                               (3, 3, 200.00, 400.00, 'Sapato Social de Couro Marrom'),
@@ -427,7 +427,7 @@ INSERT INTO produto (cor_id, modelo_id, valor_custo, valor_revenda, nome) VALUES
                                                                               (27, 9, 145.00, 290.00, 'Sandália Unissex Grendene Rosa'),  -- Modelo 9
                                                                               (28, 10, 190.00, 380.00, 'Bota Coturno Masculina Azul');  -- Modelo 10
 
-INSERT INTO etp (loja_id, produto_id, quantidade, tamanho_id, codigo, item_promocional) VALUES
+INSERT IGNORE INTO etp (loja_id, produto_id, quantidade, tamanho_id, codigo, item_promocional) VALUES
                                                                                             (1, 1, 10, 1, '001', 'NAO'),
                                                                                             (1, 2, 5, 2, '0021', 'SIM'),
                                                                                             (1, 3, 8, 3, '003', 'NAO'),
@@ -526,9 +526,11 @@ INSERT INTO etp (loja_id, produto_id, quantidade, tamanho_id, codigo, item_promo
                                                                                             (1, 30, 5, 8, '090', 'SIM'),
                                                                                             (1, 31, 3, 9, '091', 'NAO'),
                                                                                             (1, 32, 6, 10, '092', 'SIM'),
-                                                                                            (1, 33, 20, 11, '0931', 'NAO');
+                                                                                            (1, 33, 20, 11, '0931', 'NAO'),
+                                                                                            (1, 36, 20, 11, '790', 'NAO'),
+                                                                                            (1, 14, 15, 11, '7900132018153', 'SIM');
 
-INSERT INTO alertas_estoque (etp_id, data_hora, descricao, titulo)
+INSERT IGNORE INTO alertas_estoque (etp_id, data_hora, descricao, titulo)
 VALUES
     (1, '2024-10-23 10:30:00', 'Alerta estoque com quantidade abaixo do ideal!', 'Alerta de Estoque Baixo'),
     (1, '2024-10-23 11:00:00', 'Estoque do produto "Tênis Nike Air" de tamanho 40 está em 5!', 'Alerta de Estoque Crítico'),
@@ -765,83 +767,256 @@ VALUES
     (9, '2024-11-14 19:15:00', 'Estoque do produto "Sandália de Conforto" de tamanho 42 está em 2!', 'Alerta de Reposição Necessária'),
     (10, '2024-11-14 20:30:00', 'Alerta estoque com quantidade abaixo do ideal!', 'Alerta de Estoque Baixo');
 
-INSERT INTO status_transferencia (status) VALUES
+INSERT IGNORE INTO status_transferencia (status) VALUES
                                               ('PENDENTE'),
                                               ('ACEITO'),
                                               ('NEGADO');
 
-INSERT INTO status_venda (status) VALUES
+INSERT IGNORE INTO status_venda (status) VALUES
                                       ('PENDENTE'),
                                       ('FINALIZADA'),
                                       ('CANCELADA');
 
-INSERT INTO tipo_venda (desconto, tipo) VALUES
+INSERT IGNORE INTO tipo_venda (desconto, tipo) VALUES
                                             (0.0, 'VAREJO'),
                                             (0.05, 'ATACADO'),  -- 5% de desconto
                                             (0.10, 'ESPECIAL'); -- 10% de desconto
 
-INSERT INTO status_historico_produto (status) VALUES
+INSERT IGNORE INTO status_historico_produto (status) VALUES
                                                   ('VENDIDO'),
                                                   ('DEVOLVIDO'),
                                                   ('ABATIDO');
 
-INSERT INTO tipo_pagamento (metodo) VALUES
+INSERT IGNORE INTO tipo_pagamento (metodo) VALUES
                                         ('CREDITO'),
                                         ('DEBITO'),
                                         ('PIX'),
                                         ('DINHEIRO');
 
-INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora) VALUES
-                                                                                                     (0.0, 2, 1, 1, 150.00, '2024-10-01 09:00:00'),  -- FINALIZADA
-                                                                                                     (0.05, 1, 1, 2, 200.00, '2024-10-01 10:15:00'),  -- PENDENTE
-                                                                                                     (0.0, 2, 2, 3, 300.00, '2024-10-01 11:30:00'),  -- FINALIZADA
-                                                                                                     (0.10, 3, 1, 4, 120.00, '2024-10-01 12:45:00'),  -- CANCELADA
-                                                                                                     (0.0, 2, 2, 5, 80.00, '2024-10-01 13:00:00'),   -- FINALIZADA
-                                                                                                     (0.05, 1, 3, 6, 220.00, '2024-10-01 14:15:00'),  -- PENDENTE
-                                                                                                     (0.15, 3, 2, 7, 180.00, '2024-10-01 15:30:00'),  -- FINALIZADA
-                                                                                                     (0.0, 2, 1, 8, 350.00, '2024-10-01 16:00:00'),   -- FINALIZADA
-                                                                                                     (0.20, 3, 3, 9, 400.00, '2024-10-01 17:00:00'),  -- CANCELADA
-                                                                                                     (0.0, 2, 1, 10, 500.00, '2024-10-01 18:00:00'),  -- FINALIZADA
-                                                                                                     (0.10, 1, 1, 11, 85.00, '2024-10-02 09:15:00'),   -- FINALIZADA
-                                                                                                     (0.0, 2, 1, 12, 130.00, '2024-10-02 10:30:00'),  -- PENDENTE
-                                                                                                     (0.05, 2, 3, 13, 90.00, '2024-10-02 11:45:00'),   -- FINALIZADA
-                                                                                                     (0.0, 1, 2, 14, 186.50, '2024-10-02 13:00:00'),  -- FINALIZADA
-                                                                                                     (0.15, 3, 3, 15, 250.00, '2024-10-02 14:15:00'),  -- CANCELADA
-                                                                                                     (0.0, 2, 2, 1, 300.00, '2024-10-02 15:30:00'),   -- FINALIZADA
-                                                                                                     (0.05, 1, 1, 2, 400.00, '2024-10-02 16:45:00'),  -- PENDENTE
-                                                                                                     (0.10, 3, 1, 3, 200.00, '2024-10-02 18:00:00'),  -- FINALIZADA
-                                                                                                     (0.0, 2, 2, 4, 220.00, '2024-10-03 09:00:00'),   -- FINALIZADA
-                                                                                                     (0.20, 3, 3, 5, 160.00, '2024-10-03 10:15:00'),  -- CANCELADA
-                                                                                                     (0.0, 1, 1, 6, 90.00, '2024-10-03 11:30:00'),    -- FINALIZADA
-                                                                                                     (0.05, 2, 2, 7, 130.00, '2024-10-03 12:45:00'),  -- FINALIZADA
-                                                                                                     (0.0, 1, 3, 8, 110.00, '2024-10-03 13:00:00'),   -- PENDENTE
-                                                                                                     (0.15, 3, 1, 9, 75.00, '2024-10-03 14:15:00'),   -- FINALIZADA
-                                                                                                     (0.0, 2, 1, 10, 140.00, '2024-10-03 15:30:00'),   -- FINALIZADA
-                                                                                                     (0.10, 1, 2, 11, 200.00, '2024-10-03 16:00:00'),  -- FINALIZADA
-                                                                                                     (0.0, 2, 3, 12, 190.00, '2024-10-03 17:00:00'),   -- CANCELADA
-                                                                                                     (0.05, 1, 1, 13, 300.00, '2024-10-03 18:00:00'),  -- FINALIZADA
-                                                                                                     (0.0, 3, 2, 14, 320.00, '2024-10-04 09:00:00'),   -- FINALIZADA
-                                                                                                     (0.20, 1, 3, 15, 150.00, '2024-10-04 10:15:00'),  -- PENDENTE
-                                                                                                     (0.0, 1, 1, 1, 270.00, '2024-10-04 11:30:00'),   -- FINALIZADA
-                                                                                                     (0.05, 3, 2, 1, 200.00, '2024-10-04 12:45:00'),   -- FINALIZADA
-                                                                                                     (0.0, 1, 3, 1, 220.00, '2024-10-04 13:00:00'),   -- FINALIZADA
-                                                                                                     (0.15, 2, 1, 1, 190.00, '2024-10-04 14:15:00'),  -- CANCELADA
-                                                                                                     (0.0, 2, 2, 1, 80.00, '2024-10-04 15:30:00'),    -- FINALIZADA
-                                                                                                     (0.10, 1, 3, 1, 150.00, '2024-10-04 16:45:00'),  -- FINALIZADA
-                                                                                                     (0.0, 2, 1, 1, 300.00, '2024-10-04 17:00:00'),   -- FINALIZADA
-                                                                                                     (0.20, 3, 2, 10, 130.00, '2024-10-04 18:00:00'),  -- PENDENTE
-                                                                                                     (0.0, 1, 1, 2, 170.00, '2024-10-05 09:00:00'),   -- FINALIZADA
-                                                                                                     (0.05, 2, 3, 3, 140.00, '2024-10-05 10:15:00'),  -- FINALIZADA
-                                                                                                     (0.0, 1, 1, 4, 90.00, '2024-10-05 11:30:00'),    -- CANCELADA
-                                                                                                     (0.10, 2, 2, 10, 150.00, '2024-10-05 12:45:00'),  -- FINALIZADA
-                                                                                                     (0.0, 1, 3, 1, 130.00, '2024-10-05 13:00:00'),   -- FINALIZADA
-                                                                                                     (0.15, 2, 1, 2, 80.00, '2024-10-05 14:15:00'),   -- FINALIZADA
-                                                                                                     (0.10, 2, 1, 3, 110.00, '2024-10-05 18:00:00'),  -- FINALIZADA
-                                                                                                     (0.0, 1, 2, 6, 220.00, '2024-10-06 09:00:00'),   -- FINALIZADA
-                                                                                                     (0.15, 3, 3, 1, 190.00, '2024-10-06 10:15:00');   -- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 1, 1, 150.00, '2024-10-01 09:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 09:00:00' AND usuario_id = 1 AND tipo_venda_id = 1);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 1, 1, 2, 200.00, '2024-10-01 10:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 10:15:00' AND usuario_id = 2 AND tipo_venda_id = 1);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 2, 3, 300.00, '2024-10-01 11:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 11:30:00' AND usuario_id = 3 AND tipo_venda_id = 2);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.10, 3, 1, 4, 120.00, '2024-10-01 12:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 12:45:00' AND usuario_id = 4 AND tipo_venda_id = 1);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 2, 5, 80.00, '2024-10-01 13:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 13:00:00' AND usuario_id = 5 AND tipo_venda_id = 2);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 1, 3, 6, 220.00, '2024-10-01 14:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 14:15:00' AND usuario_id = 6 AND tipo_venda_id = 3);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.15, 3, 2, 7, 180.00, '2024-10-01 15:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 15:30:00' AND usuario_id = 7 AND tipo_venda_id = 2);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 1, 8, 350.00, '2024-10-01 16:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 16:00:00' AND usuario_id = 8 AND tipo_venda_id = 1);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.20, 3, 3, 9, 400.00, '2024-10-01 17:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 17:00:00' AND usuario_id = 9 AND tipo_venda_id = 3);
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 1, 10, 500.00, '2024-10-01 18:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-01 18:00:00' AND usuario_id = 10 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.10, 1, 1, 11, 85.00, '2024-10-02 09:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 09:15:00' AND usuario_id = 11 AND tipo_venda_id = 1);
+
+-- PENDENTE
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 1, 12, 130.00, '2024-10-02 10:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 10:30:00' AND usuario_id = 12 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 2, 3, 13, 90.00, '2024-10-02 11:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 11:45:00' AND usuario_id = 13 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 1, 2, 14, 186.50, '2024-10-02 13:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 13:00:00' AND usuario_id = 14 AND tipo_venda_id = 2);
+
+-- CANCELADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.15, 3, 3, 15, 250.00, '2024-10-02 14:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 14:15:00' AND usuario_id = 15 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 2, 1, 300.00, '2024-10-02 15:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 15:30:00' AND usuario_id = 1 AND tipo_venda_id = 2);
+
+-- PENDENTE
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 1, 1, 2, 400.00, '2024-10-02 16:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 16:45:00' AND usuario_id = 2 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.10, 3, 1, 3, 200.00, '2024-10-02 18:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-02 18:00:00' AND usuario_id = 3 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 2, 4, 220.00, '2024-10-03 09:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 09:00:00' AND usuario_id = 4 AND tipo_venda_id = 2);
+
+-- CANCELADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.20, 3, 3, 5, 160.00, '2024-10-03 10:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 10:15:00' AND usuario_id = 5 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 1, 1, 6, 90.00, '2024-10-03 11:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 11:30:00' AND usuario_id = 6 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 2, 2, 7, 130.00, '2024-10-03 12:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 12:45:00' AND usuario_id = 7 AND tipo_venda_id = 2);
+
+-- PENDENTE
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 1, 3, 8, 110.00, '2024-10-03 13:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 13:00:00' AND usuario_id = 8 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.15, 3, 1, 9, 75.00, '2024-10-03 14:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 14:15:00' AND usuario_id = 9 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 1, 10, 140.00, '2024-10-03 15:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 15:30:00' AND usuario_id = 10 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.10, 1, 2, 11, 200.00, '2024-10-03 16:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 16:00:00' AND usuario_id = 11 AND tipo_venda_id = 2);
+
+-- CANCELADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 3, 12, 190.00, '2024-10-03 17:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 17:00:00' AND usuario_id = 12 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 1, 1, 13, 300.00, '2024-10-03 18:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-03 18:00:00' AND usuario_id = 13 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 3, 2, 14, 320.00, '2024-10-04 09:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 09:00:00' AND usuario_id = 14 AND tipo_venda_id = 2);
+
+-- PENDENTE
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.20, 1, 3, 15, 150.00, '2024-10-04 10:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 10:15:00' AND usuario_id = 15 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 1, 1, 1, 270.00, '2024-10-04 11:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 11:30:00' AND usuario_id = 1 AND tipo_venda_id = 1);
+
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 3, 2, 1, 200.00, '2024-10-04 12:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 12:45:00' AND usuario_id = 1 AND tipo_venda_id = 2);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 1, 3, 1, 220.00, '2024-10-04 13:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 13:00:00' AND usuario_id = 1 AND tipo_venda_id = 3);
+
+-- CANCELADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.15, 2, 1, 1, 190.00, '2024-10-04 14:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 14:15:00' AND usuario_id = 1 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 2, 1, 80.00, '2024-10-04 15:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 15:30:00' AND usuario_id = 1 AND tipo_venda_id = 2);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.10, 1, 3, 1, 150.00, '2024-10-04 16:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 16:45:00' AND usuario_id = 1 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 1, 1, 300.00, '2024-10-04 17:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 17:00:00' AND usuario_id = 1 AND tipo_venda_id = 1);
+
+-- PENDENTE
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.20, 3, 2, 10, 130.00, '2024-10-04 18:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-04 18:00:00' AND usuario_id = 10 AND tipo_venda_id = 2);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 1, 1, 2, 170.00, '2024-10-05 09:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 09:00:00' AND usuario_id = 2 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.05, 2, 3, 3, 140.00, '2024-10-05 10:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 10:15:00' AND usuario_id = 3 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.10, 2, 2, 10, 150.00, '2024-10-05 12:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 12:45:00' AND usuario_id = 10 AND tipo_venda_id = 2);
+
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.15, 2, 1, 2, 80.00, '2024-10-05 14:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 14:15:00' AND usuario_id = 2 AND tipo_venda_id = 1);
+
+-- CANCELADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 2, 3, 8, 220.00, '2024-10-05 15:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 15:30:00' AND usuario_id = 8 AND tipo_venda_id = 3);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 3, 1, 2, 260.00, '2024-10-05 17:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 17:00:00' AND usuario_id = 2 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.10, 2, 1, 3, 110.00, '2024-10-05 18:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 18:00:00' AND usuario_id = 3 AND tipo_venda_id = 1);
+
+-- FINALIZADA
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 0.0, 1, 2, 6, 220.00, '2024-10-06 09:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-06 09:00:00' AND usuario_id = 6 AND tipo_venda_id = 2);
 
 -- Tabela produto_venda associada às vendas
-INSERT INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id) VALUES
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id) VALUES
                                                                                                          -- Produtos da Venda 1
                                                                                                          (0.0, 1, 0, 2, 75.00, 1),  -- Produto 1 da Venda 1
                                                                                                          (0.10, 2, 1, 1, 200.00, 1), -- Produto 2 da Venda 1
@@ -961,14 +1136,9 @@ INSERT INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor
                                                                                                          (0.0, 1, 0, 4, 100.00, 39),   -- Produto 1 da Venda 39
 
                                                                                                          -- Produtos da Venda 40
-                                                                                                         (0.10, 2, 1, 5, 90.00, 40),   -- Produto 1 da Venda 40
+                                                                                                         (0.10, 2, 1, 5, 90.00, 40);   -- Produto 1 da Venda 40
 
-                                                                                                        -- Produtos da Venda 40
-                                                                                                        (0.10, 2, 1, 5, 90.00, 41),
-                                                                                                        -- Produtos da Venda 40
-                                                                                                        (0.10, 2, 1, 5, 150.00, 42);
-
-INSERT INTO historico_produto (produto_venda_id, status_historico_produto_id, data_hora) VALUES
+INSERT IGNORE INTO historico_produto (produto_venda_id, status_historico_produto_id, data_hora) VALUES
                                                                                              (1, 1, '2024-10-01 10:00:00'),  -- VENDIDO
                                                                                              (2, 2, '2024-10-01 11:30:00'),  -- DEVOLVIDO
                                                                                              (3, 1, '2024-10-01 14:15:00'),  -- VENDIDO
@@ -1001,24 +1171,19 @@ INSERT INTO historico_produto (produto_venda_id, status_historico_produto_id, da
                                                                                              (30, 1, '2024-10-10 20:00:00');  -- VENDIDO
 
 -- Pagamentos para Vendas "FINALIZADAS"
-INSERT INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id) VALUES
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id) VALUES
                                                                              (1, 1, 150.00, 1),    -- Venda 1: pagamento integral
                                                                              (2, 1, 300.00, 3),    -- Venda 3: pagamento integral
                                                                              (1, 1, 80.00, 5),     -- Venda 5: pagamento integral
                                                                              (1, 1, 180.00, 7),    -- Venda 7: pagamento integral
                                                                              (1, 2, 350.00, 8),    -- Venda 8: pagamento integral
                                                                              (1, 1, 500.00, 10),   -- Venda 10: pagamento integral
-                                                                             (1, 2, 70.00, 11),    -- Venda 11: pagamento integral
                                                                              (1, 1, 90.00, 13),    -- Venda 13: pagamento integral
-                                                                             (1, 2, 150.00, 14),   -- Venda 14: pagamento integral
                                                                              (1, 1, 300.00, 16),   -- Venda 16: pagamento integral
                                                                              (2, 1, 220.00, 19),   -- Venda 19: pagamento integral
                                                                              (1, 1, 220.00, 22),   -- Venda 22: pagamento integral
-                                                                             (1, 2, 90.00, 26),    -- Venda 26: pagamento integral
                                                                              (1, 1, 140.00, 27),   -- Venda 27: pagamento integral
                                                                              (2, 4, 200.00, 30),   -- Venda 30: pagamento integral
-                                                                             (1, 1, 170.00, 31),   -- Venda 31: pagamento integral
-                                                                             (1, 2, 140.00, 33),   -- Venda 33: pagamento integral
                                                                              (1, 1, 150.00, 35),   -- Venda 35: pagamento integral
                                                                              (1, 1, 100.00, 37),   -- Venda 37: pagamento integral
                                                                              (2, 1, 200.00, 39),   -- Venda 39: pagamento integral
@@ -1028,7 +1193,7 @@ INSERT INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id) VALUES
                                                                              (1, 1, 130.00, 47);   -- Venda 47: pagamento integral
 
 -- Pagamentos Parciais para Vendas "PENDENTE" ou "CANCELADA"
-INSERT INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id) VALUES
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id) VALUES
                                                                              (2, 2, 100.00, 2),    -- Venda 2: parcial
                                                                              (1, 1, 50.00, 4),     -- Venda 4: parcial
                                                                              (1, 1, 60.00, 6),     -- Venda 6: parcial
@@ -1039,5 +1204,988 @@ INSERT INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id) VALUES
                                                                              (1, 2, 130.00, 20),   -- Venda 20: parcial
                                                                              (1, 1, 100.00, 23),   -- Venda 23: parcial
                                                                              (1, 1, 160.00, 25),   -- Venda 25: parcial
-                                                                             (1, 2, 100.00, 28),   -- Venda 28: parcial
                                                                              (1, 1, 200.00, 32);   -- Venda 32: parcial
+
+       -- Outubro
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-10-01 09:15:00', 5, 0, 1, 1, 2, 3
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-10-01 09:15:00' AND coletor_id = 1);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-10-05 14:30:00', 10, 8, 2, 2, 1, 5
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-10-05 14:30:00' AND coletor_id = 2);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-10-10 11:45:00', 15, 0, 1, 3, 4, 6
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-10-10 11:45:00' AND coletor_id = 3);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-10-15 08:00:00', 20, 20, 2, 4, 3, 7
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-10-15 08:00:00' AND coletor_id = 4);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-10-20 17:20:00', 7, 0, 1, 5, 6, 8
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-10-20 17:20:00' AND coletor_id = 5);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-10-25 13:10:00', 18, 10, 2, 6, 7, 9
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-10-25 13:10:00' AND coletor_id = 6);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-10-27 09:50:00', 22, 0, 1, 7, 8, 10
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-10-27 09:50:00' AND coletor_id = 7);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-10-29 15:40:00', 5, 5, 3, 8, 9, 11
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-10-29 15:40:00' AND coletor_id = 8);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-10-30 10:30:00', 12, 12, 2, 9, 10, 12
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-10-30 10:30:00' AND coletor_id = 9);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-10-31 19:00:00', 8, 0, 1, 10, 11, 13
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-10-31 19:00:00' AND coletor_id = 10);
+
+-- Novembro
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-11-02 09:10:00', 6, 0, 1, 11, 12, 14
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-11-02 09:10:00' AND coletor_id = 11);
+-- Novembro
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-11-02 09:10:00', 6, 0, 1, 11, 12, 14
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-11-02 09:10:00' AND coletor_id = 11);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-11-05 15:45:00', 12, 10, 2, 12, 11, 15
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-11-05 15:45:00' AND coletor_id = 12);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-11-08 14:00:00', 20, 0, 1, 13, 14, 16
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-11-08 14:00:00' AND coletor_id = 13);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-11-12 12:20:00', 18, 18, 2, 14, 13, 17
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-11-12 12:20:00' AND coletor_id = 14);
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-11-16 08:30:00', 7, 0, 1, 6, 14, 18
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-11-16 08:30:00' AND coletor_id = 6);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-11-20 16:10:00', 10, 10, 2, 10, 5, 19
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-11-20 16:10:00' AND coletor_id = 10);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-11-22 18:50:00', 14, 0, 1, 8, 12, 20
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-11-22 18:50:00' AND coletor_id = 8);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-11-24 11:00:00', 25, 14, 2, 7, 14, 21
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-11-24 11:00:00' AND coletor_id = 7);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-11-27 07:40:00', 9, 0, 1, 9, 13, 22
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-11-27 07:40:00' AND coletor_id = 9);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-11-30 13:25:00', 16, 12, 2, 11, 10, 23
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-11-30 13:25:00' AND coletor_id = 11);
+
+-- Dezembro
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-01 09:15:00', 10, 0, 1, 12, 6, 24
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-01 09:15:00' AND coletor_id = 12);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-03 14:30:00', 12, 10, 2, 10, 8, 25
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-03 14:30:00' AND coletor_id = 10);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-05 11:00:00', 15, 0, 1, 6, 13, 26
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-05 11:00:00' AND coletor_id = 6);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-07 13:40:00', 20, 14, 2, 7, 9, 27
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-07 13:40:00' AND coletor_id = 7);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-10 08:00:00', 8, 0, 1, 8, 12, 28
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-10 08:00:00' AND coletor_id = 8);
+-- Dezembro (continuação)
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-12 10:15:00', 18, 16, 2, 14, 14, 29
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-12 10:15:00' AND coletor_id = 14);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-15 16:00:00', 25, 0, 1, 14, 14, 30
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-15 16:00:00' AND coletor_id = 14);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-17 18:45:00', 30, 30, 2, 14, 14, 31
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-17 18:45:00' AND coletor_id = 14);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-20 14:10:00', 12, 0, 1, 14, 14, 32
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-20 14:10:00' AND coletor_id = 14);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-22 09:30:00', 16, 12, 2, 14, 14, 33
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-22 09:30:00' AND coletor_id = 14);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-24 13:25:00', 9, 0, 1, 14, 14, 34
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-24 13:25:00' AND coletor_id = 14);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-26 07:40:00', 22, 20, 2, 14, 14, 35
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-26 07:40:00' AND coletor_id = 14);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-28 12:00:00', 10, 0, 1, 14, 14, 36
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-28 12:00:00' AND coletor_id = 14);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-30 19:50:00', 17, 15, 2, 14, 14, 37
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-30 19:50:00' AND coletor_id = 14);
+
+INSERT INTO transferencia (data_hora, quantidade_solicitada, quantidade_liberada, status_transferencia_id, coletor_id, liberador_id, etp_id)
+SELECT '2024-12-31 23:59:00', 5, 0, 1, 14, 14, 38
+    WHERE NOT EXISTS (SELECT 1 FROM transferencia WHERE data_hora = '2024-12-31 23:59:00' AND coletor_id = 14);
+
+-- Venda Finalizada em Outubro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 5, 180.00, '2024-10-10 10:15:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-10 10:15:00' AND usuario_id = 5 AND tipo_venda_id = 1);
+
+-- ProdutoVenda relacionado à venda de Outubro com 3 produtos
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id) VALUES
+    (0.0, 1, 0, 2, 50.00, (SELECT id FROM venda WHERE data_hora = '2024-10-10 10:15:00' AND usuario_id = 5 AND tipo_venda_id = 1)),  -- Produto 1: 2 unidades de R$50.00
+    (0.0, 2, 0, 1, 80.00, (SELECT id FROM venda WHERE data_hora = '2024-10-10 10:15:00' AND usuario_id = 5 AND tipo_venda_id = 1));  -- Produto 2: 1 unidade de R$80.00
+
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 60.00, (SELECT id FROM venda WHERE data_hora = '2024-10-10 10:15:00' AND usuario_id = 5 AND tipo_venda_id = 1));
+
+-- Venda Finalizada em Outubro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 2, 6, 450.00, '2024-10-18 11:40:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-18 11:40:00' AND usuario_id = 6 AND tipo_venda_id = 2);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 2, 90.00, (SELECT id FROM venda WHERE data_hora = '2024-10-18 11:40:00' AND usuario_id = 6 AND tipo_venda_id = 2));
+
+       -- Produtos relacionados à venda de 18 de Outubro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 1, 0, 1, 40.00, (SELECT id FROM venda WHERE data_hora = '2024-10-18 11:40:00' AND usuario_id = 6 AND tipo_venda_id = 2)),
+(0.0, 1, 0, 1, 50.00, (SELECT id FROM venda WHERE data_hora = '2024-10-18 11:40:00' AND usuario_id = 6 AND tipo_venda_id = 2));
+
+
+       -- Venda Finalizada em Novembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 8.0, 2, 1, 7, 320.00, '2024-11-05 16:10:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-11-05 16:10:00' AND usuario_id = 7 AND tipo_venda_id = 1);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 80.00, (SELECT id FROM venda WHERE data_hora = '2024-11-05 16:10:00' AND usuario_id = 7 AND tipo_venda_id = 1));
+
+       -- Produtos relacionados à venda de 5 de Novembro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 1, 0, 1, 160.00, (SELECT id FROM venda WHERE data_hora = '2024-11-05 16:10:00' AND usuario_id = 7 AND tipo_venda_id = 1)),
+(0.0, 1, 0, 1, 160.00, (SELECT id FROM venda WHERE data_hora = '2024-11-05 16:10:00' AND usuario_id = 7 AND tipo_venda_id = 1));
+
+
+-- Venda Finalizada em Novembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 12.0, 2, 3, 8, 500.00, '2024-11-13 14:25:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-11-13 14:25:00' AND usuario_id = 8 AND tipo_venda_id = 3);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 2, 85.00, (SELECT id FROM venda WHERE data_hora = '2024-11-13 14:25:00' AND usuario_id = 8 AND tipo_venda_id = 3));
+
+       -- Produtos relacionados à venda de 13 de Novembro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 1, 0, 1, 42.50, (SELECT id FROM venda WHERE data_hora = '2024-11-13 14:25:00' AND usuario_id = 8 AND tipo_venda_id = 3)),
+(0.0, 1, 0, 1, 42.50, (SELECT id FROM venda WHERE data_hora = '2024-11-13 14:25:00' AND usuario_id = 8 AND tipo_venda_id = 3));
+
+       -- Venda Finalizada em Dezembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 15.0, 2, 2, 9, 380.00, '2024-12-02 09:55:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-12-02 09:55:00' AND usuario_id = 9 AND tipo_venda_id = 2);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 3, 120.00, (SELECT id FROM venda WHERE data_hora = '2024-12-02 09:55:00' AND usuario_id = 9 AND tipo_venda_id = 2));
+
+       -- Produtos relacionados à venda de 2 de Dezembro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 1, 0, 1, 60.00, (SELECT id FROM venda WHERE data_hora = '2024-12-02 09:55:00' AND usuario_id = 9 AND tipo_venda_id = 2)),
+(0.0, 1, 0, 1, 60.00, (SELECT id FROM venda WHERE data_hora = '2024-12-02 09:55:00' AND usuario_id = 9 AND tipo_venda_id = 2));
+
+-- Venda Finalizada em Dezembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 18.0, 2, 1, 10, 220.00, '2024-12-10 13:05:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-12-10 13:05:00' AND usuario_id = 10 AND tipo_venda_id = 1);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (2, 1, 110.00, (SELECT id FROM venda WHERE data_hora = '2024-12-10 13:05:00' AND usuario_id = 10 AND tipo_venda_id = 1));
+
+       -- Venda Finalizada em Outubro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 8.0, 2, 3, 2, 500.00, '2024-10-05 11:10:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-05 11:10:00' AND usuario_id = 2 AND tipo_venda_id = 3);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 3, 100.00, (SELECT id FROM venda WHERE data_hora = '2024-10-05 11:10:00' AND usuario_id = 2 AND tipo_venda_id = 3));
+
+       -- Produtos relacionados à venda de 5 de Outubro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 1, 0, 1, 50.00, (SELECT id FROM venda WHERE data_hora = '2024-10-05 11:10:00' AND usuario_id = 2 AND tipo_venda_id = 3)),
+(0.0, 1, 0, 1, 50.00, (SELECT id FROM venda WHERE data_hora = '2024-10-05 11:10:00' AND usuario_id = 2 AND tipo_venda_id = 3));
+
+-- Venda Finalizada em Outubro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 3, 320.00, '2024-10-08 14:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-08 14:30:00' AND usuario_id = 3 AND tipo_venda_id = 1);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 106.67, (SELECT id FROM venda WHERE data_hora = '2024-10-08 14:30:00' AND usuario_id = 3 AND tipo_venda_id = 1));
+
+       -- Produtos relacionados à venda de 8 de Outubro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 1, 0, 1, 53.33, (SELECT id FROM venda WHERE data_hora = '2024-10-08 14:30:00' AND usuario_id = 3 AND tipo_venda_id = 1)),
+(0.0, 1, 0, 1, 53.33, (SELECT id FROM venda WHERE data_hora = '2024-10-08 14:30:00' AND usuario_id = 3 AND tipo_venda_id = 1));
+
+-- Venda Finalizada em Outubro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 12.0, 2, 2, 4, 450.00, '2024-10-12 09:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-12 09:00:00' AND usuario_id = 4 AND tipo_venda_id = 2);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 2, 112.50, (SELECT id FROM venda WHERE data_hora = '2024-10-12 09:00:00' AND usuario_id = 4 AND tipo_venda_id = 2));
+
+       -- Produtos relacionados à venda de 10 de Dezembro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 1, 0, 1, 110.00, (SELECT id FROM venda WHERE data_hora = '2024-12-10 13:05:00' AND usuario_id = 10 AND tipo_venda_id = 1)),
+(0.0, 1, 0, 1, 110.00, (SELECT id FROM venda WHERE data_hora = '2024-12-10 13:05:00' AND usuario_id = 10 AND tipo_venda_id = 1));
+
+-- Venda Finalizada em Outubro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 20.0, 2, 1, 5, 300.00, '2024-10-13 16:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-13 16:45:00' AND usuario_id = 5 AND tipo_venda_id = 1);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 100.00, (SELECT id FROM venda WHERE data_hora = '2024-10-13 16:45:00' AND usuario_id = 5 AND tipo_venda_id = 1));
+
+-- Venda Finalizada em Outubro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 15.0, 2, 3, 6, 800.00, '2024-10-16 18:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-16 18:30:00' AND usuario_id = 6 AND tipo_venda_id = 3);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 2, 133.33, (SELECT id FROM venda WHERE data_hora = '2024-10-16 18:30:00' AND usuario_id = 6 AND tipo_venda_id = 3));
+
+-- Venda Finalizada em Outubro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 18.0, 2, 2, 7, 550.00, '2024-10-20 13:20:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-20 13:20:00' AND usuario_id = 7 AND tipo_venda_id = 2);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 1, 110.00, (SELECT id FROM venda WHERE data_hora = '2024-10-20 13:20:00' AND usuario_id = 7 AND tipo_venda_id = 2));
+
+-- Venda Finalizada em Outubro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 8, 400.00, '2024-10-22 15:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-22 15:00:00' AND usuario_id = 8 AND tipo_venda_id = 1);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 133.33, (SELECT id FROM venda WHERE data_hora = '2024-10-22 15:00:00' AND usuario_id = 8 AND tipo_venda_id = 1));
+
+       -- Produtos relacionados à venda de 13 de Outubro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 1, 0, 1, 50.00, (SELECT id FROM venda WHERE data_hora = '2024-10-13 16:45:00' AND usuario_id = 5 AND tipo_venda_id = 1)),
+(0.0, 2, 0, 1, 50.00, (SELECT id FROM venda WHERE data_hora = '2024-10-13 16:45:00' AND usuario_id = 5 AND tipo_venda_id = 1));
+
+       -- Produtos relacionados à venda de 16 de Outubro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 1, 0, 1, 66.67, (SELECT id FROM venda WHERE data_hora = '2024-10-16 18:30:00' AND usuario_id = 6 AND tipo_venda_id = 3)),
+(0.0, 3, 0, 1, 66.67, (SELECT id FROM venda WHERE data_hora = '2024-10-16 18:30:00' AND usuario_id = 6 AND tipo_venda_id = 3));
+
+       -- Produtos relacionados à venda de 20 de Outubro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 4, 0, 1, 55.00, (SELECT id FROM venda WHERE data_hora = '2024-10-20 13:20:00' AND usuario_id = 7 AND tipo_venda_id = 2)),
+(0.0, 5, 0, 1, 55.00, (SELECT id FROM venda WHERE data_hora = '2024-10-20 13:20:00' AND usuario_id = 7 AND tipo_venda_id = 2));
+
+-- Venda Finalizada em Outubro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 8.0, 2, 3, 9, 600.00, '2024-10-26 19:25:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-26 19:25:00' AND usuario_id = 9 AND tipo_venda_id = 3);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 3, 150.00, (SELECT id FROM venda WHERE data_hora = '2024-10-26 19:25:00' AND usuario_id = 9 AND tipo_venda_id = 3));
+
+       -- Produtos relacionados à venda de 26 de Outubro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 15, 0, 1, 150.00, (SELECT id FROM venda WHERE data_hora = '2024-10-26 19:25:00' AND usuario_id = 9 AND tipo_venda_id = 3)),
+(0.0, 16, 0, 1, 150.00, (SELECT id FROM venda WHERE data_hora = '2024-10-26 19:25:00' AND usuario_id = 9 AND tipo_venda_id = 3));
+
+-- Venda Finalizada em Outubro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 20.0, 2, 2, 10, 700.00, '2024-10-30 10:50:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-10-30 10:50:00' AND usuario_id = 10 AND tipo_venda_id = 2);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 1, 140.00, (SELECT id FROM venda WHERE data_hora = '2024-10-30 10:50:00' AND usuario_id = 10 AND tipo_venda_id = 2));
+
+-- Produtos relacionados à venda de 30 de Outubro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 17, 0, 1, 140.00, (SELECT id FROM venda WHERE data_hora = '2024-10-30 10:50:00' AND usuario_id = 10 AND tipo_venda_id = 2)),
+(0.0, 18, 0, 1, 140.00, (SELECT id FROM venda WHERE data_hora = '2024-10-30 10:50:00' AND usuario_id = 10 AND tipo_venda_id = 2));
+
+       -- Venda Finalizada em Novembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 3, 2, 400.00, '2024-11-01 08:20:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-11-01 08:20:00' AND usuario_id = 2 AND tipo_venda_id = 3);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 1, 80.00, (SELECT id FROM venda WHERE data_hora = '2024-11-01 08:20:00' AND usuario_id = 2 AND tipo_venda_id = 3));
+
+-- Venda Finalizada em Novembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 3, 200.00, '2024-11-03 11:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-11-03 11:30:00' AND usuario_id = 3 AND tipo_venda_id = 1);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (2, 2, 100.00, (SELECT id FROM venda WHERE data_hora = '2024-11-03 11:30:00' AND usuario_id = 3 AND tipo_venda_id = 1));
+
+-- Venda Finalizada em Novembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 15.0, 2, 2, 4, 300.00, '2024-11-05 14:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-11-05 14:45:00' AND usuario_id = 4 AND tipo_venda_id = 2);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 100.00, (SELECT id FROM venda WHERE data_hora = '2024-11-05 14:45:00' AND usuario_id = 4 AND tipo_venda_id = 2));
+
+-- Venda Finalizada em Novembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 5, 250.00, '2024-11-08 17:50:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-11-08 17:50:00' AND usuario_id = 5 AND tipo_venda_id = 1);
+
+-- Venda Finalizada em Novembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 12.0, 2, 3, 6, 350.00, '2024-11-12 14:10:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-11-12 14:10:00' AND usuario_id = 6 AND tipo_venda_id = 3);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 2, 87.50, (SELECT id FROM venda WHERE data_hora = '2024-11-12 14:10:00' AND usuario_id = 6 AND tipo_venda_id = 3));
+
+-- Venda Finalizada em Novembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 2, 7, 500.00, '2024-11-14 19:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-11-14 19:30:00' AND usuario_id = 7 AND tipo_venda_id = 2);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 3, 100.00, (SELECT id FROM venda WHERE data_hora = '2024-11-14 19:30:00' AND usuario_id = 7 AND tipo_venda_id = 2));
+
+-- Venda Finalizada em Novembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 8, 450.00, '2024-11-16 20:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-11-16 20:00:00' AND usuario_id = 8 AND tipo_venda_id = 1);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 112.50, (SELECT id FROM venda WHERE data_hora = '2024-11-16 20:00:00' AND usuario_id = 8 AND tipo_venda_id = 1));
+
+-- Venda Finalizada em Novembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 20.0, 2, 3, 9, 600.00, '2024-11-18 10:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-11-18 10:30:00' AND usuario_id = 9 AND tipo_venda_id = 3);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 2, 120.00, (SELECT id FROM venda WHERE data_hora = '2024-11-18 10:30:00' AND usuario_id = 9 AND tipo_venda_id = 3));
+
+-- Venda Finalizada em Novembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 18.0, 2, 1, 10, 800.00, '2024-11-20 15:45:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-11-20 15:45:00' AND usuario_id = 10 AND tipo_venda_id = 1);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 3, 133.33, (SELECT id FROM venda WHERE data_hora = '2024-11-20 15:45:00' AND usuario_id = 10 AND tipo_venda_id = 1));
+
+
+       -- Produtos relacionados à venda de 1 de Novembro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 2, 0, 1, 80.00, (SELECT id FROM venda WHERE data_hora = '2024-11-01 08:20:00' AND usuario_id = 2 AND tipo_venda_id = 3)),
+(0.0, 6, 0, 1, 80.00, (SELECT id FROM venda WHERE data_hora = '2024-11-01 08:20:00' AND usuario_id = 2 AND tipo_venda_id = 3));
+
+-- Produtos relacionados à venda de 3 de Novembro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 7, 0, 1, 100.00, (SELECT id FROM venda WHERE data_hora = '2024-11-03 11:30:00' AND usuario_id = 3 AND tipo_venda_id = 1)),
+(0.0, 10, 0, 1, 100.00, (SELECT id FROM venda WHERE data_hora = '2024-11-03 11:30:00' AND usuario_id = 3 AND tipo_venda_id = 1));
+
+-- Produtos relacionados à venda de 5 de Novembro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 3, 0, 1, 150.00, (SELECT id FROM venda WHERE data_hora = '2024-11-05 14:45:00' AND usuario_id = 4 AND tipo_venda_id = 2)),
+(0.0, 9, 0, 1, 150.00, (SELECT id FROM venda WHERE data_hora = '2024-11-05 14:45:00' AND usuario_id = 4 AND tipo_venda_id = 2));
+
+-- Produtos relacionados à venda de 8 de Novembro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 4, 0, 1, 125.00, (SELECT id FROM venda WHERE data_hora = '2024-11-08 17:50:00' AND usuario_id = 5 AND tipo_venda_id = 1)),
+(0.0, 8, 0, 1, 125.00, (SELECT id FROM venda WHERE data_hora = '2024-11-08 17:50:00' AND usuario_id = 5 AND tipo_venda_id = 1));
+
+-- Produtos relacionados à venda de 12 de Novembro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 1, 0, 1, 175.00, (SELECT id FROM venda WHERE data_hora = '2024-11-12 14:10:00' AND usuario_id = 6 AND tipo_venda_id = 3)),
+(0.0, 11, 0, 1, 175.00, (SELECT id FROM venda WHERE data_hora = '2024-11-12 14:10:00' AND usuario_id = 6 AND tipo_venda_id = 3));
+
+-- Produtos relacionados à venda de 14 de Novembro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 5, 0, 1, 250.00, (SELECT id FROM venda WHERE data_hora = '2024-11-14 19:30:00' AND usuario_id = 7 AND tipo_venda_id = 2)),
+(0.0, 12, 0, 1, 250.00, (SELECT id FROM venda WHERE data_hora = '2024-11-14 19:30:00' AND usuario_id = 7 AND tipo_venda_id = 2));
+
+-- Produtos relacionados à venda de 16 de Novembro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 13, 0, 1, 150.00, (SELECT id FROM venda WHERE data_hora = '2024-11-16 20:00:00' AND usuario_id = 8 AND tipo_venda_id = 1)),
+(0.0, 14, 0, 1, 150.00, (SELECT id FROM venda WHERE data_hora = '2024-11-16 20:00:00' AND usuario_id = 8 AND tipo_venda_id = 1));
+
+-- Produtos relacionados à venda de 18 de Novembro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 4, 0, 1, 200.00, (SELECT id FROM venda WHERE data_hora = '2024-11-18 10:30:00' AND usuario_id = 9 AND tipo_venda_id = 3)),
+(0.0, 6, 0, 1, 200.00, (SELECT id FROM venda WHERE data_hora = '2024-11-18 10:30:00' AND usuario_id = 9 AND tipo_venda_id = 3));
+
+-- Produtos relacionados à venda de 20 de Novembro
+INSERT IGNORE INTO produto_venda (desconto, etp_id, item_promocional, quantidade, valor_unitario, venda_id)
+VALUES
+(0.0, 2, 0, 1, 266.67, (SELECT id FROM venda WHERE data_hora = '2024-11-20 15:45:00' AND usuario_id = 10 AND tipo_venda_id = 1)),
+(0.0, 7, 0, 1, 266.67, (SELECT id FROM venda WHERE data_hora = '2024-11-20 15:45:00' AND usuario_id = 10 AND tipo_venda_id = 1));
+
+-- Venda Finalizada em Novembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 2, 11, 350.00, '2024-11-22 09:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-11-22 09:30:00' AND usuario_id = 11 AND tipo_venda_id = 2);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 2, 116.67, (SELECT id FROM venda WHERE data_hora = '2024-11-22 09:30:00' AND usuario_id = 11 AND tipo_venda_id = 2));
+
+
+       -- Venda Finalizada em Dezembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 3, 2, 600.00, '2024-12-01 13:20:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-12-01 13:20:00' AND usuario_id = 2 AND tipo_venda_id = 3);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 1, 100.00, (SELECT id FROM venda WHERE data_hora = '2024-12-01 13:20:00' AND usuario_id = 2 AND tipo_venda_id = 3));
+
+-- Venda Finalizada em Dezembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 3, 500.00, '2024-12-02 14:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-12-02 14:00:00' AND usuario_id = 3 AND tipo_venda_id = 1);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 2, 100.00, (SELECT id FROM venda WHERE data_hora = '2024-12-02 14:00:00' AND usuario_id = 3 AND tipo_venda_id = 1));
+
+-- Venda Finalizada em Dezembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 2, 4, 350.00, '2024-12-05 16:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-12-05 16:30:00' AND usuario_id = 4 AND tipo_venda_id = 2);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 87.50, (SELECT id FROM venda WHERE data_hora = '2024-12-05 16:30:00' AND usuario_id = 4 AND tipo_venda_id = 2));
+
+-- Venda Finalizada em Dezembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 15.0, 2, 1, 5, 700.00, '2024-12-08 18:10:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-12-08 18:10:00' AND usuario_id = 5 AND tipo_venda_id = 1);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 2, 140.00, (SELECT id FROM venda WHERE data_hora = '2024-12-08 18:10:00' AND usuario_id = 5 AND tipo_venda_id = 1));
+
+-- Venda Finalizada em Dezembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 20.0, 2, 3, 6, 850.00, '2024-12-10 10:50:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-12-10 10:50:00' AND usuario_id = 6 AND tipo_venda_id = 3);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 3, 141.67, (SELECT id FROM venda WHERE data_hora = '2024-12-10 10:50:00' AND usuario_id = 6 AND tipo_venda_id = 3));
+
+-- Venda Finalizada em Dezembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 2, 7, 900.00, '2024-12-12 12:30:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-12-12 12:30:00' AND usuario_id = 7 AND tipo_venda_id = 2);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 2, 300.00, (SELECT id FROM venda WHERE data_hora = '2024-12-12 12:30:00' AND usuario_id = 7 AND tipo_venda_id = 2));
+
+-- Venda Finalizada em Dezembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 8, 550.00, '2024-12-14 14:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-12-14 14:00:00' AND usuario_id = 8 AND tipo_venda_id = 1);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 3, 137.50, (SELECT id FROM venda WHERE data_hora = '2024-12-14 14:00:00' AND usuario_id = 8 AND tipo_venda_id = 1));
+
+-- Venda Finalizada em Dezembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 15.0, 2, 2, 9, 400.00, '2024-12-16 16:10:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-12-16 16:10:00' AND usuario_id = 9 AND tipo_venda_id = 2);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 133.33, (SELECT id FROM venda WHERE data_hora = '2024-12-16 16:10:00' AND usuario_id = 9 AND tipo_venda_id = 2));
+
+-- Venda Finalizada em Dezembro
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 20.0, 2, 1, 10, 1200.00, '2024-12-20 10:00:00'
+    WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-12-20 10:00:00' AND usuario_id = 10 AND tipo_venda_id = 1);
+
+-- Pagamento relacionado à venda
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 3, 200.00, (SELECT id FROM venda WHERE data_hora = '2024-12-20 10:00:00' AND usuario_id = 10 AND tipo_venda_id = 1));
+
+-- Vendas em Setembro de 2024
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 1, 150.00, '2024-09-01 10:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-09-01 10:00:00' AND usuario_id = 1);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (2, 1, 500.00, (SELECT id FROM venda WHERE data_hora = '2024-09-01 10:00:00' AND usuario_id = 1));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 8.0, 2, 1, 2, 200.00, '2024-09-02 11:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-09-02 11:00:00' AND usuario_id = 2);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 90.00, (SELECT id FROM venda WHERE data_hora = '2024-09-02 11:00:00' AND usuario_id = 2));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 3, 180.00, '2024-09-03 12:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-09-03 12:00:00' AND usuario_id = 3);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 2, 60.00, (SELECT id FROM venda WHERE data_hora = '2024-09-03 12:00:00' AND usuario_id = 3));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 7.0, 2, 1, 4, 220.00, '2024-09-04 13:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-09-04 13:00:00' AND usuario_id = 4);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 1, 80.00, (SELECT id FROM venda WHERE data_hora = '2024-09-04 13:00:00' AND usuario_id = 4));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 12.0, 2, 1, 5, 300.00, '2024-09-05 14:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-09-05 14:00:00' AND usuario_id = 5);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 2, 900.00, (SELECT id FROM venda WHERE data_hora = '2024-09-05 14:00:00' AND usuario_id = 5));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 6, 260.00, '2024-09-06 15:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-09-06 15:00:00' AND usuario_id = 6);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 350.00, (SELECT id FROM venda WHERE data_hora = '2024-09-06 15:00:00' AND usuario_id = 6));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 15.0, 2, 1, 7, 400.00, '2024-09-07 16:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-09-07 16:00:00' AND usuario_id = 7);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (8, 1, 100.00, (SELECT id FROM venda WHERE data_hora = '2024-09-07 16:00:00' AND usuario_id = 7));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 20.0, 2, 1, 8, 350.00, '2024-09-08 17:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-09-08 17:00:00' AND usuario_id = 8);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (7, 2, 250.00, (SELECT id FROM venda WHERE data_hora = '2024-09-08 17:00:00' AND usuario_id = 8));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 9.0, 2, 1, 9, 280.00, '2024-09-09 18:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-09-09 18:00:00' AND usuario_id = 9);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 1, 90.00, (SELECT id FROM venda WHERE data_hora = '2024-09-09 18:00:00' AND usuario_id = 9));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 10, 300.00, '2024-09-10 19:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-09-10 19:00:00' AND usuario_id = 10);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 2, 125.00, (SELECT id FROM venda WHERE data_hora = '2024-09-10 19:00:00' AND usuario_id = 10));
+
+
+       -- Vendas em Agosto de 2024
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 7.0, 2, 1, 1, 120.00, '2024-08-01 10:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-08-01 10:00:00' AND usuario_id = 1);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (2, 1, 1000.00, (SELECT id FROM venda WHERE data_hora = '2024-08-01 10:00:00' AND usuario_id = 1));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 2, 150.00, '2024-08-02 11:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-08-02 11:00:00' AND usuario_id = 2);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 560.00, (SELECT id FROM venda WHERE data_hora = '2024-08-02 11:00:00' AND usuario_id = 2));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 3, 200.00, '2024-08-03 12:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-08-03 12:00:00' AND usuario_id = 3);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 2, 430.00, (SELECT id FROM venda WHERE data_hora = '2024-08-03 12:00:00' AND usuario_id = 3));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 4, 180.00, '2024-08-04 13:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-08-04 13:00:00' AND usuario_id = 4);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 100.00, (SELECT id FROM venda WHERE data_hora = '2024-08-04 13:00:00' AND usuario_id = 4));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 8.0, 2, 1, 5, 250.00, '2024-08-05 14:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-08-05 14:00:00' AND usuario_id = 5);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 1, 569.00, (SELECT id FROM venda WHERE data_hora = '2024-08-05 14:00:00' AND usuario_id = 5));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 9.0, 2, 1, 6, 300.00, '2024-08-06 15:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-08-06 15:00:00' AND usuario_id = 6);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 2, 1000.00, (SELECT id FROM venda WHERE data_hora = '2024-08-06 15:00:00' AND usuario_id = 6));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 12.0, 2, 1, 7, 350.00, '2024-08-07 16:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-08-07 16:00:00' AND usuario_id = 7);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (7, 1, 99.00, (SELECT id FROM venda WHERE data_hora = '2024-08-07 16:00:00' AND usuario_id = 7));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 15.0, 2, 1, 8, 400.00, '2024-08-08 17:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-08-08 17:00:00' AND usuario_id = 8);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (8, 1, 99.00, (SELECT id FROM venda WHERE data_hora = '2024-08-08 17:00:00' AND usuario_id = 8));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 11.0, 2, 1, 9, 320.00, '2024-08-09 18:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-08-09 18:00:00' AND usuario_id = 9);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (8, 2, 234.00, (SELECT id FROM venda WHERE data_hora = '2024-08-09 18:00:00' AND usuario_id = 9));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 14.0, 2, 1, 10, 450.00, '2024-08-10 19:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-08-10 19:00:00' AND usuario_id = 10);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (9, 1, 900.00, (SELECT id FROM venda WHERE data_hora = '2024-08-10 19:00:00' AND usuario_id = 10));
+
+       -- Vendas e Pagamentos em Julho de 2024
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 1, 150.00, '2024-07-01 09:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-07-01 09:00:00' AND usuario_id = 1);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 123.00, (SELECT id FROM venda WHERE data_hora = '2024-07-01 09:00:00' AND usuario_id = 1));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 2, 180.00, '2024-07-02 10:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-07-02 10:00:00' AND usuario_id = 2);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 300.00, (SELECT id FROM venda WHERE data_hora = '2024-07-02 10:00:00' AND usuario_id = 2));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 8.0, 2, 1, 3, 200.00, '2024-07-03 11:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-07-03 11:00:00' AND usuario_id = 3);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 800.00, (SELECT id FROM venda WHERE data_hora = '2024-07-03 11:00:00' AND usuario_id = 3));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 7.0, 2, 1, 4, 170.00, '2024-07-04 12:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-07-04 12:00:00' AND usuario_id = 4);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 56.67, (SELECT id FROM venda WHERE data_hora = '2024-07-04 12:00:00' AND usuario_id = 4));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 9.0, 2, 1, 5, 300.00, '2024-07-05 13:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-07-05 13:00:00' AND usuario_id = 5);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 1, 50.00, (SELECT id FROM venda WHERE data_hora = '2024-07-05 13:00:00' AND usuario_id = 5));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 6, 250.00, '2024-07-06 14:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-07-06 14:00:00' AND usuario_id = 6);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 1, 200.00, (SELECT id FROM venda WHERE data_hora = '2024-07-06 14:00:00' AND usuario_id = 6));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 4.0, 2, 1, 7, 160.00, '2024-07-07 15:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-07-07 15:00:00' AND usuario_id = 7);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 60.00, (SELECT id FROM venda WHERE data_hora = '2024-07-07 15:00:00' AND usuario_id = 7));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 8, 220.00, '2024-07-08 16:00:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-07-08 16:00:00' AND usuario_id = 8);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 125.00, (SELECT id FROM venda WHERE data_hora = '2024-07-08 16:00:00' AND usuario_id = 8));
+
+
+       -- Vendas e Pagamentos em Junho de 2024
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 7.0, 2, 1, 1, 200.00, '2024-06-01 09:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-06-01 09:30:00' AND usuario_id = 1);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 345.00, (SELECT id FROM venda WHERE data_hora = '2024-06-01 09:30:00' AND usuario_id = 1));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 8.0, 2, 1, 2, 250.00, '2024-06-02 10:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-06-02 10:30:00' AND usuario_id = 2);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 1, 100.00, (SELECT id FROM venda WHERE data_hora = '2024-06-02 10:30:00' AND usuario_id = 2));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 3, 180.00, '2024-06-03 11:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-06-03 11:30:00' AND usuario_id = 3);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 87.00, (SELECT id FROM venda WHERE data_hora = '2024-06-03 11:30:00' AND usuario_id = 3));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 9.0, 2, 1, 4, 300.00, '2024-06-04 12:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-06-04 12:30:00' AND usuario_id = 4);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 1, 90.60, (SELECT id FROM venda WHERE data_hora = '2024-06-04 12:30:00' AND usuario_id = 4));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 5, 350.00, '2024-06-05 13:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-06-05 13:30:00' AND usuario_id = 5);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (7, 1, 99.00, (SELECT id FROM venda WHERE data_hora = '2024-06-05 13:30:00' AND usuario_id = 5));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 6, 120.00, '2024-06-06 14:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-06-06 14:30:00' AND usuario_id = 6);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (2, 1, 125.00, (SELECT id FROM venda WHERE data_hora = '2024-06-06 14:30:00' AND usuario_id = 6));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 4.0, 2, 1, 7, 160.00, '2024-06-07 15:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-06-07 15:30:00' AND usuario_id = 7);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 400.00, (SELECT id FROM venda WHERE data_hora = '2024-06-07 15:30:00' AND usuario_id = 7));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 8, 200.00, '2024-06-08 16:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-06-08 16:30:00' AND usuario_id = 8);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 50.00, (SELECT id FROM venda WHERE data_hora = '2024-06-08 16:30:00' AND usuario_id = 8));
+
+       -- Vendas e Pagamentos em Maio de 2024
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 1, 180.00, '2024-05-01 09:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-05-01 09:30:00' AND usuario_id = 1);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 2500.00, (SELECT id FROM venda WHERE data_hora = '2024-05-01 09:30:00' AND usuario_id = 1));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 2, 220.00, '2024-05-02 10:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-05-02 10:30:00' AND usuario_id = 2);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 100.00, (SELECT id FROM venda WHERE data_hora = '2024-05-02 10:30:00' AND usuario_id = 2));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 7.0, 2, 1, 3, 240.00, '2024-05-03 11:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-05-03 11:30:00' AND usuario_id = 3);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 1, 250.00, (SELECT id FROM venda WHERE data_hora = '2024-05-03 11:30:00' AND usuario_id = 3));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 8.0, 2, 1, 4, 260.00, '2024-05-04 12:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-05-04 12:30:00' AND usuario_id = 4);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 1, 159.33, (SELECT id FROM venda WHERE data_hora = '2024-05-04 12:30:00' AND usuario_id = 4));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 5, 220.00, '2024-05-05 13:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-05-05 13:30:00' AND usuario_id = 5);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 90.00, (SELECT id FROM venda WHERE data_hora = '2024-05-05 13:30:00' AND usuario_id = 5));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 9.0, 2, 1, 6, 280.00, '2024-05-06 14:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-05-06 14:30:00' AND usuario_id = 6);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (7, 1, 900.00, (SELECT id FROM venda WHERE data_hora = '2024-05-06 14:30:00' AND usuario_id = 6));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 7, 210.00, '2024-05-07 15:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-05-07 15:30:00' AND usuario_id = 7);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 300.00, (SELECT id FROM venda WHERE data_hora = '2024-05-07 15:30:00' AND usuario_id = 7));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 8, 300.00, '2024-05-08 16:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-05-08 16:30:00' AND usuario_id = 8);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 1, 150.00, (SELECT id FROM venda WHERE data_hora = '2024-05-08 16:30:00' AND usuario_id = 8));
+
+       -- Vendas e Pagamentos em Abril de 2024
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 1, 180.00, '2024-04-01 09:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-04-01 09:30:00' AND usuario_id = 1);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 259.00, (SELECT id FROM venda WHERE data_hora = '2024-04-01 09:30:00' AND usuario_id = 1));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 2, 220.00, '2024-04-02 10:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-04-02 10:30:00' AND usuario_id = 2);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 290.00, (SELECT id FROM venda WHERE data_hora = '2024-04-02 10:30:00' AND usuario_id = 2));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 7.0, 2, 1, 3, 240.00, '2024-04-03 11:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-04-03 11:30:00' AND usuario_id = 3);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 1, 100.50, (SELECT id FROM venda WHERE data_hora = '2024-04-03 11:30:00' AND usuario_id = 3));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 8.0, 2, 1, 4, 260.00, '2024-04-04 12:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-04-04 12:30:00' AND usuario_id = 4);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 1, 300.33, (SELECT id FROM venda WHERE data_hora = '2024-04-04 12:30:00' AND usuario_id = 4));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 5, 220.00, '2024-04-05 13:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-04-05 13:30:00' AND usuario_id = 5);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 235.00, (SELECT id FROM venda WHERE data_hora = '2024-04-05 13:30:00' AND usuario_id = 5));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 9.0, 2, 1, 6, 280.00, '2024-04-06 14:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-04-06 14:30:00' AND usuario_id = 6);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (7, 1, 80.00, (SELECT id FROM venda WHERE data_hora = '2024-04-06 14:30:00' AND usuario_id = 6));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 7, 210.00, '2024-04-07 15:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-04-07 15:30:00' AND usuario_id = 7);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 99.00, (SELECT id FROM venda WHERE data_hora = '2024-04-07 15:30:00' AND usuario_id = 7));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 8, 300.00, '2024-04-08 16:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-04-08 16:30:00' AND usuario_id = 8);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 1, 400.00, (SELECT id FROM venda WHERE data_hora = '2024-04-08 16:30:00' AND usuario_id = 8));
+
+
+       -- Vendas e Pagamentos em Março de 2024
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 1, 180.00, '2024-03-01 09:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-03-01 09:30:00' AND usuario_id = 1);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 235.00, (SELECT id FROM venda WHERE data_hora = '2024-03-01 09:30:00' AND usuario_id = 1));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 2, 220.00, '2024-03-02 10:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-03-02 10:30:00' AND usuario_id = 2);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 600.00, (SELECT id FROM venda WHERE data_hora = '2024-03-02 10:30:00' AND usuario_id = 2));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 7.0, 2, 1, 3, 240.00, '2024-03-03 11:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-03-03 11:30:00' AND usuario_id = 3);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 1, 800.00, (SELECT id FROM venda WHERE data_hora = '2024-03-03 11:30:00' AND usuario_id = 3));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 8.0, 2, 1, 4, 260.00, '2024-03-04 12:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-03-04 12:30:00' AND usuario_id = 4);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 1, 400.33, (SELECT id FROM venda WHERE data_hora = '2024-03-04 12:30:00' AND usuario_id = 4));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 5, 220.00, '2024-03-05 13:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-03-05 13:30:00' AND usuario_id = 5);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 250.00, (SELECT id FROM venda WHERE data_hora = '2024-03-05 13:30:00' AND usuario_id = 5));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 9.0, 2, 1, 6, 280.00, '2024-03-06 14:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-03-06 14:30:00' AND usuario_id = 6);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (7, 1, 128.00, (SELECT id FROM venda WHERE data_hora = '2024-03-06 14:30:00' AND usuario_id = 6));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 7, 210.00, '2024-03-07 15:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-03-07 15:30:00' AND usuario_id = 7);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 90.00, (SELECT id FROM venda WHERE data_hora = '2024-03-07 15:30:00' AND usuario_id = 7));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 8, 300.00, '2024-03-08 16:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-03-08 16:30:00' AND usuario_id = 8);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 1, 99.00, (SELECT id FROM venda WHERE data_hora = '2024-03-08 16:30:00' AND usuario_id = 8));
+
+
+       -- Vendas e Pagamentos em Fevereiro de 2024
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 1, 180.00, '2024-02-01 09:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-02-01 09:30:00' AND usuario_id = 1);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 389.00, (SELECT id FROM venda WHERE data_hora = '2024-02-01 09:30:00' AND usuario_id = 1));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 2, 220.00, '2024-02-02 10:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-02-02 10:30:00' AND usuario_id = 2);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 426.00, (SELECT id FROM venda WHERE data_hora = '2024-02-02 10:30:00' AND usuario_id = 2));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 7.0, 2, 1, 3, 240.00, '2024-02-03 11:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-02-03 11:30:00' AND usuario_id = 3);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 1, 80.00, (SELECT id FROM venda WHERE data_hora = '2024-02-03 11:30:00' AND usuario_id = 3));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 8.0, 2, 1, 4, 260.00, '2024-02-04 12:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-02-04 12:30:00' AND usuario_id = 4);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 1, 258.33, (SELECT id FROM venda WHERE data_hora = '2024-02-04 12:30:00' AND usuario_id = 4));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 5, 220.00, '2024-02-05 13:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-02-05 13:30:00' AND usuario_id = 5);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 99.00, (SELECT id FROM venda WHERE data_hora = '2024-02-05 13:30:00' AND usuario_id = 5));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 9.0, 2, 1, 6, 280.00, '2024-02-06 14:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-02-06 14:30:00' AND usuario_id = 6);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (7, 1, 235.00, (SELECT id FROM venda WHERE data_hora = '2024-02-06 14:30:00' AND usuario_id = 6));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 7, 210.00, '2024-02-07 15:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-02-07 15:30:00' AND usuario_id = 7);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 70.00, (SELECT id FROM venda WHERE data_hora = '2024-02-07 15:30:00' AND usuario_id = 7));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 8, 300.00, '2024-02-08 16:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-02-08 16:30:00' AND usuario_id = 8);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 1, 400.00, (SELECT id FROM venda WHERE data_hora = '2024-02-08 16:30:00' AND usuario_id = 8));
+
+ -- Vendas e Pagamentos em Janeiro de 2024
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 1, 180.00, '2024-01-01 09:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-01-01 09:30:00' AND usuario_id = 1);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 60.00, (SELECT id FROM venda WHERE data_hora = '2024-01-01 09:30:00' AND usuario_id = 1));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 2, 220.00, '2024-01-02 10:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-01-02 10:30:00' AND usuario_id = 2);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 55.00, (SELECT id FROM venda WHERE data_hora = '2024-01-02 10:30:00' AND usuario_id = 2));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 7.0, 2, 1, 3, 240.00, '2024-01-03 11:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-01-03 11:30:00' AND usuario_id = 3);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (5, 1, 48.00, (SELECT id FROM venda WHERE data_hora = '2024-01-03 11:30:00' AND usuario_id = 3));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 8.0, 2, 1, 4, 260.00, '2024-01-04 12:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-01-04 12:30:00' AND usuario_id = 4);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 1, 43.33, (SELECT id FROM venda WHERE data_hora = '2024-01-04 12:30:00' AND usuario_id = 4));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 6.0, 2, 1, 5, 220.00, '2024-01-05 13:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-01-05 13:30:00' AND usuario_id = 5);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (4, 1, 55.00, (SELECT id FROM venda WHERE data_hora = '2024-01-05 13:30:00' AND usuario_id = 5));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 9.0, 2, 1, 6, 280.00, '2024-01-06 14:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-01-06 14:30:00' AND usuario_id = 6);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (7, 1, 40.00, (SELECT id FROM venda WHERE data_hora = '2024-01-06 14:30:00' AND usuario_id = 6));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 5.0, 2, 1, 7, 210.00, '2024-01-07 15:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-01-07 15:30:00' AND usuario_id = 7);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (3, 1, 70.00, (SELECT id FROM venda WHERE data_hora = '2024-01-07 15:30:00' AND usuario_id = 7));
+
+INSERT INTO venda (desconto, status_venda_id, tipo_venda_id, usuario_id, valor_total, data_hora)
+SELECT 10.0, 2, 1, 8, 300.00, '2024-01-08 16:30:00' WHERE NOT EXISTS (SELECT 1 FROM venda WHERE data_hora = '2024-01-08 16:30:00' AND usuario_id = 8);
+INSERT IGNORE INTO pagamento (qtd_parcelas, tipo_pagamento_id, valor, venda_id)
+VALUES (6, 1, 50.00, (SELECT id FROM venda WHERE data_hora = '2024-01-08 16:30:00' AND usuario_id = 8));

@@ -14,7 +14,7 @@ import java.util.List;
 public class LojaLogin implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY) @Id
     private Integer id;
-    @Column @NotNull
+    @Column(unique = true) @NotNull
     private String username;
     @Column @NotNull
     private String senha;

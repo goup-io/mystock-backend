@@ -12,7 +12,7 @@ import lombok.Setter;
 public class TipoPagamento {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotNull @NotBlank @Enumerated(EnumType.STRING)
+    @Column(unique = true) @NotNull @NotBlank @Enumerated(EnumType.STRING)
     private MetodoPagamento metodo;
 
     @Getter

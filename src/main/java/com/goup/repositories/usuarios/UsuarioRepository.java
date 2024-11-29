@@ -28,8 +28,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     @Query("SELECT new com.goup.dtos.dashboards.dashboardGeral.RankingFuncionariosRes(u.id, u.nome, SUM(v.valorTotal)) FROM Venda v " +
             "JOIN v.usuario u " +
-            "JOIN ProdutoVenda pv on pv.venda = v " +
-            "WHERE pv.etp.loja.id = :idLoja " +
+            "WHERE u.loja.id = :idLoja " +
             "AND v.statusVenda.status = 'FINALIZADA'" +
             "AND MONTH(v.dataHora) = :mes " +
             "AND YEAR(v.dataHora) = :ano  " +

@@ -1,0 +1,33 @@
+name: Deploy Backend
+
+on:
+  workflow_run:
+    workflows: ["CI Mysql with Data.sql"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.conclusion == 'success' }}
+    runs-on: [self-hosted, backend, Linux, docker]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Pull latest image
+        run: sudo docker pull goupimg/mystock-backend-mysql:latest
+
+      - name: Remove old container
+        run: |
+          sudo docker stop mystock-backend || true
+          sudo docker rm mystock-backend || true
+
+      - name: Run new container
+        run: |
+          sudo docker run -d --name mystock-backend \
+          -p 8080:8080 \
+          -e ENDPOINT_MYSQL=${{ secrets.EC2_PRIVADA_BD }} \
+          goupimg/mystock-backend-mysql:latest
+      
+      - name: Check Docker logs
+        run: sudo docker logs mystock-backend || true
