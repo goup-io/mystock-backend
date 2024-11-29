@@ -20,6 +20,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -53,35 +56,42 @@ public class DashboardGeralService {
         return getKpisRes(faturamentoMes, faturamentoDia, topETP, produtoEmEstoque);
     }
 
-    public Object[][] dashGeralBuscarFaturamentoPorLoja(){
+    public Object[][] dashGeralBuscarFaturamentoPorLoja() {
         List<Loja> lojas = lojaRepository.findAll();
-        if (lojas.isEmpty()){
+        if (lojas.isEmpty()) {
             throw new BuscaRetornaVazioException("Nenhuma loja encontrada!");
         }
 
+        // Alteração para 13 colunas (1 para nome da loja + 12 para faturamentos)
         Object[][] faturamentoPorLoja = new Object[lojas.size()][13];
-        for (int i = 0; i < lojas.size(); i++){
-            LocalDateTime dataInicial = LocalDateTime.now().minusMonths(12);
-            Integer mesInicial = dataInicial.getMonthValue();
-            Integer anoPesquisar = dataInicial.getYear();
+        for (int i = 0; i < lojas.size(); i++) {
+            LocalDateTime dataInicial = LocalDateTime.now(); // Mês atual (novembro de 2024)
+            Integer mesAtual = dataInicial.getMonthValue(); // Mês atual
+            Integer anoAtual = dataInicial.getYear(); // Ano atual
             int contador = 0;
-            faturamentoPorLoja[i][0] = lojas.get(i).getNome();
-            for (int j = mesInicial; contador < 12; j++){
-                Double valorTotal = pagamentoRepository.sumPagamentosByLojaAndMonthAndYear((j + 1), anoPesquisar, lojas.get(i).getId());
 
-                if (valorTotal == null){
-                    valorTotal = 0.0;
+            faturamentoPorLoja[i][0] = lojas.get(i).getNome(); // Nome da loja
+
+            for (int j = mesAtual; contador < 12; j--) {
+                if (j < 1) {
+                    j = 12;
+                    anoAtual -= 1;
                 }
 
-                faturamentoPorLoja[i][contador + 1] = valorTotal;
+                Double valorTotal = pagamentoRepository.sumPagamentosByLojaAndMonthAndYear(j, anoAtual, lojas.get(i).getId());
 
-                if (j == 12){
-                    j = 0;
-                    anoPesquisar += 1;
+                if (valorTotal == null) {
+                    valorTotal = 0.0; // Caso não haja valor, considera 0
                 }
+
+                BigDecimal valorArredondado = new BigDecimal(valorTotal).setScale(2, RoundingMode.HALF_UP);
+
+                faturamentoPorLoja[i][12 - contador] = valorArredondado.doubleValue(); // Inverter a posição
+
                 contador++;
             }
         }
+
         return faturamentoPorLoja;
     }
 
@@ -165,18 +175,21 @@ public class DashboardGeralService {
         Integer anoPesquisar = dataInicial.getYear();
         int contador = 0;
         faturamentoPorLoja[0][0] = loja.getNome();
-        for (int j = mesInicial; contador < 12; j++){
+
+        for (int j = mesInicial; contador < 12; j++) {
             Double valorTotal = pagamentoRepository.sumPagamentosByLojaAndMonthAndYear((j + 1), anoPesquisar, loja.getId());
 
-            if (valorTotal == null){
+            if (valorTotal == null) {
                 valorTotal = 0.0;
             }
 
-            faturamentoPorLoja[0][contador + 1] = valorTotal;
+            BigDecimal valorBigDecimal = new BigDecimal(valorTotal).setScale(1, RoundingMode.HALF_UP);
 
-            if (j == 12){
-                j = 0; // reset month to January
-                anoPesquisar += 1; // increment year
+            faturamentoPorLoja[0][contador + 1] = valorBigDecimal.doubleValue();
+
+            if (j == 12) {
+                j = 0;
+                anoPesquisar += 1;
             }
             contador++;
         }
