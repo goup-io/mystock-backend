@@ -8,7 +8,7 @@ import java.time.LocalTime;
 
 public record VendaResTable(
         Integer id,
-        LocalDate data,
+        @JsonFormat(pattern = "dd/MM/yyyy")  LocalDate data,
         @JsonFormat(pattern = "HH:mm:ss") LocalTime hora,
         String codigoVendedor,
         String nomeVendedor,
