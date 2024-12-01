@@ -16,11 +16,13 @@ public interface VendaRepository extends JpaRepository<Venda, Integer> {
     List<Venda> findAllByUsuarioLojaIdAndStatusVendaStatus(Integer lojaId, StatusVenda.Status status);
 
     @Query("SELECT venda FROM Venda venda " +
+            "LEFT JOIN ProdutoVenda produto ON produto.venda.id = venda.id " +
             "WHERE (:id_tipo_venda IS NULL OR venda.tipoVenda.id = :id_tipo_venda) " +
             "AND (:id_vendedor IS NULL OR venda.usuario.id = :id_vendedor)" +
             "AND (:data_inicio IS NULL OR :data_fim IS NULL OR venda.dataHora BETWEEN :data_inicio AND :data_fim)" +
-            "AND (:id_loja IS NULL OR venda.usuario.loja.id = :id_loja)" +
-            "AND (:status IS NULL OR venda.statusVenda.status = :status)"
+            "AND (:id_loja IS NULL OR produto.etp.loja.id = :id_loja)" +
+            "AND (:status IS NULL OR venda.statusVenda.status = :status)" +
+            "GROUP BY venda"
     )
     List<Venda> findAllByFiltros(
             @Param("id_tipo_venda") Integer id_tipo_venda,
