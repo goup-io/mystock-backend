@@ -1,4 +1,5 @@
 package com.goup.repositories.vendas;
+import com.goup.entities.usuarios.Usuario;
 import com.goup.entities.vendas.StatusVenda;
 import com.goup.entities.vendas.TipoVenda;
 import com.goup.entities.vendas.Venda;
@@ -87,5 +88,6 @@ public interface VendaRepository extends JpaRepository<Venda, Integer> {
             "WHERE v.dataHora >= :startDate " +
             "AND v.statusVenda.status = 'FINALIZADA'")
     Double sumValorVendasPrecoRevenda(@Param("startDate") LocalDateTime startDate);
-    
+
+    List<Venda> findAllByUsuario_Id(Integer id);
 }

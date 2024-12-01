@@ -2,6 +2,7 @@ package com.goup.entities.usuarios;
 
 import com.goup.entities.cargos.Cargo;
 import com.goup.entities.lojas.Loja;
+import com.goup.entities.usuarios.login.Login;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
@@ -30,6 +31,8 @@ public class Usuario {
     @NotNull
     @JoinColumn(name = "loja_id")
     private Loja loja;
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.REMOVE)
+    private Login login;
 
     @PostPersist
     public void setCodigoVenda() {

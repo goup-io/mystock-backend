@@ -26,10 +26,10 @@ public class Transferencia {
     @NotNull @ManyToOne @JoinColumn(name = "status_transferencia_id", referencedColumnName = "id")
     private StatusTransferencia status;
 
-    @NotNull @ManyToOne @JoinColumn(name = "coletor_id", referencedColumnName = "id")
+    @NotNull @ManyToOne(cascade = CascadeType.REMOVE) @JoinColumn(name = "coletor_id", referencedColumnName = "id")
     private Usuario coletor;
 
-    @ManyToOne @JoinColumn(name = "liberador_id", referencedColumnName = "id")
+    @ManyToOne(cascade = CascadeType.REMOVE) @JoinColumn(name = "liberador_id", referencedColumnName = "id")
     private Usuario liberador;
 
     @NotNull @ManyToOne @JoinColumn(name = "etp_id", referencedColumnName = "id")
