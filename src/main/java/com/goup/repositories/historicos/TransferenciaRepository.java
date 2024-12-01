@@ -23,7 +23,7 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia, In
             "AND (:produto IS NULL OR lower(produto.nome) LIKE lower(concat('%',:produto, '%')))" +
             "AND (:cor IS NULL OR lower(produto.cor.nome) LIKE lower(concat('%', :cor, '%')))" +
             "AND (:tamanho IS NULL OR etp.tamanho.numero = :tamanho) " +
-            "AND (:id_loja IS NULL OR hist.coletor.loja.id = :id_loja) " +
+            "AND (:id_loja IS NULL OR hist.etp.loja.id = :id_loja) " +
             "AND (:status IS NULL OR hist.status.status = :status ) "+
             "AND (:dataInicio IS NULL OR hist.dataHora >= :dataInicio) " +
             "AND (:dataFim IS NULL OR hist.dataHora <= :dataFim) " +
