@@ -21,7 +21,7 @@ public class VendaMapper {
                 venda.getValorTotal(),
                 venda.getStatusVenda().getStatus().getDescricao(),
                 venda.getTipoVenda().getTipo().getTipo(),
-                venda.getUsuario().getNome()
+                venda.getUsuario() != null ? venda.getUsuario().getNome() : "---"
         );
     }
 
@@ -40,8 +40,8 @@ public class VendaMapper {
                 venda.getId(),
                 venda.getDataHora().toLocalDate(),
                 venda.getDataHora().toLocalTime(),
-                venda.getUsuario().getCodigoVenda().toString(),
-                venda.getUsuario().getNome(),
+                venda.getUsuario() != null ? venda.getUsuario().getCodigoVenda().toString() : "---",
+                venda.getUsuario() != null ? venda.getUsuario().getNome() : "---",
                 venda.getTipoVenda(),
                 quantidadeItens,
                 venda.getValorTotal(),
@@ -74,7 +74,7 @@ public class VendaMapper {
         Integer id = v.getId();
         LocalDate data = v.getDataHora().toLocalDate();
         LocalTime hora = v.getDataHora().toLocalTime();
-        String nomeVendedor = v.getUsuario().getNome();
+        String nomeVendedor = v.getUsuario() != null ? v.getUsuario().getNome() : "---";
         String tipoVenda = v.getTipoVenda().getTipo().getTipo();
         Double descontoTipoVenda = v.getTipoVenda().getDesconto();
         Integer qtdItens = produtosDetalhados.stream().mapToInt(ProdutoVendaDetalhamentoRes::qtd).sum();

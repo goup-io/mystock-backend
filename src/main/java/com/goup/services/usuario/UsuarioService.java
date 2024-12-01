@@ -9,6 +9,7 @@ import com.goup.exceptions.RegistroNaoEncontradoException;
 import com.goup.repositories.lojas.LojaRepository;
 import com.goup.repositories.usuarios.CargoRepository;
 import com.goup.repositories.usuarios.UsuarioRepository;
+import com.goup.repositories.vendas.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,9 @@ public class UsuarioService {
 
     @Autowired
     private CargoRepository cargoRepository;
+
+    @Autowired
+    private VendaRepository vendaRepository;
 
     @Autowired
     private LojaRepository lojaRepository;
@@ -100,6 +104,12 @@ public class UsuarioService {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
+
+            vendaRepository.findAllByUsuario_Id(usuario.getId()).forEach(venda -> {
+                venda.setUsuario(null);
+                vendaRepository.save(venda);
+            });
+
             usuarioRepository.delete(usuario);
         } else {
             throw new RegistroNaoEncontradoException("Usuário não encontrado!");

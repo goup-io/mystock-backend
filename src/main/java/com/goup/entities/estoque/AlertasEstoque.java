@@ -1,5 +1,6 @@
 package com.goup.entities.estoque;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +22,7 @@ public class AlertasEstoque {
     @NotNull @NotBlank
     private String descricao;
 
-    @NotNull
+    @NotNull @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataHora;
 
     @NotNull @ManyToOne @JoinColumn(name = "etp_id", referencedColumnName = "id")

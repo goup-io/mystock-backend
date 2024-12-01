@@ -23,6 +23,6 @@ public class Venda {
     private StatusVenda statusVenda;
     @NotNull @ManyToOne(cascade=CascadeType.ALL)
     private TipoVenda tipoVenda;
-    @NotNull @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.ALL)
     private Usuario usuario;
 }
